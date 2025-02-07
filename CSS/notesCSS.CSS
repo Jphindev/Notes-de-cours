@@ -113,7 +113,6 @@ initial: on veut retrouver la valeur initiale définie par défaut par le naviga
 /*Les valeurs oubliées en shorthand sont remplacées par leurs valeurs initiales*/
 
 h4 {
-	/*Ecriture shorthand*/
 	font-style: italic;
 	font-variant: small-caps;
 	font-weight: normal;
