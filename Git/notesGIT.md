@@ -237,12 +237,14 @@ Pour cloner une branche:
 
 #### FORK
 
-Copier un dépot sans affecter le projet original tout en contribuant au projet  
--> création nouvelle branche  
--> modifications de fichiers  
--> commit avec message  
--> pull request pour demander validation  
--> merge request pour fusion  
+Copier un dépot sans affecter le projet original tout en contribuant au projet
+
+- création nouvelle branche
+- modifications de fichiers
+- commit avec message
+- pull request pour demander validation
+- merge request pour fusion
+
 En pratique, on fork puis on clone notre branche pour pouvoir travailler dessus localement.
 
 ### SYNCHRONISATION DE DEPOT
@@ -263,7 +265,7 @@ En pratique, on fork puis on clone notre branche pour pouvoir travailler dessus 
 
 `$ git pull [nom-distant] [nom-local]` // pour récupérer en local les dernières modif du dépôt github  
 `$ git pull origin <source>:<destination>` //pareil que fetch mais avec un merge automatique sur la branche courante  
-git pull = git fetch + git merge
+git pull = git fetch + git merge  
 git pull --rebase = git fetch + git rebase
 
 #### SUPPRIMER UNE BRANCHE DISTANTE

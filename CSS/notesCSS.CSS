@@ -1,0 +1,1263 @@
+/* 
+sélecteur{
+	propriété: valeur;
+} 
+*/
+
+body {
+	/*Tous les éléments à l'intérieur de <body> vont hériter du CSS
+	Priorité de l'héritage:
+un !important dans le CSS
+<style> à coté de la balise html
+<style> dans la section <head> du html
+un sélecteur #id dans le CSS
+un sélecteur .class, d'attribut ou pseudo-classe dans le CSS
+un sélecteur élément ou pseudo-élément précis du CSS
+un sélecteur plus global
+
+	Si plusieurs sélecteurs ont la même priorité, c'est celui qui sera déclaré en dernier dans le code qui primera.
+	*/
+	margin: 0px;
+	padding: 0px;
+	/*pour réinitialiser les marges intérieures et extérieures du body*/
+
+	font-size: 1em;
+	width: 100%;
+	/*pour permettre un affichage qui s'adapte à différentes tailles d'écrans, si on n'utilise pas les media queries*/
+
+	font-family: "Source Code Pro", "monospace";
+	/*pour définir la police de la page*/
+}
+
+/************************************/
+/* >>>>>>>>>> CSS AVANCE <<<<<<<<<< */
+/************************************/
+
+/*
+*{ 
+	cible tous les éléments html
+}
+h2{
+	cible l'élément h2
+}
+.partie2{
+	cible l'élément de class partie2
+}
+#partie3{
+	cible l'élément d'id partie3
+}
+
+h2, p{
+	cible tous les éléments h2 et p
+}
+body p{
+	cible tous les p de la page
+}
+div p{
+	cible tous les p à l'intérieur d'un div
+}
+div + p {
+	cible les élements p placés directement après un div et sont de même niveaux d'indentation
+}
+div ~ p {
+	cible tous les éléments p placés après un div avec le même niveau d'indentation
+}
+div > h2{
+	cible les éléments h2 qui sont enfants directs d'un div
+}
+div[class]{}
+a[target]{}
+	cible tous les éléments possédant un attribut précis
+
+div[class="div1"]{
+	cible les div qui ont un attribut class div1
+}
+img[alt~="soleil"]{
+	cible les img qui possèdent un attribut alt avec " soleil "
+	/!\ Il doit y avoir des espaces autour du mot dans le alt.
+}
+img[alt*="soleil"]{
+	cible les img avec un alt contenant "soleil" sans aucune autre restriction
+}
+img[alt*="soleil" i]{
+	même chose mais insensible à la casse (Soleil ou soLeiL par exemple)
+}
+img[alt^="Un"]{
+	cible les img avec un alt commençant par "Un"
+}
+img[alt|="Un"]{
+	cible les img avec un alt valant exactement "Un"
+	ou qui commence par "Un-"
+}
+a[href$=".com"]{
+	cible les a avec href dont la valeur se termine par ".com"
+}
+
+
+*/
+/**********************************/
+/* >>>>>>>>>> HERITAGE <<<<<<<<<< */
+/**********************************/
+
+/*
+Certaines propriétés sont transmises par héritage, d'autres non.
+on peut changer l'héritage de certaines proprités grâce aux valeurs suivantes: 
+inherit: on veut la même valeur de propriété que l'élément parent
+initial: on veut retrouver la valeur initiale définie par défaut par le navigateur.
+*/
+
+/***********************************/
+/* >>>>>>>>>> SHORTHAND <<<<<<<<<< */
+/***********************************/
+
+/*Les valeurs oubliées en shorthand sont remplacées par leurs valeurs initiales*/
+
+h4 {
+	/*Ecriture shorthand*/
+	font-style: italic;
+	font-variant: small-caps;
+	font-weight: normal;
+	font-size: 16px; /*obligatoire*/
+	line-height: 24px;
+	font-family: Verdana, sans-serif; /*obligatoire*/
+	/*en shorthand*/
+	font: italic small-caps normal 16px/24px Verdana, sans-serif;
+
+	text-decoration-line: overline;
+	text-decoration-style: wavy;
+	text-decoration-color: #a92;
+	text-decoration-thickness: auto;
+	/*en shorthand*/
+	text-decoration: overline wavy #a92;
+
+	padding-top: 20px;
+	padding-right: 15px;
+	padding-bottom: 0px;
+	padding-left: 50px;
+	/*en shorthand*/
+	padding: 20px 15px 0px 50px;
+
+	border-width: 5px;
+	border-style: solid;
+	border-color: blue;
+	/*en shorthand*/
+	border: 5px solid blue;
+
+	margin-top: 20px;
+	margin-right: 15px;
+	margin-bottom: 10px;
+	margin-left: 5px;
+	/*en shorthand*/
+	margin: 20px 15px 10px 5px;
+
+	background-image: url(media/image.jpg);
+	background-position: top left;
+	background-size: 50px;
+	background-repeat: no-repeat;
+	background-attachment: scroll;
+	background-origin: border-box;
+	background-clip: content-box;
+	background-color: white;
+	/*en shorthand*/
+	background: url(media/image.jpg) top left/50px no-repeat scroll white;
+
+	transition-property: margin-right;
+	transition-duration: 2s;
+	transition-timing-function: ease;
+	transition-delay: 1s;
+	/*en shorthand*/
+	transition: margin-right 2s ease 1s;
+
+	animation-name: chgt-couleur;
+	animation-duration: 20s;
+	animation-timing-function: linear;
+	animation-delay: 1s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-fill-mode: both;
+	animation-play-state: running;
+	/*en shorthand*/
+	animation: chgt-couleur 20s ease 1s infinite alternate both running;
+
+	/*
+	flex-grow: 1;
+	flex-shrink: 1;
+	flex-basis: 30%; */
+	/*en shorthand
+	flex: 1 1 30%; */
+}
+
+/**************************************/
+/* >>>>>>>>>> PSEUDO CLASS <<<<<<<<<< */
+/**************************************/
+
+h2:hover {
+	color: orange;
+	/*quand on survole avec la souris*/
+}
+a:link {
+	color: blue;
+	/*couleur des liens*/
+}
+a:visited {
+	color: green;
+	/*couleur des liens déjà visités*/
+}
+a:active {
+	color: purple;
+	/*couleur du lien pendant le clic*/
+}
+a:link {
+	color: black;
+	/*cible tous les liens non visités*/
+}
+p:first-child {
+	color: orchid;
+	/*cible les p qui sont 1er enfant d'un élément parent*/
+}
+p:first-of-type {
+	color: #ccc;
+	/*cible le 1er p enfant (pas forcément le 1er enfant)d'un élément parent*/
+}
+p:last-child {
+	color: aliceblue;
+	/*cible un les p qui sont dernier enfant d'un élément*/
+}
+p:last-of-type {
+	color: #0c0;
+	/*cible le dernier p enfant (pas forcément le dernier enfant) d'un élément parent*/
+}
+p:nth-child(even) {
+	color: purple;
+	/*cible les p qui sont 2e, 4e, ... enfant d'un élément, avec (odd) pour les impairs, ou (3) pour cibler les p qui sont 3e enfant seulement*/
+}
+p:nth-of-type(2) {
+	text-decoration: underline;
+	/*cible le 2e p enfant (pas forcément le 2e enfant) d'un élément parent*/
+}
+
+/****************************************/
+/* >>>>>>>>>> PSEUDO ELEMENT <<<<<<<<<< */
+/****************************************/
+
+h3::first-letter {
+	font-size: 30px;
+	color: #a92;
+	/*cible la 1ere lettre d'un élément de type block*/
+}
+h3::first-line {
+	font-size: 30px;
+	color: #a92;
+	/*cible la 1ere ligne visible dans le navigateur*/
+}
+h3::selection {
+	background-color: orange;
+	/*quand on selectionne avec la souris*/
+}
+
+/*ajoute du contenu avant ou après un élément html*/
+h3::before {
+	content: "avec ::before) ";
+}
+h3::after {
+	content: " (avec ::after" url(media/logo.png);
+}
+
+/*CLEARFIX pour qu'un élément parent contienne ses enfants flottants*/
+h3::after {
+	display: table;
+	content: "";
+	clear: both;
+}
+
+/*********************************************/
+/* >>>>>>>>>> TEXTE ET BACKGROUND <<<<<<<<<< */
+/*********************************************/
+
+h1 {
+	/***Font***/
+
+	font-family: "Source Code Pro", "courier new", monospace;
+	/*vient de Google fonts, link dans le head du html
+		*si le navigateur ne reconnait pas une police, il essaie la suivante, il est bon de suivre ce modèle: 
+		font-family: police souhaitée, web safe font, famille générique*/
+
+	/* Web safe fonts 
+		Serif: Times New Roman, Georgia
+		Sans-serif: Arial, Verdana
+		Monospace: Courier New, Lucida Console
+		Cursive: Comic sans MS*/
+
+	font-size: 80px;
+	/*taille absolue, mettre en % ou em pour une taille relative par rapport à l'élément parent
+		*ou xx-small x-small small medium large x-large xx-large
+		*ou smaller, larger par rapport au parent
+		*ou rem pour une taille relative à la racine html*/
+
+	font-style: italic;
+	/*ou normal, oblique (qui force une police à se mettre en italique)*/
+
+	font-weight: bold;
+	/*ou normal, light, lighter, bolder ou 100 à 900*/
+
+	font-variant: small-caps;
+	/*peu utilisée*/
+
+	line-height: normal;
+	/*taille de l'espace entre les lignes (interligne)*/
+
+	/***Text***/
+
+	text-align: left;
+	/*ou right, center, justify*/
+
+	text-decoration: overline wavy;
+	/*ou underline, overline, linethrough, underline overline, none
+		*d'autres options en plus: solid, double, dotted, dashed, wavy ou une couleur*/
+
+	text-indent: 100px;
+	/*ou en % ou em, pour mettre une tabulation*/
+
+	text-shadow: 1px 1px 4px #444444;
+	/*décalage horizontal, vertical, rayon de propagation et couleur de l'ombre*/
+
+	text-transform: uppercase;
+	/*ou lowercase, capitalize (1eres lettres en majuscule), none*/
+
+	/*** Couleurs et opacité ***/
+
+	color: red;
+	/*avec le nom de la couleur
+		* transparent = couleur invisible*/
+
+	color: #ff0000;
+	/*avec l'écriture hexadécimale*/
+
+	color: rgb(255, 0, 0);
+	/*avec le code rgb*/
+
+	color: rgba(255, 0, 0, 0.7);
+	/*une valeur en plus pour la transparence*/
+
+	color: hsl(0, 100%, 50%);
+	/*hue (teinte en angle), 
+		* saturation (100%=pur 0%=gris), 
+		* lightness (100%=très lumineux - blanc, 50%=normal, 100%=très sombre - noir*/
+
+	color: hsla(0, 100, 50, 0.7);
+	/*avec la transparence*/
+
+	opacity: 0.7;
+	/*/!\ l'opacité se transmettra à l'élément entier*/
+
+	/***Background***/
+
+	background-color: white;
+	background-image: url("nom_fichier.jpg");
+	/*on peut mettre plusieurs images, séparés par des virgules.
+		* il est prudent de déclarer aussi une couleur de fond si jamais l'image ne s'affiche pas*/
+
+	background-size: 100%;
+	/*ou cover pour que l'image soit redimensionnée et prenne toute la largeur de l'élément qui la contient
+		* contain: agrandie au maximum tout en conservant ses proportions*/
+
+	background-repeat: no-repeat;
+	/*on peut mettre 2 valeurs: axe horizontal axe vertical
+		* repeat-x raccourci de repeat no-repeat
+		* repeat-y raccourci de no-repeat repeat
+		* round (étiré et pas rogné)
+		* space (pas étiré et pas rogné) 
+		* on sépare par des virgules s'il y a plusieurs fonds*/
+
+	background-attachment: fixed;
+	/*l'image de fond ne scroll pas
+		* scroll: l'image de fond scroll avec le conteneur mais pas le contenu
+		* local: l'image de fond scroll avec le conteneur et le contenu*/
+
+	background-origin: border-box;
+	/*l'image se cale sur le coin supérieur gauche de border
+		* padding-box: se cale sur le padding de l'élément (par défaut)
+		* content-box: se cale sur le contenu de l'élément*/
+
+	background-position: top right;
+	/*ou center, 
+		* 50% 400px, position horizontale verticale*/
+
+	background-clip: content-box;
+	/*affiche l'image de fond seulement pour la valeur donnée, le reste ne sera pas visible
+		* ou padding-box border-box comme origin*/
+
+	/*** Dégradés ***/
+
+	background: linear-gradient(90deg, yellow 30%, red 60%, purple);
+	/*0deg bas vers haut (to top), 180deg haut vers bas (to bottom)
+		* 90deg gauche droite (to right), 270deg droite gauche (to left)
+		* to top right (45deg) = bas gauche vers haut droite*/
+
+	background: repeating-linear-gradient(
+		yellow,
+		red 10%,
+		purple 20%,
+		yellow 30%
+	);
+	/*répète le même dégradé, même couleur en premier et dernier pour que ce soit plus fluide*/
+
+	background: radial-gradient(60px circle, blue 30%, green);
+	background: radial-gradient(closest-side at 20% 40%, red, yellow);
+	background: radial-gradient(
+		100px 50px at top,
+		yellow 25%,
+		green 60%,
+		rgba(128, 0, 128, 0.5)
+	);
+	/*(rayon-hor rayon-ver forme at position, couleur1 %, couleur2 %, couleur3 %)*/
+
+	background: repeating-radial-gradient(
+		yellow,
+		green 10%,
+		purple 20%,
+		yellow 30%
+	);
+	/* pareil que pour linear */
+
+	/*** Interlignes et espaces***/
+
+	line-height: 2em;
+	/*écart entre 2 lignes, 2em=un espace d'une taille de police*/
+
+	letter-spacing: 2px;
+	/*écart entre 2 lettres, valeur négative= texte à l'envers*/
+
+	word-spacing: 10px;
+	/*écart entre 2 mots*/
+
+	/********************************/
+	/* >>>>>>>>>> BOITES <<<<<<<<<< */
+	/********************************/
+
+	/*Bien respecter la hiérarchie d'imbrication des éléments dans les boites*/
+
+	background-color: #088;
+	/*couleur de fond de la boite*/
+
+	height: 400px;
+	width: 500px;
+	/*ou en % de l'élément parent*/
+
+	overflow: scroll;
+	/*ou hidden, auto, permet de cacher ou pas la partie de lélément qui dépasse de son conteneur*/
+
+	/***Padding***/
+
+	padding: 20px;
+	/*marge intérieure de la boite entre border et contenu*/
+
+	padding-top: 20px;
+	padding-left: 50px;
+	padding: 20px 30px 40px 50px;
+	/*pour haut, droite, bas et gauche*/
+
+	padding: 20px 40px;
+	/*20 pour heut et bas, 40 pour droite et gauche*/
+
+	/***Border***/
+
+	border: 20px solid #0c0; /*shorthand*/
+
+	/*ou on peut le détailler comme ça*/
+
+	border-width: 2px;
+	/*ou thin, medium, thick ou em*/
+
+	border-style: solid;
+	/*ou dashed, dotted, double, groove, ridge, inset, outset*/
+
+	border-color: yellow;
+
+	/*ou le détailler encore plus*/
+
+	border-width: 2px 3px 4px 5px;
+	border-style: dashed solid dashed dotted;
+	border-color: yellow, red, green, blue;
+	/*pour haut droite bas gauche*/
+
+	border-bottom: 20px ridge black;
+	border-right: 10px groove rgba(0, 0, 0, 0.5);
+	border-top-width: 2px;
+	border-top-style: dashed;
+	border-top-color: yellow;
+
+	/*coins arrondis*/
+
+	border-radius: 15px;
+	/*pour arrondir le coin des bordures
+		une seule valeur pour un effet cercle (50%)*/
+
+	border-radius: 50px / 20px;
+	/*rayon axe horizontal / vertical pour un effet ellipse*/
+
+	border-top-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-radius: 10px 5px 6px 14px;
+	/*top-left, top-right, bottom-right, bottom-left*/
+
+	border-radius: 50px 100px 40px 0px / 50px 10px 80px 0px;
+	/*correspond à*/
+	border-top-left-radius: 50px 50px;
+	border-top-right-radius: 100px 10px;
+	border-bottom-right-radius: 40px 80px;
+	border-bottom-left-radius: 0px;
+	/* /!\ pas de slash pour ces propriétés */
+
+	/***Margin***/
+
+	margin: 50px;
+	/*marge extérieure de la boite
+		un margin-bottom et top qui se suivent vont fusionner, seul le plus grand sera gardé*/
+
+	margin-top: 25px;
+	margin: 10px 20px 30px 40px;
+	/*pour haut, droite, bas et gauche*/
+
+	margin: 0px auto;
+	/*0 pour haut et bas, auto pour centrer horizontalement droite et gauche*/
+
+	/*** Box ***/
+
+	box-sizing: border-box;
+	/*la taille de l'élément ne changera pas même si on modifie les tailles de marges et border, le contenu sera alors compressé*/
+
+	box-sizing: content-box;
+	/*par défaut, la modification de marges et border vont augmenter la taille de l'élément*/
+
+	box-shadow: -5px -10px 5px 10px black inset;
+	/*décalage horizontal, vertical, valeur du flou, rayon de propagation, couleur de l'ombre
+		* inset pour projeter l'ombre vers l'intérieure
+		* 0px 0px pour centrer l'ombre autour de la boite */
+
+	/***Display***/
+
+	display: none;
+	/*ne pas afficher l'élément
+		* ne pas confondre avec visibility: hidden qui laisse un emplacement vide*/
+
+	display: contents;
+	/*non recommandé, conserve le contenu textuel mais fait disparaitre les boites générés par l'élément*/
+
+	display: inline;
+	/*n'occuppe que la largeur nécessaire à son affichage, width ou height impossible à définir
+		*se place en ligne à côté de lélément précédent
+		*ne peut pas contenir d'éléments block, mais inline oui
+		*permet de changer un élément block en élément inline*/
+
+	display: block;
+	/*prend toute la largeur possible dans son élément parent
+		*crée un saut de ligne avant et après
+		*peut contenir d'autres éléments block ou inline
+		*permet de changer un élément inline en élément block*/
+
+	display: run-in;
+	/*non recommandé, l'élément va s'insérer dans l'élément de type block suivant*/
+
+	display: flex;
+	/*se comporte comme une boite flexible
+		* voir le chapitre consacré*/
+
+	display: grid;
+	/*dispose les éléments sur une grille*/
+
+	display: table;
+	/*va se comporter comme un tableau de type block*/
+
+	display: table-footer-group;
+	/*pour être plus précis et se comporter visuellement comme un tfoot, thead, tbody, tr, td, colgroup, col*/
+
+	display: list-item;
+	list-style-type: circle;
+	list-style-position: inside; /*marqueurs dans l'élément*/
+	/*va se comporter comme un élément de liste de type block*/
+
+	display: inline-block;
+	/*se comporte comme un élément inline avec un contenu de type block pour pouvoir aligner des block
+		* permet de donner un width à un élément inline*/
+
+	display: inline-table;
+	/*pour placer un tableau à la suite d'un autre*/
+
+	display: -ms-inline-grid;
+	/*pour aligner des grilles*/
+
+	display: inline list-item;
+	/*permet d'aligner des listes*/
+
+	/*** Position ***/
+
+	position: static;
+	/*par défaut, dans ce cas top, right, left et bottom ne marche pas*/
+
+	position: relative;
+	left: 50px;
+	/*permet de décaler un élément, exemple à 50px du bord gauche de sa position d'origine dans l'élément parent, les éléments qui suivent ne peuvent pas prendre sa place*/
+
+	position: absolute;
+	top: 20px;
+	/*permet de placer l'élément par rapport à l'écran, exemple à 20px du bord sup de l'écran, les éléments qui suivent peuvent prendre sa place
+		* ne permet pas de float*/
+
+	position: fixed;
+	/*comme absolute sauf que l'élément restera visible sur la page même si on scroll, il est fixe par apport à la fenêtre */
+
+	position: sticky;
+	/*non recommandé, comme relative mais deviendra fixed quand il risque d'être caché par un scroll*/
+
+	z-index: 500;
+	/*permet de donner la priorité à plusieurs éléments qui se chevauchent, le z-index le plus élevé sera devant les autres*/
+
+	/*** float ***/
+
+	float: none;
+	/*ou left, right, permet de faire flotter un élément sur sa ligne du coté gauche ou droit de son élément conteneur, permet d'aligner une liste. 
+		* inline-start: se positionne au début de son élément conteneur
+		* inline-end: à la fin de son élément conteneur*/
+
+	clear: both;
+	/* ou right, left, inline-start, inline-end, none:  empêche un élément de se positionner à côté d'éléments possédant un float similaire*/
+}
+h1::after {
+	content: "";
+	display: table;
+	clear: both;
+} /* Ceci est un clearfix: à appliquer au conteneur qui contient le flottant qui pose problème */
+
+h1 {
+	display: none;
+}
+
+/********************************/
+/* >>>>>>>>>> LISTES <<<<<<<<<< */
+/********************************/
+
+.list1 {
+	display: inline-block;
+	border: 1px solid black;
+	margin: 5px;
+	list-style-type: none;
+	/*none: enlève les points des listes*/
+}
+
+/**********************************/
+/* >>>>>>>>>> TABLEAUX <<<<<<<<<< */
+/**********************************/
+
+.tableau {
+	background-color: rgb(221, 192, 192);
+}
+
+table {
+	border-collapse: collapse;
+	/*pour fusionner les bordures,
+
+ si border-collapse: separate (par défaut)
+ 		dans ce cas on pourra mettre
+		border-spacing: 10px; pour lécart entre les cellules
+		empty-cells: show; (par défaut) ou hide pour montrer ou cacher les bordures des cellules vides*/
+
+	width: 100%;
+	table-layout: fixed;
+	/*en précisant une largeur on peut fixé la taille des colonnes.
+		* par défaut sur auto*/
+
+	caption-side: top;
+	/*ou bottom, position de la légende*/
+}
+
+.personne {
+	width: 100px;
+}
+
+td,
+th {
+	border: 1px solid black;
+	padding: 10px;
+	/*pour plus de lisibilité*/
+
+	vertical-align: top;
+	/*ou middle, bottom précise l'alignement vertical*/
+}
+
+thead th,
+tfoot td {
+	/*pour cibler un élément contenu dans un autre élément*/
+
+	background-color: yellow;
+	color: #000;
+	text-transform: uppercase;
+	/*Pour les majuscules*/
+}
+
+th {
+	background-color: yellow;
+	font-weight: normal;
+	/*pour annuler le bold*/
+}
+
+/*Mettre un fond différent aux lignes paires et impaires pour plus de lisibilité*/
+.impaire {
+	background-color: gray;
+}
+.paire {
+	background-color: aquamarine;
+}
+/*même chose avec une pseudo class*/
+tr:nth-child(even) {
+	background-color: aquamarine;
+}
+tr:nth-child(odd) {
+	background-color: gray;
+}
+
+/*******************************/
+/* >>>>>>>>>> MEDIA <<<<<<<<<< */
+/*******************************/
+
+img {
+	width: 50%;
+	/*l'image va occuper 50%  de son conteneur
+		* la hauteur s'adaptera*/
+
+	display: block;
+	/*pour afficher les images les unes au-dessous des autres*/
+
+	object-fit: none;
+	/*pour redimensionner l'image
+		contain: occupe le max de place tout en conservant ses proportions
+		fill: se déforme pour couvrir tout le conteneur
+		cover: zoom pour couvrir toute la largeur
+		scale-down: choisi le plus petit entre none et contain*/
+
+	object-position: top left;
+	/*alignement d'un élément
+% 10%: left 10%, top 10%*/
+
+	margin: 10px;
+	padding: 10px;
+	border: 1px solid #ccc;
+	box-shadow: 0px 0px 17px #bbb;
+}
+
+/*Sprites = zones cliquables*/
+
+#lien1,
+#lien2 {
+	width: 75px;
+	height: 75px;
+	/*taille de la zone que l'on veut pour cliquer*/
+
+	display: block;
+	position: absolute;
+}
+#lien1 {
+	background-image: url(media/logo.png);
+	background-position: -10px -70px;
+	/*position de la zone à cliquer dans l'image, qui correspond au décalage horizontal et vertical par apport à l'image initiale*/
+}
+#lien2 {
+	background-image: url(media/logo.png);
+	background-position: center; /**/
+	left: 100px;
+}
+
+video {
+	width: 150px;
+}
+
+/*************************************/
+/* >>>>>>>>>> TRANSITIONS <<<<<<<<<< */
+/*************************************/
+
+.transitions {
+	background-color: #8360c3;
+
+	transition-property: margin-right, background-color;
+	/*Les propriétés qui seront affectés par la transition*/
+
+	transition-duration: 4s;
+	/*durée de la transition*/
+
+	transition-timing-function: linear; /*par défaut*/
+	/*ease: lente au début et à la fin, rapide au milieu (0.25, 0.1, 0.25, 1)
+		* linear: même vitesse du début à la fin 
+		* ease-in: départ lent qui s'accélère (0.42, 0, 1, 1)
+		* ease-out: ralenti à la fin (0, 0, 0.58, 1)
+		* ease-in-out: même que ease mais démarre plus lentement (0.42, 0, 0.58, 1)
+		* cubic-bezier(x1,y1,x2,y2): selon une courbe de Bézier*/
+
+	transition-delay: 1s;
+	/*délai d'attente avant que la transition démarre*/
+
+	/* Shorthand */
+
+	transition: margin-right 4s linear 1s, background-color 4s linear 1s;
+	/*4s de transitions, méthode de transition ease, 1s de delay*/
+}
+
+.transitions:hover {
+	margin-right: 50%;
+	background-color: #a92;
+	/*état final de la transition qui s'effectue en passant la souris sur l'élément
+		* si la transition est écrite ici, elle sera activée en priorité, mais le retour à la position initiale sera assurée par la 1ere transition déclarée*/
+}
+/************************************/
+/* >>>>>>>>>> ANIMATIONS <<<<<<<<<< */
+/************************************/
+
+.animations {
+	width: 200px;
+	height: 50px;
+	background-color: purple; /*fond en dehors de l'animation*/
+	position: relative;
+
+	animation-name: chgt-couleur;
+	/*on choisit un nom logique pour l'animation*/
+
+	animation-duration: 20s;
+	animation-timing-function: linear;
+	/*comme pour les transitions*/
+
+	animation-delay: 1s;
+	animation-iteration-count: infinite;
+	/*le nombre de répétition de l'animation*/
+
+	animation-direction: alternate;
+	/*alternate: une fois à l'endroit, une fois à l'envers
+		* reverse: en sens inverse
+		* alternate-reverse: sens inverse puis sens normal
+		* normal: par défaut*/
+
+	animation-fill-mode: backwards;
+	/*backwards: la valeur de départ de l'animation (from) sera donnée à la propriété avant animation
+		* forwards: la valeur de fin de l'animation (to) sera donnée à la propriété après animation
+		* both: les deux s'appliquent
+		ainsi, plus besoin de définir une valeur de départ pour une propriété, c'est le keyframes qui s'en chargera*/
+
+	animation-play-state: running; /*s'éxecute normalement*/
+	/*paused: se met en pause, utile avec un :hover par exemple*/
+
+	/* Shorthand */
+	animation: chgt-couleur 20s linear 1s infinite alternate both running;
+}
+
+@keyframes chgt-couleur {
+	from {
+		background-color: green;
+		top: 0px;
+		left: 0px;
+	}
+	/*ou 0% à la place de from*/
+
+	25% {
+		background-color: yellow;
+		top: 0px;
+		left: 200px;
+	}
+	50% {
+		background-color: red;
+		top: 20px;
+		left: 200px;
+	}
+	75% {
+		background-color: blue;
+		top: 20px;
+		left: 0px;
+	}
+	to {
+		background-color: orange;
+		top: 0px;
+		left: 0px;
+	}
+	/*ou 100% à la place de to*/
+}
+
+/*****************************************/
+/* >>>>>>>>>> TRANSFORMATIONS <<<<<<<<<< */
+/*****************************************/
+
+.transformations {
+	width: 70px;
+	height: 70px;
+	border: 2px solid black;
+	margin: 0px auto;
+	box-sizing: border-box;
+	position: relative;
+
+	transform-box: border-box;
+	transform-origin: 0 0; /*coin sup gauche*/
+	/*définit le point d'origine de la transformation
+		* pardéfaut le centre 50% 50%*/
+
+	transform: rotate(45deg);
+	/* rotation selon un angle*/
+
+	transform: translate(100px, -50px);
+	/*translation, correspond à translateX(100px) translateY(-50px)
+		avec une seule valeur: seulement horizontale*/
+
+	transform: scale(2, 0.5);
+	/*largeur x2, hauteur x0.5 pour l'élément
+		* correspond à scaleX(2) scaleY(0.5)*/
+
+	transform: skewX(30deg) skewY(30deg);
+	/*déformation*/
+}
+
+/*** Mettre des transformations dans des animations ***/
+
+.animation_rotation {
+	display: inline-block;
+	background-color: RGBa(240, 160, 0, 0.5);
+	height: 100px;
+	width: 100px;
+	margin: 50px 20%;
+	position: relative;
+	animation: rotation 5s linear infinite;
+}
+@keyframes rotation {
+	0% {
+		transform: rotate(0) translateX(0px);
+	}
+	25% {
+		transform: rotate(90deg) translateX(100px);
+	}
+	50% {
+		transform: rotate(180deg) translateX(0px);
+	}
+	75% {
+		transform: rotate(270deg) translateX(100px);
+	}
+	100% {
+		transform: rotate(360deg) translateX(0px);
+	}
+}
+
+/*************************************/
+/* >>>>>>>>>> FORMULAIRES <<<<<<<<<< */
+/*************************************/
+
+.formulaire {
+	font-size: 15px;
+	font-family: Verdana, sans-serif;
+	color: #333;
+}
+#form1 {
+	background-color: rgba(170, 200, 40, 0.6);
+	padding: 10px;
+	margin: 20px 10px;
+}
+#form2 {
+	background-color: rgba(40, 170, 200, 0.6);
+	padding: 10px;
+	margin: 20px 10px;
+}
+#form1:hover,
+#form2:hover {
+	box-shadow: 0px 0px 5px #444;
+}
+legend {
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 18px;
+	color: brown;
+}
+#form1 input {
+	width: 300px;
+	height: 20px;
+	border: 4px solid #8360c3;
+}
+#form1 textarea {
+	width: 300px;
+	height: 50px;
+	border: 4px solid #8360c3;
+}
+#form2 input {
+	width: 15px;
+	height: 15px;
+}
+#form1 label {
+	display: inline-block;
+	/*permet de mettre un width pour bien aligner les cases*/
+
+	width: 200px;
+	padding: 10px 0px 15px 40px;
+}
+#form2 label {
+	display: inline-block;
+	width: 120px;
+	padding: 5px 0px 15px 10px;
+}
+input[type="submit"] {
+	float: right;
+	padding: 10px;
+	font-size: 14px;
+	color: #fff;
+	background-color: #fe6921;
+	font-weight: bold;
+	text-transform: uppercase;
+	border-radius: 5px;
+}
+input[type="submit"]:hover {
+	box-shadow: 0px 0px 4px #555;
+	background-color: #e8ab2e;
+}
+
+/*********************************/
+/* >>>>>>>>>> FLEXBOX <<<<<<<<<< */
+/*********************************/
+
+.flex_box {
+	width: 100%;
+	height: 200px;
+	border: 2px solid darkblue;
+	background-color: blue;
+	box-sizing: border-box;
+	margin: 10px 0px;
+
+	display: flex; /*ou inline-flex*/
+
+	/* direction de l'axe principal*/
+	flex-direction: row; /*par défaut*/
+	/*row: axe principal = horizontal de gauche à droite
+		* row-reverse: horizontal de droite à gauche
+		* column: axe principal = vertical de haut en bas
+		* column-reverse: vertical de bas en haut*/
+
+	flex-wrap: wrap;
+	/*les éléments qui dépassent du conteneur peuvent aller sur une nouvelle ligne ou colonne
+		* wrap-reverse: même chose en lecture inverse
+		* no-wrap: par défaut, les éléments risquent de dépasser */
+
+	/* Shorthand */
+	flex-flow: row wrap;
+
+	/*alignement selon l'axe principal, ici axe H*/
+	justify-content: center;
+	/*l'alignement des box par rapport au conteneur va changer:
+		* flex-start (défaut au début), flex-end (à la fin), center
+		* space-between: distribués régulièrement et collés au bord
+		* space-around: régulièrement avec 1 marge au bord
+		* space-evenly: le plus régulièrement possible*/
+
+	/*position avec l'axe secondaire, ici axe V*/
+	align-items: baseline; /*aurait du s'appeler position-secondary*/
+	/*baseline: alignés sur l'axe V selon leurs centres*/
+	/*stretch: par défaut, s'étire selon l'axe V
+		* flex-start, flex-end: placé au début ou à la fin de l'axe V
+		* center: centré sur l'axe V
+		* exemple: placé en haut ou en bas dans l'espace réservé à l'élément*/
+
+	/*alignement avec l'axe secondaire, ici axe V*/
+	align-content: space-between; /*aurait du s'appeler: justify-sec*/
+	/*même valeurs que justify-content mais pour l'axe V
+		* pour décider comment les lignes sont placés et espacés par rapport à l'axe V
+		* exemple: espacement régulier entre chaque ligne, les lignes sont regoupés en haut ou en bas */
+
+	column-gap: 5px; /*définit l'écart entre 2 colonne*/
+	row-gap: 5px; /*définit l'écart entre 2 lignes*/
+}
+.box1,
+.box2,
+.box3,
+.box4 {
+	width: 40%;
+	height: 40%;
+	background-color: green;
+	border: 2px solid darkgreen;
+	margin: 10px;
+	box-sizing: border-box;
+	order: 2; /* 0 par défaut, on peut donner un ordre d'affichage à chaque élément*/
+
+	align-self: flex-end;
+	/*permet de rectifier et remplacer un align-items pour un seul élément*/
+
+	flex-grow: 1; /*0 par défaut*/
+	/*coefficient qui va permettre à l'élément de prendre plus de place
+		* 3: va essayer de prendre 3 fois plus d'espace*/
+
+	flex-shrink: 1;
+	/*1 par défaut, permet aux élément de rétrécir pour ne pas dépasser
+		* 3: va essayer de rétrécir 3 fois plus*/
+
+	flex-basis: 30%;
+	/*ou auto, définit la largeur de l'élément, priorité sur width*/
+
+	/* Shorthand */
+	flex: 1 1 30%;
+}
+
+/******************************/
+/* >>>>>>>>>> GRID <<<<<<<<<< */
+/******************************/
+
+.grid {
+	border: 2px solid red;
+
+	display: grid; /*ou inline-grid*/
+	/*les enfants directs deviennent aussi des grid*/
+
+	grid-auto-flow: row;
+	/*row: placement en rangée de gauche à droite par défaut
+		* column: placement en colonne de haut en bas*/
+
+	grid-template-columns: 2fr 1fr 3fr; /*ou grid-template-rows*/
+	/*détermine le nb de colonnes ainsi que leur taille en px ou en fonction des autres
+		* repeat(3, 1fr 2fr); répète 3 fois le motif 1fr 2fr
+		* repeat(3, [col] 1fr); on peut ajouter un nom pour les lignes
+		* minmax(100px, 1fr); valeurs min et max que l'on veut pour une colonne
+		* un surplus de colonnes créera une nouvelle rangée automatiquement si auncun grid-templates-rows n'est déclaré*/
+
+	grid-template-columns: [bord-gauche] 2fr [centr-gauche] 1fr [centre-droit] 3fr [bord-droit];
+	/*on peut nommer nos colonnes et lignes
+		on peut utiliser le même nom plusieurs fois, ex [col] pour les colonnes et [ran] pour les rangées, dans ce cas on mettra un numéro pour préciser la position
+		.case4{
+			grid-column: col 2 / col 4;
+			grid-row: ran 2 / ran 4 } */
+
+	grid-auto-rows: 100px; /*ou grid-auto-columns*/
+	/*hauteur d'une rangé crée automatiquement (implicitement)
+		* auto par défaut
+		* minmax(80px, auto);*/
+
+	grid-template-areas:
+		"case1 case1 case2"
+		"case3 case4 case4"
+		"case5 case4 case4";
+	/* on peut nommer les zones (en mettant des . pour les zones sans contenus)
+		* on peut utiliser le nom des zones avec les suffixes -start et -end*/
+
+	/* Shorthand non recommandé */
+	/*grid-template: grid-template-rows, grid-templates-columns, grid-templates-areas;
+	* grid: grid-template, grid-auto-rows, grid-auto-columns, grid-auto-areas*/
+
+	/*** POSITIONS ET ALIGNEMENTS (comme flexbox)***/
+
+	align-items: center;
+	/*position dans la case (cellule) selon l'axe V, stretch par défaut*/
+
+	justify-items: baseline;
+	/*position dans la case (cellule) selon l'axe H, stretch par défaut*/
+
+	/*Shorthand*/
+	place-items: center baseline;
+
+	align-content: space-evenly;
+	/*alignement des rangées (pistes H) selon l'axe V*/
+	/*pour décider comment les rangées sont placées et espacées par rapport à l'axe V*/
+
+	justify-content: center;
+	/*l'alignement des colonnes (pistes V) par rapport au conteneur va changer selon l'axe H*/
+
+	/*Shorthand*/
+	place-content: space-evenly center;
+
+	row-gap: 5px;
+	column-gap: 10px;
+	/*Shorthand*/
+	gap: 5px 10px;
+	/*définit un écart (gouttière) entre les rangées et les colonnes*/
+}
+
+.grid > div {
+	padding: 20px 0px;
+	background-color: gold;
+	border: 2px solid purple;
+}
+
+.case1 {
+	align-self: start;
+	/*comme align-items mais pour une seule case (axe V)*/
+	justify-self: start;
+	/*comme justify-items mais pour une seule case (axe H)*/
+	/*Shorthand*/
+	place-self: start start;
+
+	grid-column-start: 1;
+	grid-row-start: 1;
+	grid-column-end: 3;
+	grid-row-end: 2;
+	/*on définit les intersections de la zone
+		ici colonne 1 rangée 1 à colonne 3 rangée 3*/
+}
+.case4 {
+	grid-column-start: -3;
+	grid-row-start: 2;
+	grid-column-end: bord-droit;
+	grid-row-end: 4;
+	/*on peut utiliser les noms des colonnes / lignes définis avant
+		* on peut donner des valeurs négatives pour compter à partir de la dernière ligne / colonne*/
+
+	/* shorthand */
+	grid-column: -3 / bord-droit;
+	grid-row: 2 / 4;
+
+	grid-column: case3-end / 4;
+	grid-row: case1-end / case5-end;
+	/*en se servant du nom des zones avec les suffixes -start et -end*/
+
+	grid-area: 2 / -3 / 4 / bord-droit;
+	/* /!\ sens anti-horaire */
+
+	grid-area: case4; /*avec le nom des zones*/
+
+	/* si on utilise des noms de lignes et colonnes avec [*-start] et [*-end] dans grid-template-columns (ou rows) on pourra alors utiliser ce préfixe ici, exemple:
+		.grid{ 
+			grid-template-columns: [ext-start] 1fr [int-start] 2fr [int-end] 1fr [ext-end];
+  			grid-template-rows: [ext-start] 1fr [int-start] minmax(150px, 2fr) [int-end] 1fr [ext-end];}
+		.case3{
+			grid-area: int;} */
+
+	z-index: 100;
+	/*si plusieurs zones se chevauchent on peut fixer la priorité d'affichage*/
+}
+
+/*****************************************************/
+/* >>>>>>>>>> RESPONSIVE ET MEDIA QUERIES <<<<<<<<<< */
+/*****************************************************/
+
+/*On change le comportement de la page en fonction de la taille de la fenêtre*/
+@media screen and (max-width: 680px) {
+	body {
+		background-color: orange;
+	}
+	.flex_box {
+		flex-flow: column wrap;
+	} /*un affichage en colonne est préférable pour les petits écrans*/
+
+	h1 {
+		font-size: 20px;
+	} /*une taille de police plus petite*/
+	div {
+		width: 100%;
+		/*pratique pour que du inline-block aligné s'affiche en colonne sur de petits écrans*/
+
+		border-right: none;
+		border-left: none;
+		margin-right: 0px;
+		margin-left: 0px;
+	}
+	footer {
+		display: none;
+		/*le pied de page va disparaitre sur petits écrans*/
+	}
+}
+@media screen and (min-width: 681px) and (max-width: 1279px) {
+	body {
+		background-color: white;
+	}
+}
+@media screen and (min-width: 1280px) {
+	body {
+		background-color: rgb(222, 222, 222);
+	}
+}
+@media screen and (orientation: landsacpe) {
+	/*règles d'affichage pour un format paysage sur mobile*/
+}
