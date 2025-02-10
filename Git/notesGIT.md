@@ -7,10 +7,10 @@ GitHub: héberge les dépôts en ligne
 
 ### CONFIGURER GIT
 
-`$ mkdir Git_Objectif-Charlie` //pour créer un répertoire  
-`$ cd Git_Objectif-Charlie/` //on se déplace dans le répertoire  
-`$ git config --global user.name "JeanPhiH"`  
-`$ git config --global user.email jp.herfeld@gmail.com`  
+`$ mkdir folder_name` //pour créer un répertoire  
+`$ cd folder_name/` //on se déplace dans le répertoire  
+`$ git config --global user.name "UserName"`  
+`$ git config --global user.email name@mail.com`  
 `$ git config --global color.diff auto`  
 `$ git config --global color.status aut`  
 `$ git config --global color.branch aut`
