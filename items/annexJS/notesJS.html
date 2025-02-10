@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html lang="fr-FR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="author" content="JeanPhiH">
+	<meta name="description" content="Résumé de cours JavaScript">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<title>Notes Javascript</title> 		
+	<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+	<script src="/JavaScript/notesJavaScript.js" defer></script>
+        <!--defer pour que le fichier JavaScript ne soit exécuté qu’une fois que le code HTML a fini d’être analysé.
+        async pour que le JS se charge en même temps que l'analyseur HTML-->
+
+    <!-- On peut écrire du JavaScript ici-->
+    <!-- Comme il est dans le head, il faut demander de charger tout le code html avant -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+                let bonjour1 = document.getElementById('b1');
+                bonjour1.addEventListener('click', alerte);
+            
+                function alerte(){
+                    alert('Bonjour');
+                }
+            });
+    </script>
+</head>
+
+<body>
+    <h1>Tout Javascript</h1>
+    Javascript dans une balise ouvrante <!-- Mauvaise pratique -->
+    <button onclick="alert('Bonjour !')">Cliquez moi</button>
+    
+    JavaScript avec la balise script <!-- Mauvaise pratique -->
+    <button id='b1'>Cliquez moi</button> <!-- voir le head -->
+    <button id='b2'>Ajouter un paragraphe</button>
+    <script>
+        let ajouter1 = document.getElementById('b2');
+        ajouter1.addEventListener('click', ajout);
+        function ajout(){
+            let para = document.createElement('p');
+            para.textContent = 'Paragraphe ajouté';
+            document.body.appendChild(para);
+        }
+    </script>
+
+    <br>Types de valeurs:
+    <p id='ptype'>p id ptype</p>
+    <p id="foncAno">Clique ici pour invoquer une fonction anonyme.</p>
+    <p id="pUser"></p>
+    <button id="bopen">window.open</button>
+    <button id="confirm">Confirm</button>
+    <button id="crd">Coordonnées</button>
+    <h2>le DOM HTML</h2>
+    <p id="dom1">Tests DOM (id=dom1)</p>
+    <div>
+        <p class="dom">un p de class dom dans un div</p>
+    </div>
+    <p id="fin">p normal de fin</p>
+    <div id="noeud">
+        <h2 id="h2noeud">Les noeuds</h2>
+        <p id="pspan">C'est un p avec l'id pspan et: <span id ="span1">ceci est un span</span>
+            <div id="divdp">div dans p</div>
+        </p>
+        <p id="pfin">C'est la fin</p>
+    </div>
+
+    <!-- Evènements en HTML -->
+    <div id="evnmt">
+        <button id="bton" onclick="alert('Bouton cliqué')">Cliquez moi !</button>
+        <p onmouseover="this.style.backgroundColor='orange'" onmouseout="this.style.backgroundColor='white'">Youpi</p>
+    </div>
+    <p id="ael">addEventListener</p>
+    <p id="clock"></p>
+    <p id="chronop"></p>
+    <div id="bgchange"><p>&nbsp;</p>
+        <label for='bgtheme'>Choisissez un thème (hexa) :</label>
+        #<input class='text' id='bgtheme' value='FAFAFA' pattern='[a-fA-F0-9]{6}'><p>&nbsp;</p>
+    </div>
+    <div id="interpolation"></div>
+    <div id="formulaire">
+        <input type="checkbox" id="idCheckbox" name="nameCheckbox" value="valueCheckbox">
+        <label for="idCheckbox">Checkbox</label>
+        <input type="radio" id="idRadio" name="nameRadio" value="valueRadio">
+        <label for="idRadio">Radio</label>
+        <label for="idText">Text</label>
+        <input type="text" id="idText" name="nameText" value="valueText">
+    </div>
+
+</body>
+</html>
