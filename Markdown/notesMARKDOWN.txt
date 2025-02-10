@@ -1,0 +1,88 @@
+MARKDOWN
+
+
+TITRES
+
+# titre 1
+## titre 2
+### titre 3
+#### titre 4
+##### titre 5
+###### titre 6
+
+
+MISE EN FORME
+
+_italique_
+**gras**
+**_italique et gras_**
+~~barré~~
+==important==
+
+deux espaces = retour à la ligne
+ligne vide = nouveau paragraphe
+--- trait de séparation
+
+
+CODE
+
+`Un extrait de code.`
+``code comportant déjà la `balise`.``
+
+Bloc de code
+```
+<html>
+	<body>
+		Les indentations sont conservées
+	</body>
+</html>
+```
+
+
+LIENS ET IMAGES
+
+<https://url.com>
+[lien](https://url.com "Titre")
+
+![alt de l'image](/img/image.jpg "Titre")
+[![alt de l'image](lien image)](url)
+
+
+CITATIONS
+
+>Citation
+>Citation2 début
+Citation2 suite.
+
+
+LISTES
+
+Liste simples
+- Item 1
+- Item 2
+- Item 3
+
+Liste numérotée
+1. Item 1
+2. Item 2
+3. Item 3
+
+Liste à cocher
+[] Item 1
+[x] Item 2 coché par défaut
+[] Item 3
+
+
+TABLEAUX 
+
+|label 1|label 2|
+|-------|-------|
+|   A   |   B   |
+|   C   |   D   |
+
+
+NOTES DE BAS DE PAGE 
+
+Un [article][1] résume ceci.
+
+[1]: lien de l'article "title"
