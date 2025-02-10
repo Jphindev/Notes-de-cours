@@ -1,0 +1,3 @@
+Ecriture dans un fichier
+**NOUVEAU TEXTE**
+**AJOUT DE TEXTE**

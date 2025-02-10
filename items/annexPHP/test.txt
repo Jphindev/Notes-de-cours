@@ -1,0 +1,4 @@
+Ceci est un exemple de texte dont voici la première ligne. Voici un saut de ligne:
+
+Ici la troisième ligne puis retour à la ligne.
+La quatrième et dernière ligne.
