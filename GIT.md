@@ -148,8 +148,9 @@ pour renommer la branche master en main
 
 `$ git branch test` //ajout d’une nouvelle branche test, en parallèle de main (ou master)  
 `$ git checkout test` //on bascule sur la branche test en déplaçant le head (la surveillance pour le commit)  
-`$ git switch test` //nouvelle écriture pour la bascule  
 `$ git checkout -b test` //écriture raccourcie des 2 précédentes
+`$ git switch test` //nouvelle écriture pour la bascule  
+`$ git switch --create test` //nouvelle écriture raccourcie
 
 #### MODIFICATION
 
