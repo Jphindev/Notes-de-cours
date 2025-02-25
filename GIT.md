@@ -156,6 +156,7 @@ pour renommer la branche master en main
 
 `$ git branch -d test` //on supprime la branche test  
 `$ git branch -D test` //pour supprimer aussi toutes les modifs dans la branche
+`$ git prune --verbose --progress --expire=now` //pour nettoyer les commits suspendus
 
 #### RÉFÉRENCES RELATIVES
 
@@ -281,6 +282,7 @@ git pull --rebase = git fetch + git rebase
 `$ git branch -u origin notMain` //même chose  
 pour mettre à jour l’origine:  
 `$ git remote set-url origin git@github.com:JeanPhiH/Objectif-Charlie.git`
+`$ git fetch --prune` //pour supprimer les branches distantes obsolètes
 
 #### CODE SOURCE: UPSTREAM
 
