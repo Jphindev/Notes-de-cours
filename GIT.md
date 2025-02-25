@@ -263,6 +263,8 @@ En pratique, on fork puis on clone notre branche pour pouvoir travailler dessus 
 
 `$ git fetch` //télécharger sans modifier les branches locales, il faudra merge ou rebase ensuite  
 `$ git fetch origin <source>:<destination>` //pour rapatrier une source distante spécifique vers une destination locale spécifique
+`$ git fetch --all` //rapatrier toutes les branches distantes
+`$ git remote update` //pareil
 
 `$ git pull [nom-distant] [nom-local]` // pour récupérer en local les dernières modif du dépôt github  
 `$ git pull origin <source>:<destination>` //pareil que fetch mais avec un merge automatique sur la branche courante  
