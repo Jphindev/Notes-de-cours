@@ -1,4 +1,4 @@
-# GITLAB
+# GITLAB CI/CD
 
 If the main branch is protected on Gitlab (recommanded):
 
