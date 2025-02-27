@@ -12,9 +12,9 @@ on: #[push] #the event that will trigger the workflow or with more details:
       - v1.*
     paths:
       - "src/**.tsx" #including files with filters
-  label:
-    types:
-      - deleted
+  # label:
+  #   types:
+  #     - deleted
 
 env: #global variables here, available for the entire workflow
   DAY_OF_WEEK: Monday
