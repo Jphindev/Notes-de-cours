@@ -16,3 +16,27 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+
+  Secret-variable:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Retrieve secret
+        env:
+          super_secret: ${{ secrets.SUPERSECRET }}
+        run: |
+          echo "$super_secret"
+
+  dep-job-1-setup:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Setup job done"
+  dep-job-2-build:
+    needs: dep-job-1-setup #the build job will run only after the setup job, not in parallel
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Build job done"
+  dep-job-3-test:
+    needs: dep-job-2-build
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Test job done"
