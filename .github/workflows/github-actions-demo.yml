@@ -1,11 +1,26 @@
+#This file must got to {repo}/.github/workflows/
+
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+on: #[push] #the event that will trigger the workflow or with more details:
+  push:
+    branches:
+      - ghactions-demo
+      - "!features/**" #excluding branches with filters
+    tags-ignore: #excluding tags
+      - v2
+      - v1.*
+    paths:
+      - "src/**.tsx" #including files with filters
+  label:
+    types:
+      - deleted
 
 env: #global variables here, available for the entire workflow
   DAY_OF_WEEK: Monday
 
 jobs:
+  #GITHUB REFS
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
@@ -21,25 +36,29 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
+  #GITHUB VARIABLES
   Variables:
     runs-on: ubuntu-latest
     env: #variables here are only available for this job
       Greeting: Hello
     steps:
-      - name: "Say Hello Mona it's Monday"
+      - name: Display local variables using env.VAR or $VAR
         if: ${{ env.DAY_OF_WEEK == 'Monday' }}
-        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!"
+        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!" #Hello Mona. Today is Monday!
         env: #variables here are only available for this step
           First_Name: Mona
-      - name: Display variable configured in github options
-        run: echo "${{ vars.SUPERVAR }}" #vars. to access to the repository variables defined in github
-      - name: Retrieve secret
+      - name: Display variable defined in github options using vars.VARNAME
+        run: echo "${{ vars.SUPERVAR }}"
+      - name: Retrieve a secret variable defined in github using secrets.VARSECRET
         env:
-          super_secret: ${{ secrets.SUPERSECRET }} #secrets. to access to the repository secrets variables defined in github
+          super_secret: ${{ secrets.SUPERSECRET }}
         run: |
           echo "$super_secret"
 
   dep-job-1-setup:
+    # Calling a reusable workflow:
+    # uses: ./.github/workflows/reusable-workflow.yml
+    # uses: github.com/{owner}/{repo}/.github/workflows/reusable-workflow.yml
     runs-on: ubuntu-latest
     steps:
       - run: echo "Setup job done"
@@ -50,9 +69,18 @@ jobs:
       - run: echo "Build job done"
   dep-job-3-test:
     needs: dep-job-2-build
-    runs-on: ubuntu-latest
     strategy:
       matrix: #to test the code in multiple versions of a language or on multiple operating systems
         os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
-      - run: echo "Test job done"
+      - run: echo "Test job done on ${{ matrix.os }}"
+
+  triage:
+    if: >-
+      github.event_name == 'push' &&
+      github.actor != 'dependabot[bot]' &&
+      github.event.push.user.login == 'Jphindev'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Triage job done"
