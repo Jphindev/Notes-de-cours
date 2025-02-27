@@ -32,10 +32,10 @@ jobs:
         env: #variables here are only available for this step
           First_Name: Mona
       - name: Display variable configured in github options
-        run: echo "${{ vars.SUPERVAR }}"
+        run: echo "${{ vars.SUPERVAR }}" #vars. to access to the repository variables defined in github
       - name: Retrieve secret
         env:
-          super_secret: ${{ secrets.SUPERSECRET }}
+          super_secret: ${{ secrets.SUPERSECRET }} #secrets. to access to the repository secrets variables defined in github
         run: |
           echo "$super_secret"
 
@@ -51,5 +51,8 @@ jobs:
   dep-job-3-test:
     needs: dep-job-2-build
     runs-on: ubuntu-latest
+    strategy:
+      matrix: #to test the code in multiple versions of a language or on multiple operating systems
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - run: echo "Test job done"
