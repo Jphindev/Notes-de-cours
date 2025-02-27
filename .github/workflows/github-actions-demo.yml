@@ -12,9 +12,9 @@ on: #[push] #the event that will trigger the workflow or with more details:
       - v1.*
     paths:
       - "**.yml" #including files with filters
-  # label:
-  #   types:
-  #     - deleted
+  label:
+    types:
+      - deleted
 
 env: #global variables here, available for the entire workflow
   DAY_OF_WEEK: Monday
@@ -77,7 +77,8 @@ jobs:
       - run: echo "Test job done on ${{ matrix.os }}"
 
   triage:
-    if: github.event_name == 'push' && github.actor != 'dependabot[bot]' && github.event.push.user.login == 'Jphindev'
+    if: github.event_name == 'push' && github.actor != 'dependabot[bot]' #condition on the job
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Triage job done"
+      - if: github.actor == 'Jphindev' #condition on the step
+        run: echo "Triage job done"
