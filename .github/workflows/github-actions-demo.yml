@@ -11,7 +11,7 @@ on: #[push] #the event that will trigger the workflow or with more details:
       - v2
       - v1.*
     paths:
-      - "src/**.tsx" #including files with filters
+      - "**.yml" #including files with filters
   # label:
   #   types:
   #     - deleted
