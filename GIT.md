@@ -281,7 +281,7 @@ git pull --rebase = git fetch + git rebase
 `$ git checkout -b notMain origin` //crée une nouvelle branche nommée notMain et la configure pour suivre o/main du dépot distant.  
 `$ git branch -u origin notMain` //même chose  
 pour mettre à jour l’origine:  
-`$ git remote set-url origin git@github.com:JeanPhiH/Objectif-Charlie.git`
+`$ git remote set-url origin git@github.com:JeanPhiH/Objectif-Charlie.git`  
 `$ git fetch --prune` //pour supprimer les branches distantes obsolètes
 
 #### CODE SOURCE: UPSTREAM
