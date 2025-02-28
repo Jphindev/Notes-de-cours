@@ -33,6 +33,8 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4 #checkout the repository to allow to run scripts relative to its code
       - uses: actions/setup-node@v4 #install node to use node and npm commands
+        with:
+          node-version: "20"
       - run: npm install bats
       - run: bats -v
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
