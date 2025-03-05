@@ -26,10 +26,9 @@ jobs:
       - name: Create comment with API
         run: |
           gh api -X POST \
-            http://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
-            -f body="
-            Comment but from the API
-            "
+            http://api.github.com/repos/$ORGANIZATION/$REPOSITORY/issues/$ISSUE_NUMBER/comments \
+            -f body="Comment but from the API" \
+            --auth $GITHUB_TOKEN
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ORGANIZATION: ${{ github.event.repository.owner.login }}
