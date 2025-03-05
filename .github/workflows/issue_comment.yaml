@@ -24,15 +24,20 @@ jobs:
     permissions: write-all
     steps:
       - name: Create comment with API
+        #using \ to run a command on multiple lines
         run: |
-          gh api -X POST \
+          gh api -X POST \ 
             https://api.github.com/repos/$ORGANIZATION/$REPOSITORY/issues/$ISSUE_NUMBER/comments \
-            -f body="Comment but from the API" \
+            -f body="Comment but from the API"
+
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} #required when using the GitHub API
           ORGANIZATION: ${{ github.event.repository.owner.login }}
           REPOSITORY: ${{ github.event.repository.name }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
+#
+#
+#
 ### GITHUB CONTEXT ###
 # {
 #   token: ***,
