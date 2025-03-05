@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "dump github context"
-        run: echo "${{ toJSON(github) }}" | jq #to retrieve the context variables that we can use
+        run: echo "${{ toJSON(github) }}" #to retrieve the context variables that we can use
         shell: bash
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v4
