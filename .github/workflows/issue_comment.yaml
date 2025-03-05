@@ -9,7 +9,7 @@ jobs:
       - name: "dump github context"
         run: echo "${{ toJSON(github) }}" #to retrieve the context variables that we can use
       - name: Create comment
-        uses: peter-evans/create-or-update-comment@v4
+        uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
