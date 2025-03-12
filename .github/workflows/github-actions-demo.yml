@@ -1,4 +1,5 @@
 #This file must got to {repo}/.github/workflows/
+#Template here: https://github.com/ExamProCo/Github-Examples/tree/main
 
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
