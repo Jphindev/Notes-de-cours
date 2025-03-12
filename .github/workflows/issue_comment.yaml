@@ -26,7 +26,7 @@ jobs:
       - name: Create comment with API
         #using \ to run a command on multiple lines
         run: |
-          gh api -X POST \ 
+          gh api -X POST \
             https://api.github.com/repos/$ORGANIZATION/$REPOSITORY/issues/$ISSUE_NUMBER/comments \
             -f body="Comment but from the API" \
         env:
