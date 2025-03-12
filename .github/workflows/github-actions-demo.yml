@@ -114,6 +114,7 @@ jobs:
   #AUTOMATIC COMMENT ON NEW ISSUES
   #This will only work with on: issues only
   comment-with-action:
+    if: false #to disable the job
     runs-on: ubuntu-latest
     steps:
       - name: "dump github context"
@@ -131,13 +132,14 @@ jobs:
           reactions: "+1"
 
   comment-with-api:
+    if: false
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
       - name: Create comment with API
         #using \ to run a command on multiple lines
         run: |
-          gh api -X POST \ 
+          gh api -X POST \
             https://api.github.com/repos/$ORGANIZATION/$REPOSITORY/issues/$ISSUE_NUMBER/comments \
             -f body="Comment but from the API"
         env:
