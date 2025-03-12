@@ -5,7 +5,7 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: #[push, label] #the event that will trigger the workflow or with more details:
   push:
     branches:
-      - ghactions-demo
+      - ghactions
       - "!features/**" #excluding branches with filters
     tags-ignore: #excluding tags
       - v2
