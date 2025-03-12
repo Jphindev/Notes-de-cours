@@ -71,7 +71,8 @@ jobs:
           super_secret: ${{ secrets.SUPERSECRET }}
         run: |
           echo "$super_secret"
-      - uses: actions/first-interaction@v1
+      # https://github.com/actions/first-interaction
+      - uses: actions/first-interaction@v1 #write a message when the first issue is created
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           issue-message: |
@@ -108,3 +109,36 @@ jobs:
     steps:
       - if: github.actor == 'Jphindev' #condition on the step
         run: echo "Triage job done"
+
+  comment-with-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "dump github context"
+        run: echo "${{ toJSON(github) }}" #to retrieve the context variables that we can use
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            This is a multi-line test comment
+            - With GitHub **Markdown** :sparkles:
+            - Created by [create-or-update-comment][1]
+
+            [1]: https://github.com/peter-evans/create-or-update-comment
+          reactions: "+1"
+
+  comment-with-api:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Create comment with API
+        #using \ to run a command on multiple lines
+        run: |
+          gh api -X POST \ 
+            https://api.github.com/repos/$ORGANIZATION/$REPOSITORY/issues/$ISSUE_NUMBER/comments \
+            -f body="Comment but from the API"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} #required when using the GitHub API
+          ORGANIZATION: ${{ github.event.repository.owner.login }}
+          REPOSITORY: ${{ github.event.repository.name }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
