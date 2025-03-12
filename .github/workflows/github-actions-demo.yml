@@ -3,24 +3,23 @@
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: #[push, label] #the event that will trigger the workflow or with more details:
-  # push:
-  #   branches:
-  #     - ghactions
-  #     - "!features/**" #excluding branches with filters
-  #   tags-ignore: #excluding tags
-  #     - v2
-  #     - v1.*
-  #   paths:
-  #     - "**.yml" #including files with filters
-  # label:
-  #   types:
-  #     - deleted
-  # schedule:
-  #   - cron: "30 5,17 28 2 1,3" # minutes hours day month day name
-  #   #at 5h30 or 17h30 on the 28th day of february on a monday or wednesday
+  push:
+    branches:
+      - ghactions
+      - "!features/**" #excluding branches with filters
+    tags-ignore: #excluding tags
+      - v2
+      - v1.*
+    paths:
+      - "**.yml" #including files with filters
+  label:
+    types:
+      - deleted
+  schedule:
+    - cron: "30 5,17 28 2 1,3" # minutes hours day month day name
+    #at 5h30 or 17h30 on the 28th day of february on a monday or wednesday
   issues:
     types:
-      - opened
       - edited
       - closed
 
