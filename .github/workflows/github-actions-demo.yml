@@ -2,7 +2,7 @@
 
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: #[push] #the event that will trigger the workflow or with more details:
+on: #[push, label] #the event that will trigger the workflow or with more details:
   push:
     branches:
       - ghactions-demo
@@ -18,6 +18,11 @@ on: #[push] #the event that will trigger the workflow or with more details:
   schedule:
     - cron: "30 5,17 28 2 1,3" # minutes hours day month day name
     #at 5h30 or 17h30 on the 28th day of february on a monday or wednesday
+  issues:
+    types:
+      - opened
+      - edited
+      - closed
 
 env: #global variables here, available for the entire workflow
   DAY_OF_WEEK: Monday
@@ -28,6 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+        #run: execute a command on the runner
         shell: bash #specify which shell to use
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
@@ -48,6 +54,8 @@ jobs:
   #GITHUB VARIABLES
   Variables:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     env: #variables here are only available for this job
       Greeting: Hello
     steps:
@@ -57,12 +65,18 @@ jobs:
         env: #variables here are only available for this step
           First_Name: Mona
       - name: Display variable defined in github options using vars.VARNAME
-        run: echo "${{ vars.SUPERVAR }}" #run: execute a command on the runner
+        run: echo "${{ vars.SUPERVAR }}"
       - name: Retrieve a secret variable defined in github using secrets.VARSECRET
         env:
           super_secret: ${{ secrets.SUPERSECRET }}
         run: |
           echo "$super_secret"
+      - uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: |
+            # Message with markdown.
+            "Hello ${{ github.actor }}, thank you for the ${{ github.event_name }}!"
 
   dep-job-1-setup:
     # Calling a reusable workflow:
