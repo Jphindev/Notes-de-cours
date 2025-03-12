@@ -5,7 +5,7 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: #[push, label] #the event that will trigger the workflow or with more details:
   push:
     branches:
-      - ghactions
+      - ghactions-demo
       - "!features/**" #excluding branches with filters
     tags-ignore: #excluding tags
       - v2
@@ -78,6 +78,7 @@ jobs:
             # Message with markdown.
             "Hello ${{ github.actor }}, thank you for the ${{ github.event_name }}!"
 
+  #NEEDS
   dep-job-1-setup:
     # Calling a reusable workflow:
     # uses: ./.github/workflows/reusable-workflow.yml
@@ -99,6 +100,7 @@ jobs:
     steps:
       - run: echo "Test job done on ${{ matrix.os }}"
 
+  #CONDITIONS
   triage:
     #condition on the job
     if: >-
@@ -109,6 +111,8 @@ jobs:
       - if: github.actor == 'Jphindev' #condition on the step
         run: echo "Triage job done"
 
+  #AUTOMATIC COMMENT ON NEW ISSUES
+  #This will only work with on: issues only
   comment-with-action:
     runs-on: ubuntu-latest
     steps:
