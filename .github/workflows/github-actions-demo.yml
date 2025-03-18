@@ -5,8 +5,13 @@
 
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: #[push, label] #the event that will trigger the workflow or with more details:
-  #workflow_dispatch: #trigger the workflow manually
+
+##########
+# EVENTS #
+##########
+
+on: #[push, label] #the event that will trigger the workflow
+  workflow_dispatch: #trigger the workflow manually
   push:
     branches:
       - ghactions-demo
@@ -30,8 +35,11 @@ on: #[push, label] #the event that will trigger the workflow or with more detail
 env: #global variables here, available for the entire workflow
   DAY_OF_WEEK: Monday
 
-jobs:
-  #GITHUB REFS
+jobs: #jobs are executed in parallel
+  ###############
+  # GITHUB REFS #
+  ###############
+
   Explore-GitHub-Actions: #no spaces in the job's name
     if: false #to disable the job
     name: Explore GitHub Actions #name of the job (optional)
@@ -43,6 +51,9 @@ jobs:
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code #name of the step (optional)
+        # Calling a reusable workflow with actions repo or url
+        # uses: ./.github/workflows/reusable-workflow.yml
+        # uses: github.com/{owner}/{repo}/.github/workflows/reusable-workflow.yml
         uses: actions/checkout@v4 #checkout the repository to allow to run scripts relative to its code
       - uses: actions/setup-node@v4 #install node to use node and npm commands
         with:
@@ -56,7 +67,10 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
-  #GITHUB VARIABLES
+  ####################
+  # GITHUB VARIABLES #
+  ####################
+
   Variables:
     if: false #to disable the job
     runs-on: ubuntu-latest
@@ -85,12 +99,12 @@ jobs:
             # Message with markdown.
             "Hello ${{ github.actor }}, thank you for the ${{ github.event_name }}!"
 
-  #NEEDS
+  #########################
+  # DEPENDENT JOBS: NEEDS #
+  #########################
+
   dep-job-1-setup:
     if: false #to disable the job
-    # Calling a reusable workflow:
-    # uses: ./.github/workflows/reusable-workflow.yml
-    # uses: github.com/{owner}/{repo}/.github/workflows/reusable-workflow.yml
     runs-on: ubuntu-latest
     steps:
       - run: echo "Setup job done"
@@ -109,7 +123,10 @@ jobs:
     steps:
       - run: echo "Test job done on ${{ matrix.os }}"
 
-  #CONDITIONS
+  ##############
+  # CONDITIONS #
+  ##############
+
   triage:
     #condition on the job
     if: >-
@@ -120,14 +137,234 @@ jobs:
       - if: github.actor == 'Jphindev' #condition on the step
         run: echo "Triage job done"
 
-  #AUTOMATIC COMMENT ON NEW ISSUES
+  ########################
+  # EXPRESSION FUNCTIONS #
+  ########################
+
+  expression-functions:
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if string contains substring
+        if: contains('Hello world', 'llo')
+        run: echo "The string contains the substring."
+      - name: Check if string starts with
+        if: startsWith('Hello world', 'He')
+        run: echo "The string starts with 'He'."
+      - name: Check if string ends with
+        if: endsWith('Hello world', 'ld')
+        run: echo "The string ends with 'ld'."
+      - name: Format and echo string
+        run: echo ${{ format('Hello {0} {1} {2}', 'Mona', 'the', 'Octocat') }}
+      - name: Join issue labels
+        if: github.event_name == 'issues'
+        run: |
+          echo "Issue labels: ${{ join(github.event.issue.labels.*.name, ', ') }}"
+      - name: Convert job context to JSON
+        run: |
+          echo "Job context in JSON: ${{ toJSON(github.job) }}"
+      - name: Parse JSON string
+        run: |
+          echo "Parsed JSON: ${{ fromJSON('{"hello":"world"}').hello }}"
+      - name: Hash files
+        run: |
+          echo "Hash of files: ${{ hashFiles('**/package-lock.json', '**/Gemfile.lock') }}
+      - name: The job has succeeded
+        if: ${{ success() }}
+        run: echo "The job has succeeded"
+      - name: The job has failed
+        if: ${{ failure() }}
+        run: echo "The job has failed"
+
+  ###################
+  # CI/CD STRUCTURE #
+  ###################
+  Build:
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Compile
+        run: echo Hello, world!
+
+  DeployDev:
+    name: Deploy to Dev
+    if: >
+      false &&
+      github.event_name == 'pull_request'
+    needs: [Build]
+    runs-on: ubuntu-latest
+    environment:
+      name: Development #defined in github settings
+      url: "http://dev.myapp.com"
+    steps:
+      - name: Deploy
+        run: echo I am deploying!
+
+  DeployStaging:
+    name: Deploy to Staging
+    if: >
+      false &&
+      github.event.ref == 'refs/heads/main'
+    needs: [Build]
+    runs-on: ubuntu-latest
+    environment:
+      name: Staging
+      url: "http://test.myapp.com"
+    steps:
+      - name: Deploy
+        run: echo I am deploying!
+
+  DeployProd:
+    if: false
+    name: Deploy to Production
+    needs: [DeployStaging]
+    runs-on: ubuntu-latest
+    environment:
+      name: Production
+      url: "http://www.myapp.com"
+    steps:
+      - name: Deploy
+        run: echo I am deploying!
+
+  #################
+  # CI/CD EXEMPLE #
+  #################
+
+  # Run unit tests to make sure everything is 👍
+  test:
+    if: false
+    name: "Run unit tests"
+    defaults:
+      run:
+        shell: bash
+        # Define the working directory for all run steps in the workflow
+        working-directory: ./web
+    # Specify the OS we want the workflow to run on
+    runs-on: ubuntu-latest
+    # Define the steps for this job
+    steps:
+      - uses: actions/checkout@v2
+        name: "Checkout repository"
+
+      - name: "Install Dependencies"
+        run: npm install
+
+      - name: "Run Tests"
+        run: npm run test
+
+  # Run the linter to check for code style issues
+  lint:
+    if: false
+    name: "Run linter"
+    defaults:
+      run:
+        shell: bash
+        # Define the working directory for all run steps in the workflow
+        working-directory: ./web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: "Checkout repository"
+
+      - name: "Install Dependencies"
+        run: npm install
+
+      - name: "Run Linter"
+        run: npx standard -v
+
+  # ======================================================
+  # Deploy the main branch to staging
+  #
+  # It's important to test the main branch in staging
+  # before going to production with it.
+  # ======================================================
+  deploy_staging:
+    if: false
+    environment: staging
+    name: "Deploy to staging"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        name: "Checkout repository"
+
+      - uses: burnett01/rsync-deployments@23a557dceb19f9bb960ef40cf75cab5e9b37ec1f
+        name: "Deploy to staging"
+        with:
+          switches: -avzr --delete
+          path: ./web
+          remote_path: /var/app
+          remote_host: ${{ secrets.HOSTNAME }}
+          remote_user: ${{ secrets.REMOTE_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
+        name: Execute SSH commmands on remote server
+        with:
+          hosts: "${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}"
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          command: |
+            cd /var/app/web
+            npm ci
+            pm2 start /var/app/web/bin/www || pm2 restart /var/app/web/bin/www
+            sudo service nginx restart
+
+  # ======================================================
+  # Deploy the main branch to production
+  #
+  # This job will require the `deploy_staging` job to
+  # run and complete successfully first!
+  #
+  # WARNING: this job will sync all the files that are
+  # in the folder ./web/ to the production server
+  # while removing all the files that are already
+  # in the production server!
+  # ======================================================
+  deploy_production:
+    if: false
+    environment: production
+    name: "Deploy to production"
+    runs-on: ubuntu-latest
+    needs: deploy_staging
+
+    steps:
+      - uses: actions/checkout@v2
+        name: "Checkout repository"
+
+      - uses: burnett01/rsync-deployments@23a557dceb19f9bb960ef40cf75cab5e9b37ec1f
+        name: "Deploy to production"
+        with:
+          switches: -avzr --delete
+          path: ./web
+          remote_path: /var/app
+          remote_host: ${{ secrets.HOSTNAME }}
+          remote_user: ${{ secrets.REMOTE_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - uses: JimCronqvist/action-ssh@7737f1192ddd8376686e9d6354dea44592c942bf
+        name: Execute SSH commmands on remote server
+        with:
+          hosts: "${{ secrets.REMOTE_USER }}@${{ secrets.HOSTNAME }}"
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          command: |
+            cd /var/app/web
+            npm ci
+            pm2 start /var/app/web/bin/www || pm2 restart /var/app/web/bin/www
+            sudo service nginx restart
+
+  ############################################
+  # EXEMPLE: AUTOMATIC COMMENT ON NEW ISSUES #
+  ############################################
+
   #This will only work with on: issues only
   comment-with-action:
     if: false #to disable the job
     runs-on: ubuntu-latest
     steps:
       - name: "dump github context"
-        run: echo "${{ toJSON(github) }}" #to retrieve the context variables that we can use
+        run: echo "${{ toJSON(github) }}" #to retrieve the context variables that we can use (see below)
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v4
         with:
@@ -146,7 +383,7 @@ jobs:
     permissions: write-all
     steps:
       - name: Create comment with API
-        #using \ to run a command on multiple lines
+        #using \ to run a command on multiple lines and ending lines with a backslash (no space after)
         run: |
           gh api -X POST \
             https://api.github.com/repos/$ORGANIZATION/$REPOSITORY/issues/$ISSUE_NUMBER/comments \
@@ -156,3 +393,565 @@ jobs:
           ORGANIZATION: ${{ github.event.repository.owner.login }}
           REPOSITORY: ${{ github.event.repository.name }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
+#
+#
+#
+### GITHUB CONTEXT ###
+# {
+#   token: ***,
+#   job: comment-with-action,
+#   ref: refs/heads/ghactions-demo,
+#   sha: efdf88dc88722aac986e549f3580c37b66301844,
+#   repository: Jphindev/Notes-de-cours,
+#   repository_owner: Jphindev,
+#   repository_owner_id: 174002205,
+#   repositoryUrl: git://github.com/Jphindev/Notes-de-cours.git,
+#   run_id: 13676481760,
+#   run_number: 2,
+#   retention_days: 90,
+#   run_attempt: 1,
+#   artifact_cache_size_limit: 10,
+#   repository_visibility: public,
+#   actor_id: 174002205,
+#   actor: Jphindev,
+#   workflow: Create a comment on new issues,
+#   head_ref: ,
+#   base_ref: ,
+#   event_name: issues,
+#   server_url: https://github.com,
+#   api_url: https://api.github.com,
+#   graphql_url: https://api.github.com/graphql,
+#   ref_name: ghactions-demo,
+#   ref_protected: false,
+#   ref_type: branch,
+#   secret_source: Actions,
+#   event: {
+#     action: opened,
+#     issue: {
+#       active_lock_reason: null,
+#       assignee: null,
+#       assignees: [],
+#       author_association: OWNER,
+#       body: testing,
+#       closed_at: null,
+#       comments: 0,
+#       comments_url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues/3/comments,
+#       created_at: 2025-03-05T12:54:58Z,
+#       events_url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues/3/events,
+#       html_url: https://github.com/Jphindev/Notes-de-cours/issues/3,
+#       id: 2897257268,
+#       labels: [],
+#       labels_url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues/3/labels{/name},
+#       locked: false,
+#       milestone: null,
+#       node_id: I_kwDON11IPs6ssKM0,
+#       number: 3,
+#       performed_via_github_app: null,
+#       reactions: {
+#         +1: 0,
+#         -1: 0,
+#         confused: 0,
+#         eyes: 0,
+#         heart: 0,
+#         hooray: 0,
+#         laugh: 0,
+#         rocket: 0,
+#         total_count: 0,
+#         url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues/3/reactions
+#       },
+#       repository_url: https://api.github.com/repos/Jphindev/Notes-de-cours,
+#       state: open,
+#       state_reason: null,
+#       sub_issues_summary: {
+#         completed: 0,
+#         percent_completed: 0,
+#         total: 0
+#       },
+#       timeline_url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues/3/timeline,
+#       title: worflow test,
+#       updated_at: 2025-03-05T12:54:58Z,
+#       url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues/3,
+#       user: {
+#         avatar_url: https://avatars.githubusercontent.com/u/174002205?v=4,
+#         events_url: https://api.github.com/users/Jphindev/events{/privacy},
+#         followers_url: https://api.github.com/users/Jphindev/followers,
+#         following_url: https://api.github.com/users/Jphindev/following{/other_user},
+#         gists_url: https://api.github.com/users/Jphindev/gists{/gist_id},
+#         gravatar_id: ,
+#         html_url: https://github.com/Jphindev,
+#         id: 174002205,
+#         login: Jphindev,
+#         node_id: U_kgDOCl8QHQ,
+#         organizations_url: https://api.github.com/users/Jphindev/orgs,
+#         received_events_url: https://api.github.com/users/Jphindev/received_events,
+#         repos_url: https://api.github.com/users/Jphindev/repos,
+#         site_admin: false,
+#         starred_url: https://api.github.com/users/Jphindev/starred{/owner}{/repo},
+#         subscriptions_url: https://api.github.com/users/Jphindev/subscriptions,
+#         type: User,
+#         url: https://api.github.com/users/Jphindev,
+#         user_view_type: public
+#       }
+#     },
+#     repository: {
+#       allow_forking: true,
+#       archive_url: https://api.github.com/repos/Jphindev/Notes-de-cours/{archive_format}{/ref},
+#       archived: false,
+#       assignees_url: https://api.github.com/repos/Jphindev/Notes-de-cours/assignees{/user},
+#       blobs_url: https://api.github.com/repos/Jphindev/Notes-de-cours/git/blobs{/sha},
+#       branches_url: https://api.github.com/repos/Jphindev/Notes-de-cours/branches{/branch},
+#       clone_url: https://github.com/Jphindev/Notes-de-cours.git,
+#       collaborators_url: https://api.github.com/repos/Jphindev/Notes-de-cours/collaborators{/collaborator},
+#       comments_url: https://api.github.com/repos/Jphindev/Notes-de-cours/comments{/number},
+#       commits_url: https://api.github.com/repos/Jphindev/Notes-de-cours/commits{/sha},
+#       compare_url: https://api.github.com/repos/Jphindev/Notes-de-cours/compare/{base}...{head},
+#       contents_url: https://api.github.com/repos/Jphindev/Notes-de-cours/contents/{+path},
+#       contributors_url: https://api.github.com/repos/Jphindev/Notes-de-cours/contributors,
+#       created_at: 2025-02-07T11:19:01Z,
+#       default_branch: ghactions-demo,
+#       deployments_url: https://api.github.com/repos/Jphindev/Notes-de-cours/deployments,
+#       description: null,
+#       disabled: false,
+#       downloads_url: https://api.github.com/repos/Jphindev/Notes-de-cours/downloads,
+#       events_url: https://api.github.com/repos/Jphindev/Notes-de-cours/events,
+#       fork: false,
+#       forks: 0,
+#       forks_count: 0,
+#       forks_url: https://api.github.com/repos/Jphindev/Notes-de-cours/forks,
+#       full_name: Jphindev/Notes-de-cours,
+#       git_commits_url: https://api.github.com/repos/Jphindev/Notes-de-cours/git/commits{/sha},
+#       git_refs_url: https://api.github.com/repos/Jphindev/Notes-de-cours/git/refs{/sha},
+#       git_tags_url: https://api.github.com/repos/Jphindev/Notes-de-cours/git/tags{/sha},
+#       git_url: git://github.com/Jphindev/Notes-de-cours.git,
+#       has_discussions: false,
+#       has_downloads: true,
+#       has_issues: true,
+#       has_pages: false,
+#       has_projects: true,
+#       has_wiki: true,
+#       homepage: null,
+#       hooks_url: https://api.github.com/repos/Jphindev/Notes-de-cours/hooks,
+#       html_url: https://github.com/Jphindev/Notes-de-cours,
+#       id: 928860222,
+#       is_template: false,
+#       issue_comment_url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues/comments{/number},
+#       issue_events_url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues/events{/number},
+#       issues_url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues{/number},
+#       keys_url: https://api.github.com/repos/Jphindev/Notes-de-cours/keys{/key_id},
+#       labels_url: https://api.github.com/repos/Jphindev/Notes-de-cours/labels{/name},
+#       language: PHP,
+#       languages_url: https://api.github.com/repos/Jphindev/Notes-de-cours/languages,
+#       license: null,
+#       merges_url: https://api.github.com/repos/Jphindev/Notes-de-cours/merges,
+#       milestones_url: https://api.github.com/repos/Jphindev/Notes-de-cours/milestones{/number},
+#       mirror_url: null,
+#       name: Notes-de-cours,
+#       node_id: R_kgDON11IPg,
+#       notifications_url: https://api.github.com/repos/Jphindev/Notes-de-cours/notifications?since,
+#       open_issues: 1,
+#       open_issues_count: 1,
+#       owner: {
+#         avatar_url: https://avatars.githubusercontent.com/u/174002205?v=4,
+#         events_url: https://api.github.com/users/Jphindev/events{/privacy},
+#         followers_url: https://api.github.com/users/Jphindev/followers,
+#         following_url: https://api.github.com/users/Jphindev/following{/other_user},
+#         gists_url: https://api.github.com/users/Jphindev/gists{/gist_id},
+#         gravatar_id: ,
+#         html_url: https://github.com/Jphindev,
+#         id: 174002205,
+#         login: Jphindev,
+#         node_id: U_kgDOCl8QHQ,
+#         organizations_url: https://api.github.com/users/Jphindev/orgs,
+#         received_events_url: https://api.github.com/users/Jphindev/received_events,
+#         repos_url: https://api.github.com/users/Jphindev/repos,
+#         site_admin: false,
+#         starred_url: https://api.github.com/users/Jphindev/starred{/owner}{/repo},
+#         subscriptions_url: https://api.github.com/users/Jphindev/subscriptions,
+#         type: User,
+#         url: https://api.github.com/users/Jphindev,
+#         user_view_type: public
+#       },
+#       private: false,
+#       pulls_url: https://api.github.com/repos/Jphindev/Notes-de-cours/pulls{/number},
+#       pushed_at: 2025-03-05T12:54:02Z,
+#       releases_url: https://api.github.com/repos/Jphindev/Notes-de-cours/releases{/id},
+#       size: 151,
+#       ssh_url: git@github.com:Jphindev/Notes-de-cours.git,
+#       stargazers_count: 0,
+#       stargazers_url: https://api.github.com/repos/Jphindev/Notes-de-cours/stargazers,
+#       statuses_url: https://api.github.com/repos/Jphindev/Notes-de-cours/statuses/{sha},
+#       subscribers_url: https://api.github.com/repos/Jphindev/Notes-de-cours/subscribers,
+#       subscription_url: https://api.github.com/repos/Jphindev/Notes-de-cours/subscription,
+#       svn_url: https://github.com/Jphindev/Notes-de-cours,
+#       tags_url: https://api.github.com/repos/Jphindev/Notes-de-cours/tags,
+#       teams_url: https://api.github.com/repos/Jphindev/Notes-de-cours/teams,
+#       topics: [],
+#       trees_url: https://api.github.com/repos/Jphindev/Notes-de-cours/git/trees{/sha},
+#       updated_at: 2025-03-05T12:54:05Z,
+#       url: https://api.github.com/repos/Jphindev/Notes-de-cours,
+#       visibility: public,
+#       watchers: 0,
+#       watchers_count: 0,
+#       web_commit_signoff_required: false
+#     },
+#     sender: {
+#       avatar_url: https://avatars.githubusercontent.com/u/174002205?v=4,
+#       events_url: https://api.github.com/users/Jphindev/events{/privacy},
+#       followers_url: https://api.github.com/users/Jphindev/followers,
+#       following_url: https://api.github.com/users/Jphindev/following{/other_user},
+#       gists_url: https://api.github.com/users/Jphindev/gists{/gist_id},
+#       gravatar_id: ,
+#       html_url: https://github.com/Jphindev,
+#       id: 174002205,
+#       login: Jphindev,
+#       node_id: U_kgDOCl8QHQ,
+#       organizations_url: https://api.github.com/users/Jphindev/orgs,
+#       received_events_url: https://api.github.com/users/Jphindev/received_events,
+#       repos_url: https://api.github.com/users/Jphindev/repos,
+#       site_admin: false,
+#       starred_url: https://api.github.com/users/Jphindev/starred{/owner}{/repo},
+#       subscriptions_url: https://api.github.com/users/Jphindev/subscriptions,
+#       type: User,
+#       url: https://api.github.com/users/Jphindev,
+#       user_view_type: public
+#     }
+#   },
+#   workflow_ref: Jphindev/Notes-de-cours/.github/workflows/issue_comment.yaml@refs/heads/ghactions-demo,
+#   workflow_sha: efdf88dc88722aac986e549f3580c37b66301844,
+#   repository_id: 928860222,
+#   triggering_actor: Jphindev,
+#   workspace: /home/runner/work/Notes-de-cours/Notes-de-cours,
+#   action: __run,
+#   event_path: /home/runner/work/_temp/_github_workflow/event.json,
+#   action_repository: ,
+#   action_ref: ,
+#   path: /home/runner/work/_temp/_runner_file_commands/add_path_38d2910f-dae2-4310-9037-6433f62a174e,
+#   env: /home/runner/work/_temp/_runner_file_commands/set_env_38d2910f-dae2-4310-9037-6433f62a174e,
+#   step_summary: /home/runner/work/_temp/_runner_file_commands/step_summary_38d2910f-dae2-4310-9037-6433f62a174e,
+#   state: /home/runner/work/_temp/_runner_file_commands/save_state_38d2910f-dae2-4310-9037-6433f62a174e,
+#   output: /home/runner/work/_temp/_runner_file_commands/set_output_38d2910f-dae2-4310-9037-6433f62a174e
+# } test,
+#       updated_at: 2025-03-05T12:54:58Z,
+#       url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues/3,
+#       user: {
+#         avatar_url: https://avatars.githubusercontent.com/u/174002205?v=4,
+#         events_url: https://api.github.com/users/Jphindev/events{/privacy},
+#         followers_url: https://api.github.com/users/Jphindev/followers,
+#         following_url: https://api.github.com/users/Jphindev/following{/other_user},
+#         gists_url: https://api.github.com/users/Jphindev/gists{/gist_id},
+#         gravatar_id: ,
+#         html_url: https://github.com/Jphindev,
+#         id: 174002205,
+#         login: Jphindev,
+#         node_id: U_kgDOCl8QHQ,
+#         organizations_url: https://api.github.com/users/Jphindev/orgs,
+#         received_events_url: https://api.github.com/users/Jphindev/received_events,
+#         repos_url: https://api.github.com/users/Jphindev/repos,
+#         site_admin: false,
+#         starred_url: https://api.github.com/users/Jphindev/starred{/owner}{/repo},
+#         subscriptions_url: https://api.github.com/users/Jphindev/subscriptions,
+#         type: User,
+#         url: https://api.github.com/users/Jphindev,
+#         user_view_type: public
+#       }
+#     },
+#     repository: {
+#       allow_forking: true,
+#       archive_url: https://api.github.com/repos/Jphindev/Notes-de-cours/{archive_format}{/ref},
+#       archived: false,
+#       assignees_url: https://api.github.com/repos/Jphindev/Notes-de-cours/assignees{/user},
+#       blobs_url: https://api.github.com/repos/Jphindev/Notes-de-cours/git/blobs{/sha},
+#       branches_url: https://api.github.com/repos/Jphindev/Notes-de-cours/branches{/branch},
+#       clone_url: https://github.com/Jphindev/Notes-de-cours.git,
+#       collaborators_url: https://api.github.com/repos/Jphindev/Notes-de-cours/collaborators{/collaborator},
+#       comments_url: https://api.github.com/repos/Jphindev/Notes-de-cours/comments{/number},
+#       commits_url: https://api.github.com/repos/Jphindev/Notes-de-cours/commits{/sha},
+#       compare_url: https://api.github.com/repos/Jphindev/Notes-de-cours/compare/{base}...{head},
+#       contents_url: https://api.github.com/repos/Jphindev/Notes-de-cours/contents/{+path},
+#       contributors_url: https://api.github.com/repos/Jphindev/Notes-de-cours/contributors,
+#       created_at: 2025-02-07T11:19:01Z,
+#       default_branch: ghactions-demo,
+#       deployments_url: https://api.github.com/repos/Jphindev/Notes-de-cours/deployments,
+#       description: null,
+#       disabled: false,
+#       downloads_url: https://api.github.com/repos/Jphindev/Notes-de-cours/downloads,
+#       events_url: https://api.github.com/repos/Jphindev/Notes-de-cours/events,
+#       fork: false,
+#       forks: 0,
+#       forks_count: 0,
+#       forks_url: https://api.github.com/repos/Jphindev/Notes-de-cours/forks,
+#       full_name: Jphindev/Notes-de-cours,
+#       git_commits_url: https://api.github.com/repos/Jphindev/Notes-de-cours/git/commits{/sha},
+#       git_refs_url: https://api.github.com/repos/Jphindev/Notes-de-cours/git/refs{/sha},
+#       git_tags_url: https://api.github.com/repos/Jphindev/Notes-de-cours/git/tags{/sha},
+#       git_url: git://github.com/Jphindev/Notes-de-cours.git,
+#       has_discussions: false,
+#       has_downloads: true,
+#       has_issues: true,
+#       has_pages: false,
+#       has_projects: true,
+#       has_wiki: true,
+#       homepage: null,
+#       hooks_url: https://api.github.com/repos/Jphindev/Notes-de-cours/hooks,
+#       html_url: https://github.com/Jphindev/Notes-de-cours,
+#       id: 928860222,
+#       is_template: false,
+#       issue_comment_url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues/comments{/number},
+#       issue_events_url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues/events{/number},
+#       issues_url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues{/number},
+#       keys_url: https://api.github.com/repos/Jphindev/Notes-de-cours/keys{/key_id},
+#       labels_url: https://api.github.com/repos/Jphindev/Notes-de-cours/labels{/name},
+#       language: PHP,
+#       languages_url: https://api.github.com/repos/Jphindev/Notes-de-cours/languages,
+#       license: null,
+#       merges_url: https://api.github.com/repos/Jphindev/Notes-de-cours/merges,
+#       milestones_url: https://api.github.com/repos/Jphindev/Notes-de-cours/milestones{/number},
+#       mirror_url: null,
+#       name: Notes-de-cours,
+#       node_id: R_kgDON11IPg,
+#       notifications_url: https://api.github.com/repos/Jphindev/Notes-de-cours/notificationsall,
+#       open_issues: 1,
+#       open_issues_count: 1,
+#       owner: {
+#         avatar_url: https://avatars.githubusercontent.com/u/174002205?v=4,
+#         events_url: https://api.github.com/users/Jphindev/events{/privacy},
+#         followers_url: https://api.github.com/users/Jphindev/followers,
+#         following_url: https://api.github.com/users/Jphindev/following{/other_user},
+#         gists_url: https://api.github.com/users/Jphindev/gists{/gist_id},
+#         gravatar_id: ,
+#         html_url: https://github.com/Jphindev,
+#         id: 174002205,
+#         login: Jphindev,
+#         node_id: U_kgDOCl8QHQ,
+#         organizations_url: https://api.github.com/users/Jphindev/orgs,
+#         received_events_url: https://api.github.com/users/Jphindev/received_events,
+#         repos_url: https://api.github.com/users/Jphindev/repos,
+#         site_admin: false,
+#         starred_url: https://api.github.com/users/Jphindev/starred{/owner}{/repo},
+#         subscriptions_url: https://api.github.com/users/Jphindev/subscriptions,
+#         type: User,
+#         url: https://api.github.com/users/Jphindev,
+#         user_view_type: public
+#       },
+#       private: false,
+#       pulls_url: https://api.github.com/repos/Jphindev/Notes-de-cours/pulls{/number},
+#       pushed_at: 2025-03-05T12:54:02Z,
+#       releases_url: https://api.github.com/repos/Jphindev/Notes-de-cours/releases{/id},
+#       size: 151,
+#       ssh_url: git@github.com:Jphindev/Notes-de-cours.git,
+#       stargazers_count: 0,
+#       stargazers_url: https://api.github.com/repos/Jphindev/Notes-de-cours/stargazers,
+#       statuses_url: https://api.github.com/repos/Jphindev/Notes-de-cours/statuses/{sha},
+#       subscribers_url: https://api.github.com/repos/Jphindev/Notes-de-cours/subscribers,
+#       subscription_url: https://api.github.com/repos/Jphindev/Notes-de-cours/subscription,
+#       svn_url: https://github.com/Jphindev/Notes-de-cours,
+#       tags_url: https://api.github.com/repos/Jphindev/Notes-de-cours/tags,
+#       teams_url: https://api.github.com/repos/Jphindev/Notes-de-cours/teams,
+#       topics: [],
+#       trees_url: https://api.github.com/repos/Jphindev/Notes-de-cours/git/trees{/sha},
+#       updated_at: 2025-03-05T12:54:05Z,
+#       url: https://api.github.com/repos/Jphindev/Notes-de-cours,
+#       visibility: public,
+#       watchers: 0,
+#       watchers_count: 0,
+#       web_commit_signoff_required: false
+#     },
+#     sender: {
+#       avatar_url: https://avatars.githubusercontent.com/u/174002205?v=4,
+#       events_url: https://api.github.com/users/Jphindev/events{/privacy},
+#       followers_url: https://api.github.com/users/Jphindev/followers,
+#       following_url: https://api.github.com/users/Jphindev/following{/other_user},
+#       gists_url: https://api.github.com/users/Jphindev/gists{/gist_id},
+#       gravatar_id: ,
+#       html_url: https://github.com/Jphindev,
+#       id: 174002205,
+#       login: Jphindev,
+#       node_id: U_kgDOCl8QHQ,
+#       organizations_url: https://api.github.com/users/Jphindev/orgs,
+#       received_events_url: https://api.github.com/users/Jphindev/received_events,
+#       repos_url: https://api.github.com/users/Jphindev/repos,
+#       site_admin: false,
+#       starred_url: https://api.github.com/users/Jphindev/starred{/owner}{/repo},
+#       subscriptions_url: https://api.github.com/users/Jphindev/subscriptions,
+#       type: User,
+#       url: https://api.github.com/users/Jphindev,
+#       user_view_type: public
+#     }
+#   },
+#   workflow_ref: Jphindev/Notes-de-cours/.github/workflows/issue_comment.yaml@refs/heads/ghactions-demo,
+#   workflow_sha: efdf88dc88722aac986e549f3580c37b66301844,
+#   repository_id: 928860222,
+#   triggering_actor: Jphindev,
+#   workspace: /home/runner/work/Notes-de-cours/Notes-de-cours,
+#   action: __run,
+#   event_path: /home/runner/work/_temp/_github_workflow/event.json,
+#   action_repository: ,
+#   action_ref: ,
+#   path: /home/runner/work/_temp/_runner_file_commands/add_path_38d2910f-dae2-4310-9037-6433f62a174e,
+#   env: /home/runner/work/_temp/_runner_file_commands/set_env_38d2910f-dae2-4310-9037-6433f62a174e,
+#   step_summary: /home/runner/work/_temp/_runner_file_commands/step_summary_38d2910f-dae2-4310-9037-6433f62a174e,
+#   state: /home/runner/work/_temp/_runner_file_commands/save_state_38d2910f-dae2-4310-9037-6433f62a174e,
+#   output: /home/runner/work/_temp/_runner_file_commands/set_output_38d2910f-dae2-4310-9037-6433f62a174e
+# } test,
+#       updated_at: 2025-03-05T12:54:58Z,
+#       url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues/3,
+#       user: {
+#         avatar_url: https://avatars.githubusercontent.com/u/174002205?v=4,
+#         events_url: https://api.github.com/users/Jphindev/events{/privacy},
+#         followers_url: https://api.github.com/users/Jphindev/followers,
+#         following_url: https://api.github.com/users/Jphindev/following{/other_user},
+#         gists_url: https://api.github.com/users/Jphindev/gists{/gist_id},
+#         gravatar_id: ,
+#         html_url: https://github.com/Jphindev,
+#         id: 174002205,
+#         login: Jphindev,
+#         node_id: U_kgDOCl8QHQ,
+#         organizations_url: https://api.github.com/users/Jphindev/orgs,
+#         received_events_url: https://api.github.com/users/Jphindev/received_events,
+#         repos_url: https://api.github.com/users/Jphindev/repos,
+#         site_admin: false,
+#         starred_url: https://api.github.com/users/Jphindev/starred{/owner}{/repo},
+#         subscriptions_url: https://api.github.com/users/Jphindev/subscriptions,
+#         type: User,
+#         url: https://api.github.com/users/Jphindev,
+#         user_view_type: public
+#       }
+#     },
+#     repository: {
+#       allow_forking: true,
+#       archive_url: https://api.github.com/repos/Jphindev/Notes-de-cours/{archive_format}{/ref},
+#       archived: false,
+#       assignees_url: https://api.github.com/repos/Jphindev/Notes-de-cours/assignees{/user},
+#       blobs_url: https://api.github.com/repos/Jphindev/Notes-de-cours/git/blobs{/sha},
+#       branches_url: https://api.github.com/repos/Jphindev/Notes-de-cours/branches{/branch},
+#       clone_url: https://github.com/Jphindev/Notes-de-cours.git,
+#       collaborators_url: https://api.github.com/repos/Jphindev/Notes-de-cours/collaborators{/collaborator},
+#       comments_url: https://api.github.com/repos/Jphindev/Notes-de-cours/comments{/number},
+#       commits_url: https://api.github.com/repos/Jphindev/Notes-de-cours/commits{/sha},
+#       compare_url: https://api.github.com/repos/Jphindev/Notes-de-cours/compare/{base}...{head},
+#       contents_url: https://api.github.com/repos/Jphindev/Notes-de-cours/contents/{+path},
+#       contributors_url: https://api.github.com/repos/Jphindev/Notes-de-cours/contributors,
+#       created_at: 2025-02-07T11:19:01Z,
+#       default_branch: ghactions-demo,
+#       deployments_url: https://api.github.com/repos/Jphindev/Notes-de-cours/deployments,
+#       description: null,
+#       disabled: false,
+#       downloads_url: https://api.github.com/repos/Jphindev/Notes-de-cours/downloads,
+#       events_url: https://api.github.com/repos/Jphindev/Notes-de-cours/events,
+#       fork: false,
+#       forks: 0,
+#       forks_count: 0,
+#       forks_url: https://api.github.com/repos/Jphindev/Notes-de-cours/forks,
+#       full_name: Jphindev/Notes-de-cours,
+#       git_commits_url: https://api.github.com/repos/Jphindev/Notes-de-cours/git/commits{/sha},
+#       git_refs_url: https://api.github.com/repos/Jphindev/Notes-de-cours/git/refs{/sha},
+#       git_tags_url: https://api.github.com/repos/Jphindev/Notes-de-cours/git/tags{/sha},
+#       git_url: git://github.com/Jphindev/Notes-de-cours.git,
+#       has_discussions: false,
+#       has_downloads: true,
+#       has_issues: true,
+#       has_pages: false,
+#       has_projects: true,
+#       has_wiki: true,
+#       homepage: null,
+#       hooks_url: https://api.github.com/repos/Jphindev/Notes-de-cours/hooks,
+#       html_url: https://github.com/Jphindev/Notes-de-cours,
+#       id: 928860222,
+#       is_template: false,
+#       issue_comment_url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues/comments{/number},
+#       issue_events_url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues/events{/number},
+#       issues_url: https://api.github.com/repos/Jphindev/Notes-de-cours/issues{/number},
+#       keys_url: https://api.github.com/repos/Jphindev/Notes-de-cours/keys{/key_id},
+#       labels_url: https://api.github.com/repos/Jphindev/Notes-de-cours/labels{/name},
+#       language: PHP,
+#       languages_url: https://api.github.com/repos/Jphindev/Notes-de-cours/languages,
+#       license: null,
+#       merges_url: https://api.github.com/repos/Jphindev/Notes-de-cours/merges,
+#       milestones_url: https://api.github.com/repos/Jphindev/Notes-de-cours/milestones{/number},
+#       mirror_url: null,
+#       name: Notes-de-cours,
+#       node_id: R_kgDON11IPg,
+#       notifications_url: https://api.github.com/repos/Jphindev/Notes-de-cours/notificationsparticipating,
+#       open_issues: 1,
+#       open_issues_count: 1,
+#       owner: {
+#         avatar_url: https://avatars.githubusercontent.com/u/174002205?v=4,
+#         events_url: https://api.github.com/users/Jphindev/events{/privacy},
+#         followers_url: https://api.github.com/users/Jphindev/followers,
+#         following_url: https://api.github.com/users/Jphindev/following{/other_user},
+#         gists_url: https://api.github.com/users/Jphindev/gists{/gist_id},
+#         gravatar_id: ,
+#         html_url: https://github.com/Jphindev,
+#         id: 174002205,
+#         login: Jphindev,
+#         node_id: U_kgDOCl8QHQ,
+#         organizations_url: https://api.github.com/users/Jphindev/orgs,
+#         received_events_url: https://api.github.com/users/Jphindev/received_events,
+#         repos_url: https://api.github.com/users/Jphindev/repos,
+#         site_admin: false,
+#         starred_url: https://api.github.com/users/Jphindev/starred{/owner}{/repo},
+#         subscriptions_url: https://api.github.com/users/Jphindev/subscriptions,
+#         type: User,
+#         url: https://api.github.com/users/Jphindev,
+#         user_view_type: public
+#       },
+#       private: false,
+#       pulls_url: https://api.github.com/repos/Jphindev/Notes-de-cours/pulls{/number},
+#       pushed_at: 2025-03-05T12:54:02Z,
+#       releases_url: https://api.github.com/repos/Jphindev/Notes-de-cours/releases{/id},
+#       size: 151,
+#       ssh_url: git@github.com:Jphindev/Notes-de-cours.git,
+#       stargazers_count: 0,
+#       stargazers_url: https://api.github.com/repos/Jphindev/Notes-de-cours/stargazers,
+#       statuses_url: https://api.github.com/repos/Jphindev/Notes-de-cours/statuses/{sha},
+#       subscribers_url: https://api.github.com/repos/Jphindev/Notes-de-cours/subscribers,
+#       subscription_url: https://api.github.com/repos/Jphindev/Notes-de-cours/subscription,
+#       svn_url: https://github.com/Jphindev/Notes-de-cours,
+#       tags_url: https://api.github.com/repos/Jphindev/Notes-de-cours/tags,
+#       teams_url: https://api.github.com/repos/Jphindev/Notes-de-cours/teams,
+#       topics: [],
+#       trees_url: https://api.github.com/repos/Jphindev/Notes-de-cours/git/trees{/sha},
+#       updated_at: 2025-03-05T12:54:05Z,
+#       url: https://api.github.com/repos/Jphindev/Notes-de-cours,
+#       visibility: public,
+#       watchers: 0,
+#       watchers_count: 0,
+#       web_commit_signoff_required: false
+#     },
+#     sender: {
+#       avatar_url: https://avatars.githubusercontent.com/u/174002205?v=4,
+#       events_url: https://api.github.com/users/Jphindev/events{/privacy},
+#       followers_url: https://api.github.com/users/Jphindev/followers,
+#       following_url: https://api.github.com/users/Jphindev/following{/other_user},
+#       gists_url: https://api.github.com/users/Jphindev/gists{/gist_id},
+#       gravatar_id: ,
+#       html_url: https://github.com/Jphindev,
+#       id: 174002205,
+#       login: Jphindev,
+#       node_id: U_kgDOCl8QHQ,
+#       organizations_url: https://api.github.com/users/Jphindev/orgs,
+#       received_events_url: https://api.github.com/users/Jphindev/received_events,
+#       repos_url: https://api.github.com/users/Jphindev/repos,
+#       site_admin: false,
+#       starred_url: https://api.github.com/users/Jphindev/starred{/owner}{/repo},
+#       subscriptions_url: https://api.github.com/users/Jphindev/subscriptions,
+#       type: User,
+#       url: https://api.github.com/users/Jphindev,
+#       user_view_type: public
+#     }
+#   },
+#   workflow_ref: Jphindev/Notes-de-cours/.github/workflows/issue_comment.yaml@refs/heads/ghactions-demo,
+#   workflow_sha: efdf88dc88722aac986e549f3580c37b66301844,
+#   repository_id: 928860222,
+#   triggering_actor: Jphindev,
+#   workspace: /home/runner/work/Notes-de-cours/Notes-de-cours,
+#   action: __run,
+#   event_path: /home/runner/work/_temp/_github_workflow/event.json,
+#   action_repository: ,
+#   action_ref: ,
+#   path: /home/runner/work/_temp/_runner_file_commands/add_path_38d2910f-dae2-4310-9037-6433f62a174e,
+#   env: /home/runner/work/_temp/_runner_file_commands/set_env_38d2910f-dae2-4310-9037-6433f62a174e,
+#   step_summary: /home/runner/work/_temp/_runner_file_commands/step_summary_38d2910f-dae2-4310-9037-6433f62a174e,
+#   state: /home/runner/work/_temp/_runner_file_commands/save_state_38d2910f-dae2-4310-9037-6433f62a174e,
+#   output: /home/runner/work/_temp/_runner_file_commands/set_output_38d2910f-dae2-4310-9037-6433f62a174e
+# }
