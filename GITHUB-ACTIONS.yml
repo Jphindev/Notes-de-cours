@@ -3,7 +3,7 @@
 # https://github.com/ExamProCo/Github-Examples/tree/main
 # https://github.com/n3wt0n/ActionsTest
 
-name: GitHub Actions Demo
+name: GitHub Actions Notes
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 
 ##########
@@ -72,7 +72,7 @@ jobs: #jobs are executed in parallel
   ####################
 
   Variables:
-    if: false #to disable the job
+    # if: false
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -104,7 +104,7 @@ jobs: #jobs are executed in parallel
   #########################
 
   dep-job-1-setup:
-    if: false #to disable the job
+    # if: false
     runs-on: ubuntu-latest
     steps:
       - run: echo "Setup job done"
@@ -128,7 +128,7 @@ jobs: #jobs are executed in parallel
   ##############
 
   triage:
-    #condition on the job
+    #condition on the job: > to specify a bloc of code on multiple lines
     if: >-
       github.event_name == 'push' && 
       github.actor != 'dependabot[bot]'
@@ -142,7 +142,7 @@ jobs: #jobs are executed in parallel
   ########################
 
   expression-functions:
-    if: false
+    # if: false
     runs-on: ubuntu-latest
     steps:
       - name: Check if string contains substring
@@ -181,7 +181,7 @@ jobs: #jobs are executed in parallel
   ###################
 
   Build:
-    if: false
+    # if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -218,7 +218,7 @@ jobs: #jobs are executed in parallel
         run: echo I am deploying!
 
   DeployProd:
-    if: false
+    # if: false
     name: Deploy to Production
     needs: [DeployStaging]
     runs-on: ubuntu-latest
@@ -235,7 +235,7 @@ jobs: #jobs are executed in parallel
 
   # Run unit tests to make sure everything is 👍
   test:
-    if: false
+    # if: false
     name: "Run unit tests"
     defaults:
       run:
@@ -257,7 +257,7 @@ jobs: #jobs are executed in parallel
 
   # Run the linter to check for code style issues
   lint:
-    if: false
+    # if: false
     name: "Run linter"
     defaults:
       run:
@@ -282,7 +282,7 @@ jobs: #jobs are executed in parallel
   # before going to production with it.
   # ======================================================
   deploy_staging:
-    if: false
+    # if: false
     environment: staging
     name: "Deploy to staging"
     runs-on: ubuntu-latest
@@ -324,7 +324,7 @@ jobs: #jobs are executed in parallel
   # in the production server!
   # ======================================================
   deploy_production:
-    if: false
+    # if: false
     environment: production
     name: "Deploy to production"
     runs-on: ubuntu-latest
