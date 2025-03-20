@@ -1,476 +1,579 @@
+<!-- Cours de Pierre Giraud -->
+<!-- https://www.pierre-giraud.com/html-css-apprendre-coder-cours/ -->
+
+<!-- FreeCodeCamp Courses -->
+<!-- https://www.freecodecamp.org/learn/full-stack-developer/review-basic-html/basic-html-review -->
+<!-- https://www.freecodecamp.org/learn/full-stack-developer/review-semantic-html/review-semantic-html -->
+
 <!DOCTYPE html>
 
 <!-- balise ouvrante <élément attribut="valeur">Contenu</élément> balise fermante -->
 
 <html lang="fr-FR">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="author" content="JeanPhiH">
-	<meta name="description" content="Résumé de cours HTML et CSS">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> 
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="author" content="JeanPhiH" />
+		<meta name="description" content="Résumé de cours HTML et CSS" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, user-scalable=no"
+		/>
 		<!--optimise l'affichage sur mobile,
 		avec une largeur correspondant à la largeur de l'appareil
 		un niveau de zoom initial égal à 1
 		et l'interdiction d'utiliser le zoom, avec un yes on pourra utiliser minimum-scale et maximum-scale entre 0 et 10-->
 
-	<title>Titre de la page (onglet)</title> 
+		<title>Titre de la page (onglet)</title>
 		<!--balise paire-->
 
-	<link rel="stylesheet" href="/CSS/notesCSS.css"> 
+		<link rel="stylesheet" href="/CSS/notesCSS.css" />
 		<!--balise orpheline pour lier le CSS-->
 
-	<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+		<link
+			href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap"
+			rel="stylesheet"
+		/>
 		<!--Lien d'une font-family de Google fonts-->
 
-	<style>h3{color: red;}</style>
+		<style>
+			h3 {
+				color: red;
+			}
+		</style>
 		<!-- On peut écrire du CSS ici (non recommandé) -->
 
-	<script src="script.js"></script>
-</head>
+		<script src="script.js"></script>
+	</head>
 
-<body>
-	<!-- Commentaires -->
-	<header>
-	En tête de la page, logos, menus
-		<nav></nav>
-	</header>
-	
-	<hr> <!-- ligne de séparation -->
+	<body>
+		<!-- Commentaires -->
+		<header>
+			En tête de la page, logos, menus
+			<nav></nav>
+		</header>
 
-	<main>
+		<hr />
+		<!-- ligne de séparation -->
 
-	<article>
-		<!--pour séparer des zones de textes spécifiques-->
-		<header><nav></nav></header>
-		<article><h1></h1></article>
-		<footer></footer>
-	</article>
-	
-	<section>
-		<!--pour découper la page en plusieurs sections-->
-		<aside>
-			<!--contenu non lié au reste (publicités par exemple)-->
-		</aside>
-		<aside></aside>
-	</section>
-	
+		<main>
+			<article>
+				<!--pour séparer des zones de textes spécifiques-->
+				<header><nav></nav></header>
+				<article><h1></h1></article>
+				<footer></footer>
+			</article>
 
-	<!---------------------------->
-	<!-- >>>>>>> BASES <<<<<<<< -->
-	<!---------------------------->
+			<section>
+				<!--pour découper la page en plusieurs sections-->
+				<aside>
+					<!--contenu non lié au reste (publicités par exemple)-->
+				</aside>
+				<aside></aside>
+			</section>
 
-	<div class = "texte">
-	<h1>Titre h1</h1>
-		<!--un seul autorisé par page-->
-	
-	<p style="color: red;">Paragraphe p</p> 
-		<!-- On peut écrire du CSS avec la class style (non recommandé)-->
+			<!--------------------------------->
+			<!-- >>>>>>> SEMANTIQUE <<<<<<<< -->
+			<!--------------------------------->
 
-	<br> <!-- Pour aller à la ligne -->
-		
-	J'insère une image <img src="media/logo.png" alt="Description de l'image"><br>
-	J'insère un lien   <a href="lien.html" title="clique sur moi" target="_blank" rel="nofollow">Cliquez ici</a><br>
-		<!--target="_blank" pour ouvrir dans un nouvel onglet-->
-		<!--lien vers un dossier parent: ../fichier.html 
+			<div class="texte">
+				<h1>Titre h1</h1>
+				<!--un seul autorisé par page-->
+
+				<p style="color: red">Paragraphe p</p>
+				<!-- On peut écrire du CSS avec la class style (non recommandé)-->
+
+				<br />
+				<!-- Pour aller à la ligne -->
+
+				J'insère une image
+				<img src="media/logo.png" alt="Description de l'image" /><br />
+				J'insère un lien
+				<a
+					href="lien.html"
+					title="clique sur moi"
+					target="_blank"
+					rel="nofollow"
+					>Cliquez ici</a
+				><br />
+				<!--target="_blank" pour ouvrir dans un nouvel onglet-->
+				<!--lien vers un dossier parent: ../fichier.html 
 		rel pour indiquer aux robots des moteurs de recherche qu'il n'est pas nécessaire de suivre ce lien-->
 
-	J'insère une ancre <a href="#partie3">Allez à la partie 3</a><br> 
-		<!-- Pratique pour les sommaires -->
+				J'insère une ancre <a href="#partie3">Allez à la partie 3</a><br />
+				<!-- Pratique pour les sommaires -->
 
-	M'envoyer <a href="mailto:allovieuxfoureveur@gmail.com">un mail</a>
+				M'envoyer <a href="mailto:allovieuxfoureveur@gmail.com">un mail</a>
 
-	<p>Télécharger le son <a href="media/audio.mp3" download="extrait audio"> en cliquant ici.</a>(ou clic droit "Enregistrer sous")</p>
-		<!--download pour renommer le fichier qui sera téléchargé-->
+				<p>
+					Télécharger le son
+					<a href="media/audio.mp3" download="extrait audio">
+						en cliquant ici.</a
+					>(ou clic droit "Enregistrer sous")
+				</p>
+				<!--download pour renommer le fichier qui sera téléchargé-->
 
-	<br><br><br><br><br>
-	
+				<br /><br /><br /><br /><br />
 
-	<!--CLASS ET ID-->
+				<!--CLASS ET ID-->
 
-	<p class="partie2">Partie 2</p> 
-		<!--Ajouter class pour le CSS, peut être répété sur plusieurs éléments-->
-	
-	<p id="partie3">Partie 3</p> 
-		<!--Ajouter id pour ancres et CSS (#id), ne peut pas être répété sur un autre élément (un id est unique)-->
-	
-	<p class="partie2 div1">
-		<!--appliquer plusieurs class sur un élément avec un espace-->
-	</p>
+				<p class="partie2">Partie 2</p>
+				<!--Ajouter class pour le CSS, peut être répété sur plusieurs éléments-->
 
+				<p id="partie3">Partie 3</p>
+				<!--Ajouter id pour ancres et CSS (#id), ne peut pas être répété sur un autre élément (un id est unique)-->
 
-	<!--DIV et SPAN-->
+				<p class="partie2 div1">
+					<!--appliquer plusieurs class sur un élément avec un espace-->
+				</p>
 
-	<div class="div1">div est de type block (prends tout l'espace et va à la ligne)<br> 
-	pour regrouper ou séparer des parties, contrairement à<br>
-	l'élément <span class="span1">span qui est inline</span></div>	
-	
-	<!-- Formatage de texte mais il est préférable d'utiliser le CSS -->
-	
-	<strong>Un texte très important en gras</strong> pour les moteurs de recherche<br>
-	<em>Un texte relativement important en italique</em><br>
-	<mark>Un texte à surligner</mark><br>
-	<ins datetime="YYMMDD" cite="lien_qui_explique_le_changement.html">Le nouveau texte</ins> remplace <del>l'ancien texte</del><br>
-		<!-- Utile pour les moteurs de recherches
-		alors que <b>bold</b> <i>italique</i> <s>strike</s> <u>underline>/u> sont obsolètes et ne sont là que pour l'affichage du texte-->
-	
-	<time datetime="1993-12-06 18:12:24+0100">December 6, 1993 at 18:12:24</time><br>
-	<address>Informations de contact (mail)</address>
-	<q>quote entre guillemet</q><br>
-	<blockquote>quote avec un retrait</blockquote><br>
-	<cite>cite une oeuvre en italique</cite><br>
-	<pre>Permet de conserver: l e s    e s p a c e s
-			et les retours à la ligne</pre><br>
-	H<sub>2</sub>O <br>
-	E = mc<sup>2</sup><br>
-	<abbr title="Hypertext Markup Language">abbréviation de HTML</abbr><br>
-	<dfn title="la définition du terme">Le terme à définir</dfn><br>
-	<small>affichage avec une taille de police en-dessous</small><br>
-	quand_un_bloc_de_texte_est_trop_long<wbr>_pour_dire_au_navigateur_qu_il_peut_aller_a_la_ligne<br>
-	<code>Ecrire du code comme calculateAverage()</code>
-	<kbd>pour les touches</kbd>+<kbd>alt</kbd>+<kbd>4</kbd>
-	<samp>Messages d'un programme (Error 404)</samp>
-	<var>variable</var>
-	
+				<!--DIV et SPAN-->
 
+				<div class="div1">
+					div est de type block (prends tout l'espace et va à la ligne)<br />
+					pour regrouper ou séparer des parties, contrairement à<br />
+					l'élément <span class="span1">span qui est inline</span>
+				</div>
 
+				<!-- Formatage de texte mais il est préférable d'utiliser le CSS -->
 
+				<strong>Un texte très important en gras</strong> pour les moteurs de
+				recherche<br />
+				<em>Un texte relativement important en italique</em><br />
+				<mark>Un texte à surligner</mark><br />
+				<ins datetime="YYMMDD" cite="lien_qui_explique_le_changement.html"
+					>Le nouveau texte</ins
+				>
+				remplace <del>l'ancien texte</del><br />
+				<!-- Utile pour les moteurs de recherches alors que <b>bold</b> <i lang="fr">italique</i> <s>strike</s> <u>underline>/u> sont obsolètes et ne sont là que pour l'affichage du texte-->
 
-	<!--ENTITES html-->
+				<!-- en vrac -->
 
-	Faire des espaces: <br>
-	simples: |&nbsp;| <br>
-	fins: |&thinsp;| <br>
-	doubles: |&ensp;| <br>
-	quadruples (tabulation): |&emsp;| <br>
+				<time datetime="1993-12-06T18:12:24+0100"
+					>December 6, 1993 at 18:12:24</time
+				><br />
+				<address>
+					<h2>Company Name</h2>
+					<p>
+						1234 Elm Street<br />
+						Springfield, IL 62701<br />
+						United States
+					</p>
+					<p>Phone: <a href="tel:+15555555555">+1 (555) 555-5555</a></p>
+					<p>
+						Email: <a href="mailto:contact@company.com">contact@company.com</a>
+					</p>
+				</address>
+				<q cite="url de la source">inline quote entre guillemet</q><br />
+				<blockquote cite="url de la source">quote avec un retrait</blockquote>
+				<br />
+				<cite>cite une oeuvre en italique</cite><br />
+				<pre>
+        Permet de conserver: l e s    e s p a c e s
+			  et les retours à la ligne</pre
+				>
+				<br />
+				H<sub>2</sub>O <br />
+				E = mc<sup>2</sup><br />
+				<abbr title="Hypertext Markup Language">abbréviation de HTML</abbr
+				><br />
+				<dfn title="la définition du terme">Le terme à définir</dfn><br />
+				<small>affichage avec une taille de police en-dessous</small><br />
+				quand_un_bloc_de_texte_est_trop_long<wbr />_pour_dire_au_navigateur_qu_il_peut_aller_a_la_ligne<br />
+				<code>Ecrire du code comme calculateAverage()</code>
+				<kbd>pour les touches</kbd>+<kbd>alt</kbd>+<kbd>4</kbd>
+				<samp>Messages d'un programme (Error 404)</samp>
+				<var>variable</var>
+				<ruby> 明日 <rp>(</rp><rt>Ashita</rt><rp>)</rp> </ruby>
+				<!--ruby pour la prononciation des typographies d'Asie de l'est-->
 
-	Afficher un élément avec les balises: 
-	&lt; br &gt; <br> <!-- pour afficher "<br>" sur une page web -->
-	ou une esperluette &amp; <br>
-	ou un guillemet &quot; 
-	</div>
-	
-	<hr> <!-- ligne de séparation -->
-	
+				<!--ENTITES html-->
 
-	<!----------------------------->
-	<!-- >>>>>>> LISTES <<<<<<<< -->
-	<!----------------------------->
+				Faire des espaces: <br />
+				simples: |&nbsp;| <br />
+				fins: |&thinsp;| <br />
+				doubles: |&ensp;| <br />
+				quadruples (tabulation): |&emsp;| <br />
 
-	<div class = "liste">
-	<h2>(h2) Listes</h2>
-	<p>Liste non-ordonnée (ul)
-		<ul>ul <!--Unordered list-->
-			<li class="list1">Premier élément (li)</li>
-			<li class="list1">Deuxième élément</li>
-			<li class="list1">Troisième élément</li>
-		</ul>
-	</p>
-	<br><br><br>
-	<p>Liste ordonnée (ol)
-		<ol> <!--type="I" "i" "A" "a", plutôt le faire en CSS
-				start="3" pour choisir la valeur de départ
-				reversed pour compter à l'envers-->
+				Afficher un élément avec les balises: &lt; br &gt; <br />
+				<!-- pour afficher "<br>" sur une page web -->
+				ou une esperluette &amp; <br />
+				ou un guillemet &quot;
+			</div>
 
-			<li>Premier (li)</li>	
-			<li>Deuxième</li>
-			<li>Troisième</li>
-			<li value="7">Septième</li> 
-				<!--pour fixer une valeur-->
-				<ul type="square">Sous-liste 
-					<!--conseillé de changer le type en CSS-->
+			<hr />
+			<!-- ligne de séparation -->
 
-					<li>Sous élément 1</li>
-					<li>Sous élément 2</li>
-				</ul>			
-			</li>	
-		</ol>
-	</p>
-	<br><br><br>
-	<p>Liste de définition (dl)(dt)(dd)
-		<dl> <!--definition list-->
-			<dt>Terme 1</dt> <!--definition term-->
-				<dd>Définition de Terme 1</dd> <!--definition description-->
-			<dt>Terme 2</dt>
-				<dd>Définition de Terme 2</dd>
-		</dl>	
-	</p>
-	</div>
+			<!----------------------------->
+			<!-- >>>>>>> LISTES <<<<<<<< -->
+			<!----------------------------->
 
+			<div class="liste">
+				<h2>(h2) Listes</h2>
+				<p>Liste non-ordonnée (ul)</p>
+				<ul>
+					ul
+					<!--Unordered list-->
+					<li class="list1">Premier élément (li)</li>
+					<li class="list1">Deuxième élément</li>
+					<li class="list1">Troisième élément</li>
+				</ul>
 
-	<!------------------------------>
-	<!-- >>>>>>> TABLEAU <<<<<<<< -->
-	<!------------------------------>
+				<br /><br /><br />
+				<p>Liste ordonnée (ol)</p>
+				<ol>
+					<!--type="I" "i" "A" "a", plutôt le faire en CSS
+      start="3" pour choisir la valeur de départ
+      reversed pour compter à l'envers-->
 
-	<h3>Les tableaux</h3>
-	<div class="tableau">
-		<table>
-			
-			<caption>Liste des inscrits</caption> <!--la légende-->
+					<li>Premier (li)</li>
+					<li>Deuxième</li>
+					<li>Troisième</li>
+					<li value="7">Septième</li>
+					<!--pour fixer une valeur-->
+					<ul type="square">
+						Sous-liste
+						<!--conseillé de changer le type en CSS-->
 
-			<colgroup><!--sert à modifier le CSS par colonne-->
-				<col span="2" class="personne"><!--les 2 1eres colonnes-->
-				<col span="1" class="age"> <!--la 3e colonne-->
-				<col span="1" class="genre"> <!--la 4e olonne-->
-			</colgroup>
-			
-			<thead> <!--Pour spécifier l'en-tête du tableau-->
-				<tr> <!--1ere ligne du tableau (table range)-->
-					<th>Nom</th> <!--table head-->
-					<th>Prénom</th>
-					<th>Age</th>
-					<th>Genre</th> <!--4 colonnes-->
-				</tr>
-			</thead>
-			
-			<tbody>
-				<tr class="paire"> <!--2e ligne du tableau-->
-					<td>Becker</td> <!--table data-->
-					<td>Nathalie</td>
-					<td>24</td>
-					<td>F</td>
-				</tr>
-				<tr class="impaire"> <!--3e ligne du tableau-->
-					<td>Mangin</td>
-					<td>Vincent</td>
-					<td>32</td>
-					<td>H</td>
-				</tr>
-			</tbody>
-			<tfoot> <!--pied de tableau-->
-				<tr>
-					<td colspan="2">Nb: 2</td> 
-						<!--fusionne 2 colonnes sur une même ligne-->
-						<!--rowspan pour fusionner des lignes sur un même colonne-->
-					<td>Moyenne: 28</td>
-					<td>50% F</td>
-				</tr>
-			</tfoot>
-		</table>
+						<li>Sous élément 1</li>
+						<li>Sous élément 2</li>
+					</ul>
+				</ol>
 
-	</div>
-	<hr> <!-- ligne de séparation -->
+				<br /><br /><br />
+				<p>Liste de définition (dl)(dt)(dd)</p>
+				<dl>
+					<!--definition list-->
+					<dt>Terme 1</dt>
+					<!--definition term-->
+					<dd>Définition de Terme 1</dd>
+					<!--definition description-->
+					<dt>Terme 2</dt>
+					<dd>Définition de Terme 2</dd>
+				</dl>
+			</div>
 
+			<!------------------------------>
+			<!-- >>>>>>> TABLEAU <<<<<<<< -->
+			<!------------------------------>
 
-	<!---------------------------->
-	<!-- >>>>>>> MEDIA <<<<<<<< -->
-	<!---------------------------->
+			<h3>Les tableaux</h3>
+			<div class="tableau">
+				<table>
+					<caption>
+						Liste des inscrits
+					</caption>
+					<!--la légende-->
 
-	<!-- image -->
+					<colgroup>
+						<!--sert à modifier le CSS par colonne-->
+						<col span="2" class="personne" />
+						<!--les 2 1eres colonnes-->
+						<col span="1" class="age" />
+						<!--la 3e colonne-->
+						<col span="1" class="genre" />
+						<!--la 4e olonne-->
+					</colgroup>
 
-	<div class = "media">
-	<figure>
-		<img src="media/logo.png" alt="Il y a un logo ici">
-		<figcaption>Le logo</figcaption> 
-			<!--Pour mettre une légende à un media-->
+					<thead>
+						<!--Pour spécifier l'en-tête du tableau-->
+						<tr>
+							<!--1ere ligne du tableau (table range)-->
+							<th>Nom</th>
+							<!--table head-->
+							<th>Prénom</th>
+							<th>Age</th>
+							<th>Genre</th>
+							<!--4 colonnes-->
+						</tr>
+					</thead>
 
-	</figure>
+					<tbody>
+						<tr class="paire">
+							<!--2e ligne du tableau-->
+							<td>Becker</td>
+							<!--table data-->
+							<td>Nathalie</td>
+							<td>24</td>
+							<td>F</td>
+						</tr>
+						<tr class="impaire">
+							<!--3e ligne du tableau-->
+							<td>Mangin</td>
+							<td>Vincent</td>
+							<td>32</td>
+							<td>H</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<!--pied de tableau-->
+						<tr>
+							<td colspan="2">Nb: 2</td>
+							<!--fusionne 2 colonnes sur une même ligne-->
+							<!--rowspan pour fusionner des lignes sur un même colonne-->
+							<td>Moyenne: 28</td>
+							<td>50% F</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+			<hr />
+			<!-- ligne de séparation -->
 
-	<img src="html5.gif" alt="HTML5 Icon" width="128" height="128">
-		<!--Indiquer largeur et hauteur pour prévoir une place à l'image-->
-	<img src="html5.gif" alt="HTML5 Icon" style="width:128px;height:128px;">
-		<!--Utilisation du style pour éviter d'être effacé encas de balises style dans le head-->
+			<!---------------------------->
+			<!-- >>>>>>> MEDIA <<<<<<<< -->
+			<!---------------------------->
 
-	<!-- sprites : zones cliquables -->
+			<!-- image -->
 
-	<img src="media/image.jpg" alt="Il y a une image ici">
+			<div class="media">
+				<figure>
+					<img src="media/logo.png" alt="Il y a un logo ici" />
+					<figcaption>Le logo</figcaption>
+					<!--Pour mettre une légende à un media-->
+				</figure>
 
-	<p class="sprites"> 
+				<img src="html5.gif" alt="HTML5 Icon" width="128" height="128" />
+				<!--Indiquer largeur et hauteur pour prévoir une place à l'image-->
+				<img
+					src="html5.gif"
+					alt="HTML5 Icon"
+					style="width: 128px; height: 128px"
+				/>
+				<!--Utilisation du style pour éviter d'être effacé encas de balises style dans le head-->
 
-		Zones cliquables = Sprites
-		<a href="lien1.html" id="lien1">l1</a>
-		<a href="lien2.html" id="lien2">l2</a>
-	</p>
+				<!-- sprites : zones cliquables -->
 
-	<p><br><br><br><br><br><br>
+				<img src="media/image.jpg" alt="Il y a une image ici" />
 
-	<!-- audio -->
+				<p class="sprites">
+					Zones cliquables = Sprites
+					<a href="lien1.html" id="lien1">l1</a>
+					<a href="lien2.html" id="lien2">l2</a>
+				</p>
 
-	<audio  controls loop autoplay>
-		<!--autres attributs possibles: 
+				<p>
+					<br /><br /><br /><br /><br /><br />
+
+					<!-- audio -->
+
+					<audio controls loop autoplay>
+						<!--autres attributs possibles: 
 			preload="metadata" ou "auto" ou "none" 
 			muted-->
 
-		<source src="media/audio.mp3" type="audio/mpeg" alt="Il y a de l'audio ici"> 
-			<!--On peut l'écrire dans la balise audio-->
+						<source
+							src="media/audio.mp3"
+							type="audio/mpeg"
+							alt="Il y a de l'audio ici"
+						/>
+						<!--On peut l'écrire dans la balise audio-->
 
-		<source src="media/audio.ogg" type="audio/ogg; codec=vorbis" alt="Il y a de l'audio ici"> 
-			<!--mettre plusieurs formats pour les différents navigateurs-->
-		Votre navigateur ne peut pas lire l'audio.
-	</audio></p>
+						<source
+							src="media/audio.ogg"
+							type="audio/ogg; codec=vorbis"
+							alt="Il y a de l'audio ici"
+						/>
+						<!--mettre plusieurs formats pour les différents navigateurs-->
+						Votre navigateur ne peut pas lire l'audio.
+					</audio>
+				</p>
 
-	<!-- video -->
+				<!-- video -->
 
-	<p><video poster="media/logo.png" controls muted>
-			<!--ou loop autoplay-->
-		<source src="media/video.mp4" type="video/mp4">
-		Votre navigateur ne peut pas lire la vidéo, mettez le à jour. 
-			<!--Texte si la vidéo ne se lance pas-->
+				<p>
+					<video poster="media/logo.png" controls muted>
+						<!--ou loop autoplay width="640" -->
+						<source src="media/video.mp4" type="video/mp4" />
+						Votre navigateur ne peut pas lire la vidéo, mettez le à jour.
+						<!--Texte si la vidéo ne se lance pas-->
+					</video>
+				</p>
 
-	</video></p>
-	
-	<!-- iframe lien embed -->
+				<!-- iframe lien embed -->
 
-	<iframe width="560" height="315" src="https://www.youtube.com/embed/vfxfjiLoq6k?si=iZb-Cj3L2cHr7nsH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-		<!--ajouter un attribut sandbox pour renforcer la sécurité-->
-	</div>
+				<iframe
+					width="560"
+					height="315"
+					style="border: 1px solid black"
+					src="https://www.youtube.com/embed/vfxfjiLoq6k?si=iZb-Cj3L2cHr7nsH"
+					title="YouTube video player"
+					frameborder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+					allowfullscreen
+				>
+				</iframe>
+				<!-- srcdoc pour embed un page html -->
+				<!--ajouter un attribut sandbox pour renforcer la sécurité-->
+			</div>
 
+			<!---------------------------------->
+			<!-- >>>>>>> FORMULAIRES <<<<<<<< -->
+			<!---------------------------------->
 
-	<!---------------------------------->
-	<!-- >>>>>>> FORMULAIRES <<<<<<<< -->
-	<!---------------------------------->
-
-	<div class="formulaire">
-		<p>Les formulaires</p>
-		<form method="post" action="traitement.php">
-		<!--method post: les données sont invisibles et envoyées pour traitement
+			<div class="formulaire">
+				<p>Les formulaires</p>
+				<form method="post" action="traitement.php">
+					<!--method post: les données sont invisibles et envoyées pour traitement
 		methode get: les données sont visibles et collectées dans l'url de la page-->
 
-		<fieldset id="form1"> 
-			<!--pour regrouper des questions dans un cadre-->
+					<fieldset id="form1">
+						<!--pour regrouper des questions dans un cadre-->
 
-			<legend>Cases à remplir</legend>
+						<legend>Cases à remplir</legend>
 
-			<label for="prenom">Entrez votre prénom</label> 
-				<!--Descriptif du formulaire, for et id de l'input doivent être les mêmes-->
+						<label for="prenom">Entrez votre prénom</label>
+						<!--Descriptif du formulaire, for et id de l'input doivent être les mêmes-->
 
-			<input type="text" id="prenom" name="prenom" minlength="2" maxlength="25" autocomplete="on" placeholder="ex: Pierre"><br> 
-				<!--une seule ligne, 
+						<input
+							type="text"
+							id="prenom"
+							name="prenom"
+							minlength="2"
+							maxlength="25"
+							autocomplete="on"
+							placeholder="ex: Pierre"
+						/><br />
+						<!--une seule ligne, 
 				name: correspond au texte recueilli
 				autocomplete: permet de proposer des choix de complétion
 				autofocus: permet de mettre le curseur dans cette case quand on arrive sur la page du formulaire
 				placeholder: pour mettre un exemple dans la case
 				minlength: nb minimum de caractère
 				maxlength: nb max de cractères-->
-			
-			<label for="pass">Entrez un mot de passe</label>
-			<input type="password" id="pass" name="pass" minlength="8"><br>
 
-			<label for="naissance">Date de naissance</label>
-			<input type="date" id="naissance" name="naissance"><br>
+						<label for="pass">Entrez un mot de passe</label>
+						<input type="password" id="pass" name="pass" minlength="8" /><br />
 
-			<label for="email">Entrez votre email</label>
-			<input type="email" id="email" name="email" required><br>
-				<!--required pour les cases à remplir obligatoirement-->
+						<label for="naissance">Date de naissance</label>
+						<input type="date" id="naissance" name="naissance" /><br />
 
-			<label for="site">Votre site</label>
-			<input type="url" id="site" name="site"><br>
+						<label for="email">Entrez votre email</label>
+						<input type="email" id="email" name="email" required /><br />
+						<!--required pour les cases à remplir obligatoirement-->
 
-			<label for="age">Votre âge entre 1 et 99 ans</label>
-			<input type="number" id="age" name="age" min="18" max ="36"><br> 
-				<!--La valeur attendue doit se situer dans la fourchette demandée-->
-			
-			<label for="prez">Une petite présentation</label>
-			<textarea id="prez" name="presentation" maxlength="500"></textarea><br> 
-				<!--plusieurs lignes-->
+						<label for="site">Votre site</label>
+						<input type="url" id="site" name="site" /><br />
 
-		</fieldset>
+						<label for="age">Votre âge entre 1 et 99 ans</label>
+						<input type="number" id="age" name="age" min="18" max="36" /><br />
+						<!--La valeur attendue doit se situer dans la fourchette demandée-->
 
-		<fieldset id="form2">
-			<legend>Cases à cocher</legend>
+						<label for="prez">Une petite présentation</label>
+						<textarea id="prez" name="presentation" maxlength="500"></textarea
+						><br />
+						<!--plusieurs lignes-->
+					</fieldset>
 
-			<!--boutons radio, name doit être le même pour la série de choix, car une seule valeur sera retournée-->
+					<fieldset id="form2">
+						<legend>Cases à cocher</legend>
 
-			Votre genre<br>
-			<input type="radio" id="homme" name="genre" value="homme" checked> 
-				<!--attribut checked pour précocher une case-->
+						<!--boutons radio, name doit être le même pour la série de choix, car une seule valeur sera retournée-->
 
-			<label for="homme">Un homme</label>
-			<input type="radio" id="femme" name="genre" value="femme">
-			<label for="femme">Une femme</label><br>
+						Votre genre<br />
+						<input type="radio" id="homme" name="genre" value="homme" checked />
+						<!--attribut checked pour précocher une case-->
 
-			<!--Ckeckbox-->
-			Quels sports partiquez-vous ?<br>
-			<input type="checkbox" name="sport" value="natation" id="natation">
-			<label for="natation">Natation</label>
-			<input type="checkbox" name="sport" value="course" id="course">
-			<label for="course">Course à pied</label>
-			<input type="checkbox" name="sport" value="velo" id="velo">
-			<label for="velo">Cyclisme</label><br>
+						<label for="homme">Un homme</label>
+						<input type="radio" id="femme" name="genre" value="femme" />
+						<label for="femme">Une femme</label><br />
 
-			<!--Liste d'options-->
-			Où habitez-vous ?<br>
-			<select name="pays">
-				<optgroup label="Pays francophones"></optgroup>
-					<option value="France" selected="selected">France</option> 
-						<!--attribut selected pour préselectionner une option-->
+						<!--Ckeckbox-->
+						Quels sports partiquez-vous ?<br />
+						<input
+							type="checkbox"
+							name="sport"
+							value="natation"
+							id="natation"
+						/>
+						<label for="natation">Natation</label>
+						<input type="checkbox" name="sport" value="course" id="course" />
+						<label for="course">Course à pied</label>
+						<input type="checkbox" name="sport" value="velo" id="velo" />
+						<label for="velo">Cyclisme</label><br />
 
-					<option value="Belgique">Belgique</option>
-					<option value="Canada">Canada</option>
-					<option value="Suisse">Suisse</option>
+						<!--Liste d'options-->
+						Où habitez-vous ?<br />
+						<select name="pays">
+							<optgroup label="Pays francophones"></optgroup>
+							<option value="France" selected="selected">France</option>
+							<!--attribut selected pour préselectionner une option-->
 
-				<optgroup label="Autres pays"></optgroup>
-					<option value="USA">USA</option>
-					<option value="Allemagne">Allemagne</option>
-			</select><br><br>
-		</fieldset>
+							<option value="Belgique">Belgique</option>
+							<option value="Canada">Canada</option>
+							<option value="Suisse">Suisse</option>
 
-			<input type="submit" value="Envoyer"><br><br><br><br>
-		</form>
-	</div>
+							<optgroup label="Autres pays"></optgroup>
+							<option value="USA">USA</option>
+							<option value="Allemagne">Allemagne</option></select
+						><br /><br />
+					</fieldset>
 
+					<input type="submit" value="Envoyer" /><br /><br /><br /><br />
+				</form>
+			</div>
 
-	<!--------------------------------->
-	<!-- >>>>>>> DINGUERIES <<<<<<<< -->
-	<!--------------------------------->
+			<!--------------------------------->
+			<!-- >>>>>>> DINGUERIES <<<<<<<< -->
+			<!--------------------------------->
 
-	<h4>DINGUERIES</h4>
-	<h5 class="transitions">Les transitions</h5>
-	<h5 class="animations">Les animations CSS</h5>
-	<h5 class="transformations">Les transformations</h5>
-	<h5 class="animation_rotation">an-rot</h5>
-	<div class="flex_box">
-		<div class="box1">box1</div>
-		<div class="box2">box2</div>
-		<div class="box3">box3</div>
-		<div class="box4">box4</div>
-	</div>
-	<div class="grid">
-		<div class="case1">case1</div>
-		<div class="case2">case2</div>
-		<div class="case3">case3</div>
-		<div class="case4">case4</div>
-		<div class="case5">case5</div>
-	</div>
+			<h4>DINGUERIES</h4>
+			<h5 class="transitions">Les transitions</h5>
+			<h5 class="animations">Les animations CSS</h5>
+			<h5 class="transformations">Les transformations</h5>
+			<h5 class="animation_rotation">an-rot</h5>
+			<div class="flex_box">
+				<div class="box1">box1</div>
+				<div class="box2">box2</div>
+				<div class="box3">box3</div>
+				<div class="box4">box4</div>
+			</div>
+			<div class="grid">
+				<div class="case1">case1</div>
+				<div class="case2">case2</div>
+				<div class="case3">case3</div>
+				<div class="case4">case4</div>
+				<div class="case5">case5</div>
+			</div>
 
+			<!-------------------------------------------------->
+			<!-- >>>>>>> RESPONSIVE ET MEDIA QUERIES <<<<<<<< -->
+			<!-------------------------------------------------->
 
-	<!-------------------------------------------------->
-	<!-- >>>>>>> RESPONSIVE ET MEDIA QUERIES <<<<<<<< -->
-	<!-------------------------------------------------->
-
-	<div class="responsive">Responsive 
-		<img srcset="media/imageS.jpg 372w,
-					 media/imageM.jpg 726w,
-					 media/imageL.jpg 1024w"
-			sizes="(max-width: 680px) 380px, (max-width: 1280px) 500px, 700px"
-			src="media/imageL.jpg" alt="afate">
-	</div>		<!--une image différente va s'afficher en fonction
+			<div class="responsive">
+				Responsive
+				<img
+					srcset="
+						media/imageS.jpg  372w,
+						media/imageM.jpg  726w,
+						media/imageL.jpg 1024w
+					"
+					sizes="(max-width: 680px) 380px, (max-width: 1280px) 500px, 700px"
+					src="media/imageL.jpg"
+					alt="afate"
+				/>
+			</div>
+			<!--une image différente va s'afficher en fonction
 				 de la taille d'écran affichée-->
 
+			<!---------------------------------->
+			<!-- >>>>>>> EXTRAS <<<<<<<< -->
+			<!---------------------------------->
 
-
-	<!---------------------------------->
-	<!-- >>>>>>> EXTRAS <<<<<<<< -->
-	<!---------------------------------->
-
-	<!-- Meter et Progress -->
-	<div class="meter">
-		<meter min="0" low="20" high="80" max="100" value="81">81</meter>
-			<!-- affiche une jauge qui change de couleur si on se place en-dessous du low ou au-dessus du high
+			<!-- Meter et Progress -->
+			<div class="meter">
+				<meter min="0" low="20" high="80" max="100" value="81">81</meter>
+				<!-- affiche une jauge qui change de couleur si on se place en-dessous du low ou au-dessus du high
 			* attribut optimum pour savoir quelle est la valeur à viser -->
 
-		<progress value="81" max="100"> 81% </progress>
-			<!-- affiche une barre de progression -->
-	</div>
+				<progress value="81" max="100">81%</progress>
+				<!-- affiche une barre de progression -->
+			</div>
+		</main>
 
-	
-	</main>
-	
-	<hr> <!-- ligne de séparation -->
-	
-	<footer>
-	Pied de page, logos, contacts, liens
-	</footer>
-	
-</body>
+		<hr />
+		<!-- ligne de séparation -->
+
+		<footer>Pied de page, logos, contacts, liens</footer>
+	</body>
 </html>
