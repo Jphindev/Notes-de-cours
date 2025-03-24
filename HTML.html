@@ -414,7 +414,7 @@
 			<div class="formulaire">
 				<p>Les formulaires</p>
 				<form method="post" action="traitement.php">
-					<!--method post: les données sont invisibles et envoyées pour traitement
+					<!--method post: les données sont invisibles et envoyées pour traitement vers la page action
 		methode get: les données sont visibles et collectées dans l'url de la page-->
 
 					<fieldset id="form1">
@@ -434,13 +434,18 @@
 							autocomplete="on"
 							placeholder="ex: Pierre"
 						/><br />
-						<!--une seule ligne, 
-				name: correspond au texte recueilli
-				autocomplete: permet de proposer des choix de complétion
-				autofocus: permet de mettre le curseur dans cette case quand on arrive sur la page du formulaire
-				placeholder: pour mettre un exemple dans la case
-				minlength: nb minimum de caractère
-				maxlength: nb max de cractères-->
+						<!--options possibles: 
+            type: type d'input
+            id: pour le label et le CSS
+            name: nom qui caractérise l'input
+            autocomplete: permet de proposer des choix de complétion
+            autofocus: permet de mettre le curseur dans cette case quand on arrive sur la page du formulaire
+            placeholder: pour mettre un exemple dans la case
+            minlength: nb minimum de caractère
+            maxlength: nb max de cractères
+            value: donne une valeur par défaut à l'input
+            readonly: input non midifiable
+            disabled: input non utilisable-->
 
 						<label for="pass">Entrez un mot de passe</label>
 						<input type="password" id="pass" name="pass" minlength="8" /><br />
