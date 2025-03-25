@@ -37,6 +37,7 @@ Un commit est un objet qui contient un pointeur vers l’instantané du contenu 
 `$ touch index.html` //création d’un fichier  
 `$ git add index.html styles.css` //on met en index ou stage le fichier html  
 `$ git add .` // indexer tous les fichiers modifiés
+`$ git add -p [fichier]` // passe en revue chaque modification dans le fichier
 
 #### STATUS
 
