@@ -1,4 +1,7 @@
 #This file must got to {repo}/.github/workflows/
+# Best course here:
+# https://www.youtube.com/playlist?list=PLiO7XHcmTsleVSRaY7doSfZryYWMkMOxB
+# https://github.com/devopselvis/my-github-actions-presentation/tree/main/.github/workflows
 #Templates here:
 # https://github.com/ExamProCo/Github-Examples/tree/main
 # https://github.com/n3wt0n/ActionsTest
@@ -114,7 +117,7 @@ jobs: #jobs are executed in parallel
     steps:
       - run: echo "Build job done"
   dep-job-3-test:
-    if: ${{ always() }} #the test job will run even if the prerequisite jobs fails
+    if: always() #the test job will run even if the prerequisite jobs fails
     needs: [dep-job-1-setup, dep-job-2-build]
     strategy:
       matrix: #to test the code in multiple versions of a language or on multiple operating systems
