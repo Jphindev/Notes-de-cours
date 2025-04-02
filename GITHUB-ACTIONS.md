@@ -208,7 +208,7 @@ on:
   # the workflow can be triggered manually when a pull request is made on the main branch
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -234,7 +234,7 @@ jobs:
       # If you don't specify an output file, it will automatically add as a job summary.
       # If you specify an output file, you have to create your own step of adding it to the job summary.
       # I am intentionally doing that to show job summaries.
-      - name: Create test summary
+      - name: Create markdown test summary from the xml report
         uses: test-summary/action@v2.4 #https://github.com/marketplace/actions/testforest-dashboard
         with:
           paths: ${{ github.workspace }}/results/*.xml
@@ -250,13 +250,209 @@ jobs:
           cat "${{ github.workspace }}/results/summary.md" >> $GITHUB_STEP_SUMMARY
         if: always()
 
-      - name: Publish
+      - name: Publish the file as an artifact in mywebapp folder
         run: dotnet publish "${{github.workspace}}/src/my-web-app/my-web-app.csproj" -c Release -o mywebapp
 
-      - name: Upload build artifact
+      - name: Upload build artifact in the workflow
         uses: actions/upload-artifact@v4
         with:
           name: myapp
           path: mywebapp/**
           if-no-files-found: error
+```
+
+## 5. Custom actions
+
+We can create a custom workflow of the build-and-test job in another repo to avoid repeating the same code.
+3 types of custom actions:
+
+- Javascript or Typescript file (more powerful)
+- Action inside a docker container with every language possible (slowest and only on linux runner)
+- Composite action (list of steps called from another repo with a action.yml file)
+
+_devopselvis/build-test-net-core-app-custom-action/action.yml_
+
+```yml
+name: "Build and Publish .NET Core App"
+description: "Composite action to build and publish a .NET Core application"
+inputs: #the parameters the user have to provide
+  dotnet-version:
+    description: "The version of .NET Core to use"
+    required: true
+  project-path:
+    description: "The path to the .NET Core project file"
+    required: true
+  output-path:
+    description: "The output path for the published application"
+    required: true
+outputs:
+  artifact-path:
+    description: "The path to the build artifact"
+
+runs: # /!\ not jobs
+  using: "composite" #type of custom action
+  steps: #same code as the build-and-test job, but with the inputs required
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4.1.0
+      with:
+        dotnet-version: ${{ inputs.dotnet-version }}
+
+    - name: Restore dependencies
+      run: dotnet restore "${{ inputs.project-path }}"
+      shell: bash
+
+    - name: Build
+      run: dotnet build "${{ inputs.project-path }}" --no-restore --configuration Release
+      shell: bash
+
+    - name: Publish
+      run: dotnet publish "${{ inputs.project-path }}" -c Release -o ${{ inputs.output-path }}
+      shell: bash
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: myapp
+        path: ${{ inputs.output-path }}/**
+        if-no-files-found: error
+```
+
+## 6. Deploy workflow and use a custom action
+
+Best practices before deployment:
+
+- Protect the main branch from the push (only pull request accepted)
+- Build and test on the dev branch
+- Create a pull request to merge on the main branch
+- Build and test on the main branch
+- If all tests are ok, deploy on the dev and then the staging environment
+- Deploy on the production environment manually with a review
+
+```yml
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions: #from the documentation of OICD
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-test: #with a custom action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Before Composite action
+        run: |
+          echo "Hello from before composite action"
+
+      - name: Build and Publish .NET Core App
+        uses: devopselvis/build-test-net-core-app-custom-action@main
+        #or uses: jphindev/repo-of-custom-workflow@main
+        with: #the inputs parameters must be provided here
+          dotnet-version: "8.0.x"
+          project-path: "${{ github.workspace }}/src/my-web-app/my-web-app.csproj"
+          output-path: "mywebapp"
+
+      - name: After Composite action
+        run: |
+          echo "Hello from after composite action"
+
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    environment:
+      name: DEV
+      url: http://my-web-app-please-work-dev.azurewebsites.net/
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: myapp
+          path: myapp
+
+      - name: Prove to myself the files are there
+        run: |
+          ls -la
+          ls -la myapp
+
+      - name: Login to Azure
+        uses: azure/login@v2.2.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }} #set in the github actions secrets
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.WEB_APP_NAME }} #set in the github actions variables
+          slot-name: dev
+          package: myapp #the artifact to deploy
+
+  deploy-to-staging:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    environment:
+      name: STAGING
+      url: http://my-web-app-please-work-staging.azurewebsites.net/
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: myapp
+          path: myapp
+
+      - name: Login to Azure
+        uses: azure/login@v2.2.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.WEB_APP_NAME }}
+          slot-name: staging
+          package: myapp
+
+  # Set in the PROD environment options, a review must be accepted manually to run the job
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    needs:
+      - deploy-to-dev
+      - deploy-to-staging
+    environment:
+      name: PROD
+      url: http://my-web-app-please-work-prod.azurewebsites.net/
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: myapp
+          path: myapp
+
+      - name: Login to Azure
+        uses: azure/login@v2.2.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.WEB_APP_NAME }}
+          slot-name: prod
+          package: myapp
 ```
