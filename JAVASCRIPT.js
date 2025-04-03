@@ -462,7 +462,7 @@ function Rectangle(longueur, largeur) {
 	this.largeur = largeur;
 }
 Rectangle.prototype = Object.create(Ligne.prototype);
-// on importe le prototype de Ligne (dans lequel est la méthode taille) dans Rectangle, ce qui aura pour effet d'importer aussi le constructor de Ligne dans Rectangle, il faut donc le recréé:
+// on importe le prototype de Ligne (dans lequel est la méthode taille) dans Rectangle, ce qui aura pour effet d'importer aussi le constructor de Ligne dans Rectangle, il faut donc le recréer:
 Rectangle.prototype.constructor = Rectangle;
 Rectangle.prototype.aire = function () {
 	console.log("Aire : " + this.longueur * this.largeur);
@@ -478,7 +478,7 @@ Parallelepipede.prototype.volume = function () {
 	console.log("Volume : " + this.longueur * this.largeur * this.hauteur);
 };
 
-// Le constructeur Parallelepipede possède ainsi 3 propriétés (nom, age, mail) dans son objet et 3 méthodes (taille, aire, volume) dans son prototype
+// Le constructeur Parallelepipede possède ainsi 3 propriétés (longueur, largeur, hauteur) dans son objet et 3 méthodes (taille, aire, volume) dans son prototype
 let geo = new Parallelepipede(5, 4, 3);
 geo.volume();
 geo.aire();

@@ -261,66 +261,7 @@ jobs:
           if-no-files-found: error
 ```
 
-## 5. Custom actions
-
-We can create a custom workflow of the build-and-test job in another repo to avoid repeating the same code.
-3 types of custom actions:
-
-- Javascript or Typescript file (more powerful)
-- Action inside a docker container with every language possible (slowest and only on linux runner)
-- Composite action (list of steps called from another repo with a action.yml file)
-
-_devopselvis/build-test-net-core-app-custom-action/action.yml_
-
-```yml
-name: "Build and Publish .NET Core App"
-description: "Composite action to build and publish a .NET Core application"
-inputs: #the parameters the user have to provide
-  dotnet-version:
-    description: "The version of .NET Core to use"
-    required: true
-  project-path:
-    description: "The path to the .NET Core project file"
-    required: true
-  output-path:
-    description: "The output path for the published application"
-    required: true
-outputs:
-  artifact-path:
-    description: "The path to the build artifact"
-
-runs: # /!\ not jobs
-  using: "composite" #type of custom action
-  steps: #same code as the build-and-test job, but with the inputs required
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v4.1.0
-      with:
-        dotnet-version: ${{ inputs.dotnet-version }}
-
-    - name: Restore dependencies
-      run: dotnet restore "${{ inputs.project-path }}"
-      shell: bash
-
-    - name: Build
-      run: dotnet build "${{ inputs.project-path }}" --no-restore --configuration Release
-      shell: bash
-
-    - name: Publish
-      run: dotnet publish "${{ inputs.project-path }}" -c Release -o ${{ inputs.output-path }}
-      shell: bash
-
-    - name: Upload build artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: myapp
-        path: ${{ inputs.output-path }}/**
-        if-no-files-found: error
-```
-
-## 6. Deploy workflow and use a custom action
+## 5. Deploy workflow
 
 Best practices before deployment:
 
@@ -345,25 +286,6 @@ permissions: #from the documentation of OICD
   contents: read
 
 jobs:
-  build-and-test: #with a custom action
-    runs-on: ubuntu-latest
-    steps:
-      - name: Before Composite action
-        run: |
-          echo "Hello from before composite action"
-
-      - name: Build and Publish .NET Core App
-        uses: devopselvis/build-test-net-core-app-custom-action@main
-        #or uses: jphindev/repo-of-custom-workflow@main
-        with: #the inputs parameters must be provided here
-          dotnet-version: "8.0.x"
-          project-path: "${{ github.workspace }}/src/my-web-app/my-web-app.csproj"
-          output-path: "mywebapp"
-
-      - name: After Composite action
-        run: |
-          echo "Hello from after composite action"
-
   deploy-to-dev:
     runs-on: ubuntu-latest
     needs: build-and-test
@@ -455,4 +377,201 @@ jobs:
           app-name: ${{ vars.WEB_APP_NAME }}
           slot-name: prod
           package: myapp
+```
+
+## 6. Custom actions and reusable workflows
+
+### Create a custom action (in another repo)
+
+We can create a custom workflow of the build-and-test job in another repo to avoid repeating the same code.
+3 types of custom actions:
+
+- Javascript or Typescript file (more powerful)
+- Action inside a docker container with every language possible (slowest and only on linux runner)
+- Composite action (list of steps called from another repo with a action.yml file)
+
+With a custom action we can't use secrets or variables from the repo
+
+_devopselvis/build-test-net-core-app-custom-action/action.yml_
+
+```yml
+name: "Build and Publish .NET Core App"
+description: "Composite action to build and publish a .NET Core application"
+inputs: #the parameters the user will have to provide
+  dotnet-version:
+    description: "The version of .NET Core to use"
+    required: true
+  project-path:
+    description: "The path to the .NET Core project file"
+    required: true
+  output-path:
+    description: "The output path for the published application"
+    required: true
+outputs:
+  artifact-path:
+    description: "The path to the build artifact"
+
+runs: # /!\ not jobs
+  using: "composite" #type of custom action
+  steps: #same code as the build-and-test job, but with the inputs required
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4.1.0
+      with:
+        dotnet-version: ${{ inputs.dotnet-version }}
+
+    - name: Restore dependencies
+      run: dotnet restore "${{ inputs.project-path }}"
+      shell: bash
+
+    - name: Build
+      run: dotnet build "${{ inputs.project-path }}" --no-restore --configuration Release
+      shell: bash
+
+    - name: Publish
+      run: dotnet publish "${{ inputs.project-path }}" -c Release -o ${{ inputs.output-path }}
+      shell: bash
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: myapp
+        path: ${{ inputs.output-path }}/**
+        if-no-files-found: error
+```
+
+### Create a reusable workflow (in the same repo)
+
+The yml file must be placed in the same .github/workflows folder.
+_devopselvis/my-github-actions-presentation/.github/workflows/deploy-to-environment-reusable.yml_
+We can use here secrets or variables.
+
+```yml
+name: Deploy to Environment
+
+on:
+  workflow_call: #this is a reusable workflow
+    inputs: #the parameters the user will have to provide
+      environment-name:
+        description: "The name of the environment (e.g., DEV, STAGING, PROD)"
+        required: true
+        type: string
+      environment-url:
+        description: "The URL of the environment"
+        required: true
+        type: string
+      artifact-name:
+        description: "The name of the artifact to download"
+        required: true
+        type: string
+      web-app-name:
+        description: "The name of the Azure Web App"
+        required: true
+        type: string
+        default: ${{ vars.WEB_APP_NAME }}
+      slot-name:
+        description: "The slot name for the Azure Web App"
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment-name }}
+      url: ${{ inputs.environment-url }}
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: myapp
+
+      - name: Login to Azure
+        uses: azure/login@v2.2.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ inputs.web-app-name }}
+          slot-name: ${{ inputs.slot-name }}
+          package: myapp
+```
+
+### Implement them in a workflow
+
+```yml
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions: #from the documentation of OICD
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-test: #with the custom action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Before Composite action
+        run: |
+          echo "Hello from before composite action"
+
+      - name: Build and Publish .NET Core App
+        #import the action.yml from another repo
+        uses: devopselvis/build-test-net-core-app-custom-action@main
+        with: #the inputs parameters must be provided here
+          dotnet-version: "8.0.x"
+          project-path: "${{ github.workspace }}/src/my-web-app/my-web-app.csproj"
+          output-path: "mywebapp"
+
+      - name: After Composite action
+        run: |
+          echo "Hello from after composite action"
+
+  deploy-to-dev: #use the reusable workflow from the same repo
+    needs: build-and-test
+    uses: devopselvis/my-github-actions-presentation/.github/workflows/deploy-to-environment-reusable.yml@main
+    with:
+      environment-name: "DEV"
+      environment-url: "http://my-web-app-please-work-dev.azurewebsites.net/"
+      artifact-name: "myapp"
+      web-app-name: ${{ vars.WEB_APP_NAME }}
+      slot-name: "dev"
+    secrets: inherit #to give access of the secrets of this repo
+
+  deploy-to-staging:
+    needs: build-and-test
+    uses: devopselvis/my-github-actions-presentation/.github/workflows/deploy-to-environment-reusable.yml@main
+    with:
+      environment-name: "STAGING"
+      environment-url: "http://my-web-app-please-work-staging.azurewebsites.net/"
+      artifact-name: "myapp"
+      web-app-name: ${{ vars.WEB_APP_NAME }}
+      slot-name: "staging"
+    secrets: inherit
+
+  deploy-to-prod:
+    needs:
+      - deploy-to-staging
+      - deploy-to-dev
+    uses: devopselvis/my-github-actions-presentation/.github/workflows/deploy-to-environment-reusable.yml@main
+    with:
+      environment-name: "PROD"
+      environment-url: "http://my-web-app-please-work-prod.azurewebsites.net/"
+      artifact-name: "myapp"
+      web-app-name: ${{ vars.WEB_APP_NAME }}
+      slot-name: "prod"
+    secrets: inherit
 ```
