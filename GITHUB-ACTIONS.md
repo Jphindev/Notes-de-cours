@@ -575,3 +575,102 @@ jobs:
       slot-name: "prod"
     secrets: inherit
 ```
+
+## 7. Custom events
+
+```yml
+name: Repository Dispatch Example
+
+on:
+  repository_dispatch:
+    types: [on-demand-test-event] #name of the custom event
+
+jobs:
+  get-info-from-event:
+    runs-on:
+      - ubuntu-latest
+
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Send greeting
+        run: |
+          echo "value1: ${{github.event.client_payload.value1}}" 
+          echo "value2: ${{github.event.client_payload.value2}}" 
+          echo "value3: ${{github.event.client_payload.value3}}"
+```
+
+To trigger the workflow, we need to send a post request to the GitHub API, using cURL, JavaScript or Github CLI.
+See [the docs here](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event)  
+**event_type** will trigger the workflow and the client_payload values will be passed in the github context.
+
+```bash
+gh api \
+  --method POST \
+  -H "Accept: application/vnd.github+json" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  /repos/devopselvis/my-github-actions-presentation/dispatches \
+   -f "event_type=on-demand-test-event" -F "client_payload[value1]=true" -F "client_payload[value2]=42 42" -F "client_payload[value3]=DevOps rocks"
+```
+
+## 8. Masking variables and secrets
+
+```yml
+name: Masking Variables
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI or API.
+on:
+  workflow_dispatch:
+
+jobs:
+  # Simple Example: Mask a string in the logs
+  demo-basic-masking:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mask a simple string
+        run: |
+          echo "::add-mask::SuperSecretPassword123"
+          echo "This is my password: SuperSecretPassword123"
+
+  # Mask an environment variable
+  demo-env-var-masking:
+    runs-on: ubuntu-latest
+    env:
+      MY_SECRET: "TopSecretValue"
+    steps:
+      - name: Mask an environment variable
+        run: |
+          echo "::add-mask::$MY_SECRET"
+          echo "The secret value is: $MY_SECRET"
+
+  # Dynamic Masking: mask in one step and use in a different step
+  demo-dynamic-masking:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate and mask a dynamic secret
+        id: secret-step
+        run: |
+          DYNAMIC_SECRET=$(openssl rand -hex 16)
+          echo "::add-mask::$DYNAMIC_SECRET"
+          echo "generated-secret=$DYNAMIC_SECRET" >> $GITHUB_OUTPUT
+      - name: Use the masked secret
+        run: echo "The secret is ${{ steps.secret-step.outputs.generated-secret }}"
+
+  # Masking a multi-line value
+  demo-multiline-masking:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mask a multi-line value
+        run: |
+          MULTILINE_SECRET="Line 1
+          Line 2
+          Line 3"
+          echo "$MULTILINE_SECRET" | while IFS= read -r line; do
+            echo "::add-mask::$line"
+          done
+          echo "The multi-line secret is:"
+          echo "$MULTILINE_SECRET"
+```
