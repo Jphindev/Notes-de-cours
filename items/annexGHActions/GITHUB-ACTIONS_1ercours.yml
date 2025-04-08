@@ -194,9 +194,7 @@ jobs: #jobs are executed in parallel
 
   DeployDev:
     name: Deploy to Dev
-    if: >
-      false &&
-      github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request'
     needs: [Build]
     runs-on: ubuntu-latest
     environment:
@@ -208,9 +206,7 @@ jobs: #jobs are executed in parallel
 
   DeployStaging:
     name: Deploy to Staging
-    if: >
-      false &&
-      github.event.ref == 'refs/heads/main'
+    if: github.event.ref == 'refs/heads/main'
     needs: [Build]
     runs-on: ubuntu-latest
     environment:
@@ -221,7 +217,6 @@ jobs: #jobs are executed in parallel
         run: echo I am deploying!
 
   DeployProd:
-    # if: false
     name: Deploy to Production
     needs: [DeployStaging]
     runs-on: ubuntu-latest
