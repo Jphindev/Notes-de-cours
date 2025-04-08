@@ -1008,7 +1008,7 @@ jobs:
             sudo service nginx restart
 ```
 
-### EXEMPLE: AUTOMATIC COMMENT ON NEW ISSUES
+### AUTOMATIC COMMENT ON NEW ISSUES
 
 ```yml
 #This will only work with on: issues only
