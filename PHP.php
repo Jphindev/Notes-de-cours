@@ -1,3 +1,11 @@
+<!-- 
+Notes de cours PHP 
+Basées sur le cours de Pierre Giraud
+https://www.pierre-giraud.com/php-mysql-apprendre-coder-cours/
+Et Dani Krossing
+https://www.youtube.com/playlist?list=PL0eyrZgxdwhwwQQZA79OzYwl5ewA7HQih
+-->
+
 <!DOCTYPE html>
 <?php
 session_start();

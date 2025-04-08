@@ -1,4 +1,6 @@
-//Notes de cours JavaScript
+// Notes de cours JavaScript
+// Basées sur le cours de Pierre Giraud
+// https://www.pierre-giraud.com/javascript-apprendre-coder-cours/
 
 /********************************************/
 /***** LES VARIABLES ET TYPES DE VALEUR *****/
