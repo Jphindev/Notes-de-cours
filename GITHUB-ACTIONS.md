@@ -885,7 +885,7 @@ jobs:
         run: echo "I am deploying to prod!"
 ```
 
-### CI/CD EXEMPLE
+### CI/CD EXAMPLE
 
 ```yml
 jobs:
