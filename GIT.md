@@ -109,6 +109,11 @@ Ainsi jusqu’à trouver le 1er commit qui a engendré l’erreur (first bad com
 `$ git revert [id_commit]` //pour annuler le commit avec l’erreur  
 `$ git stash pop` //pour récupérer et reprendre le travail sauvegardé
 
+#### SUPPRIMER UN FICHIER DE TOUS LES COMMITS
+
+`$ git filter-branch --tree-filter 'rm -f passwords.txt' HEAD`  
+//si jamais un mdp est enregistré en clair dans l'historique
+
 #### RESET
 
 ##### SOFT
