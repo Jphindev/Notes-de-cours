@@ -42,7 +42,7 @@ Bloc de code
 LIENS ET IMAGES
 
 <https://url.com>
-[lien](https://url.com "Titre")
+[Texte du lien](https://url.com "Titre")
 
 ![alt de l'image](/img/image.jpg "Titre")
 [![alt de l'image](lien image)](url)
