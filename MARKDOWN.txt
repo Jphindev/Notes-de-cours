@@ -42,6 +42,7 @@ Bloc de code
 LIENS ET IMAGES
 
 <https://url.com>
+<a href=url target="_blank">Clique ici</a>
 [Texte du lien](https://url.com "Titre")
 
 ![alt de l'image](/img/image.jpg "Titre")
