@@ -24,6 +24,18 @@ Elles peuvent être:
 - Clé simple: sur une seule rubrique
 - Clé composée: définir une clé sur plusieurs rubriques
 
+
+## Charte
+BTN_Bouton
+FEN_Fenêtre
+SAI_ChampDeSaisie
+
+## Raccourcis clavier
+
+Ctrl <: Accueil
+Ctrl E: chercher une fenêtre
+Ctrl W: cacher les volets
+
 # WLANGAGE
 
-`Info("Hello", SAI_Prénom)`
+Info("Bonjour" + SAI_Prénom, "Bienvenue ! (sur une autre ligne)")
