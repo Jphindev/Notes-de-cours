@@ -1,5 +1,9 @@
 # WINDEV
 
+## Initialisation d'un projet
+
+Les variables globales peuvent être déclarées en codant l'élément P.
+
 ## Analyse
 
 rubrique = entrée  
