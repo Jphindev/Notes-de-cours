@@ -2,20 +2,32 @@
 
 ## Raccourcis clavier
 
-| Raccourci | Effet                             |
-| --------- | --------------------------------- |
-| Ctrl <    | Accueil                           |
-| Ctrl E    | chercher une fenêtre              |
-| Ctrl W    | cacher les volets                 |
-| Ctrl B    | Placer un point d'arrêt débogueur |
+| Raccourci  | Effet                             |
+| ---------- | --------------------------------- |
+| Ctrl <     | Accueil                           |
+| Ctrl E     | chercher une fenêtre              |
+| Ctrl W     | cacher les volets                 |
+| Ctrl B     | Placer un point d'arrêt débogueur |
+| F2         | Événements de l'objet             |
+| Ctrl F2    | Traitement ou événement initial   |
+| Ctrl L     | supprime la ligne                 |
+| Ctrl D     | duplique la ligne                 |
+| Tab        | Indente                           |
+| Maj Tab    | Désindente                        |
+| Ctrl /     | met en commentaires               |
+| Ctrl Maj / | enlève les commentaires           |
+| Ctrl R     | Indenter automatiquement le code  |
+|            |                                   |
+|            |                                   |
+|            |                                   |
 
-## Les bases
+## I. Les bases
 
-### Initialisation d'un projet
+### 1. Initialisation d'un projet
 
 Les variables globales peuvent être déclarées en codant l'élément P.
 
-### Analyse
+### 2. Analyse
 
 rubrique = entrée  
 fichier de données = table  
@@ -26,7 +38,7 @@ Cardinalités: Client 0,n --- 1,1 Commande
 Un client peut avoir entre 0 et plusieurs commandes.  
 Une commande peut avoir un seul client et pas plus.
 
-### Clés de fichiers de données
+### 3. Clés de fichiers de données
 
 - Clé unique: identifie la rubrique avec une valeur unique, possibilité d'utiliser un identifiant automatique
 - Clé avec doublons: plusieurs valeurs identiques sont possibles
@@ -39,7 +51,7 @@ Elles peuvent être:
 - Clé simple: sur une seule rubrique
 - Clé composée: définir une clé sur plusieurs rubriques
 
-### Charte
+### 4. Charte
 
 BTN_Bouton  
 FEN_Fenêtre  
@@ -49,7 +61,7 @@ g_Global
 s_String  
 m_Méthode
 
-### Débogueur
+### 5.Débogueur
 
 - Placer un point d'arrêt puis lancer le projet
 - Suivre l'évolution pas à pas ou plus détaillé
@@ -59,7 +71,7 @@ m_Méthode
 - colonne expression pour mettre une valeur cible (ex: =10)
 - Visualiser le suivi d'une variable: clic droit puis éditer
 
-## Wlangage
+## II. Wlangage
 
 -> programmation événementielle
 
@@ -79,7 +91,7 @@ SI EnModeTest() = Vrai ALORS //
 FIN
 ```
 
-### VARIABLES
+### 1. VARIABLES
 
 https://doc.pcsoft.fr/?1514013&name=les_differents_types_variables
 
@@ -100,7 +112,7 @@ Prix est un monétaire = 500.32
 // - niveau Champ.
 ```
 
-#### NOMBRES
+#### a. NOMBRES
 
 ```wl
 Compteur est un entier
@@ -119,7 +131,7 @@ Res = Compteur / 5 // Res vaut 3.6
 // Comparaisons: < > <= >= <> =
 ```
 
-#### CHAÎNE
+#### b. CHAÎNE
 
 ```wl
 Nom est une chaîne
@@ -220,7 +232,7 @@ FIN //différentes
 SI Chaîne1 ~= Chaîne3 ALORS ... //équivalentes
 ```
 
-#### TEMPS
+#### c. TEMPS
 
 ##### Type Date
 
@@ -272,7 +284,7 @@ MaDurée.EnSecondes = 128
 Trace(MaDurée.VersChaîne("MM:SS")) //02:08
 ```
 
-#### TABLEAU
+#### d. TABLEAU
 
 ```wl
 // les indices commencent à 1, pas à 0
@@ -319,7 +331,7 @@ POUR TOUT ÉLÉMENT Valeur, Clé, Indice DE MonTableau
 FIN
 ```
 
-#### STRUCTURE
+#### e. STRUCTURE
 
 ```wl
 //regroupe des variables de type différents
@@ -345,9 +357,9 @@ MesContacts.Ajoute(Contact) //ou Ajoute(MesContacts, Contact)
 Trace(MesContacts[1].Nom, MesContacts[1].Prénom) //POLO | MARCO
 ```
 
-### CONDITIONS
+### 2. CONDITIONS
 
-#### SI... ALORS... SINON... FIN
+#### a. SI... ALORS... SINON... FIN
 
 ```wl
 NombreAléatoire est un entier
@@ -395,7 +407,7 @@ FIN
 // avec _ET_ _OU_ la seconde condition n'est pas évaluée si la première est fausse
 ```
 
-#### SELON
+#### b. SELON
 
 ```wl
 LaDateDuJour est une Date
@@ -413,9 +425,9 @@ SELON LaDateDuJour.Mois
 FIN
 ```
 
-### LES BOUCLES
+### 3. LES BOUCLES
 
-#### POUR
+#### a. POUR
 
 ```wl
 // Remplissage d'un tableau d'entiers pairs de 1 à 10
@@ -447,7 +459,7 @@ POUR Indice = 100 À 1 PAS -10
 FIN
 ```
 
-#### BOUCLE (nb d'occurences inconnus)
+#### b. BOUCLE (nb d'occurences inconnus)
 
 ```wl
 Compteur est un entier = 10
@@ -472,7 +484,7 @@ BOUCLE(10) //boucle répétée 10 fois
 FIN
 ```
 
-#### TANTQUE (condition de sortie au début)
+#### c. TANTQUE (condition de sortie au début)
 
 ```wl
 Compteur est un entier = 1
@@ -482,7 +494,7 @@ TANTQUE Compteur <= 10
 FIN
 ```
 
-### LES PROCÉDURES
+### 4. LES PROCÉDURES
 
 ```wl
 //Création d'une procédure globale
@@ -514,16 +526,20 @@ MontantTTC = CalculTTC(500, 10)
 Trace("Montant TTC : " + MontantTTC) //550
 ```
 
-### PROGRAMMATION ORIENTÉE OBJET
+### 5. PROGRAMMATION ORIENTÉE OBJET
 
 Nouveau -> Code -> Classe
 
-```wl
+Une classe comporte des membres (données, paramètres) et des méthodes (procédures, fonctions).  
+Chaque objet crée sera une instance de la classe.  
+L'héritage permet d'inclure les caractéristiques d'une classe de base dans une nouvelle classe dérivée (sous classe).  
+Une classe dérivée permet à ses objets d'accéder à toutes les méthodes, à tous les membres et à toutes les propriétés de ses classes ancêtres.
 
+```wl
 CProduit est une Classe
 
 PUBLIC
-  mg_SeuilAlerteStock est un entier = 20 //membre public
+  mg_SeuilAlerteStock est un entier //membre public
 
 PRIVÉ
   m_Référence est une chaîne //membre privé
@@ -537,4 +553,76 @@ EtatStock est une Enumération
   STOCK_ALERTE
   STOCK_OK
 FIN
+```
+
+On modifie le constructeur pour initialiser le membre mg_SeuilAlerteStock lors de la création de l'objet
+
+```wl
+PROCÉDURE Constructeur(SeuilAlerteStock est un entier)
+mg_SeuilAlerteStock = SeuilAlerteStock
+```
+
+On génère la propriété (clic droit) pour chaque membre afin d'avoir un getter et setter
+
+```wl
+//getter: lit la valeur du membre
+PROCÉDURE PUBLIQUE Référence() : chaîne
+RENVOYER m_Référence
+
+//setter: modifie la valeur du membre
+PROCÉDURE PUBLIQUE Référence(Valeur est une chaîne)
+m_Référence=Valeur
+```
+
+On crée des méthodes pour mettre le stock à jour et vérifier l'état du stock
+
+```wl
+PROCÉDURE AjouteStock(LOCAL StockSupplémentaire est un entier) : booléen
+
+// Le stock fourni en paramètre doit être valide
+SI StockSupplémentaire < 0 ALORS
+// Impossible d'ajouter un stock négatif
+RENVOYER Faux
+FIN
+
+// Incrémente le stock actuel avec le stock supplémentaire
+m_Stock += StockSupplémentaire
+
+// L'ajout est effectif
+RENVOYER Vrai
+```
+
+```wl
+PROCÉDURE EtatDuStock() : EtatStock
+
+// Si le stock est vide
+SI m_Stock = 0 ALORS
+RENVOYER STOCK_VIDE
+FIN
+
+// Si le stock est sous le seuil d'alerte
+SI m_Stock <= mg_SeuilAlerteStock ALORS
+RENVOYER STOCK_ALERTE
+FIN
+
+// Le stock est OK
+RENVOYER STOCK_OK
+```
+
+On crée un objet pour instancier la classe
+
+```wl
+UnProduit est un CProduit(20) //renseignement de la quantité limite grâce au contructeur
+
+UnProduit.Référence	= "REF-123"
+UnProduit.Libellé	= "Mon produit"
+UnProduit.AjouteStock(10)
+Trace(UnProduit.Référence + " " + UnProduit.Libellé + " " + UnProduit.Stock)
+
+SI UnProduit.EtatDuStock() = CProduit.STOCK_OK ALORS
+	Trace("Le stock est correct")
+SINON
+	Trace("Le stock est insuffisant")
+FIN
+//REF-123 Mon produit 10 | Le stock est insuffisant
 ```
