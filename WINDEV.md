@@ -17,6 +17,13 @@
 | Ctrl /     | met en commentaires               |
 | Ctrl Maj / | enlève les commentaires           |
 | Ctrl R     | Indenter automatiquement le code  |
+| Ctrl N     | Nouveau                           |
+| F9         | Tester la fenêtre                 |
+| Ctrl F9    | Tester le projet                  |
+|            |                                   |
+|            |                                   |
+|            |                                   |
+|            |                                   |
 |            |                                   |
 |            |                                   |
 |            |                                   |
@@ -45,7 +52,8 @@ Une commande peut avoir un seul client et pas plus.
 - Clé primaire: unique et non nulle, une seule par fichier de données
 - Clé spatiale: contient des données géographiques ou géométriques
 
-Ces clés permettent d'accélérer les accès aux données et les tris.  
+Ces clés permettent d'accélérer les accès aux données et les tris.
+
 Elles peuvent être:
 
 - Clé simple: sur une seule rubrique
@@ -56,10 +64,17 @@ Elles peuvent être:
 BTN_Bouton  
 FEN_Fenêtre  
 SAI_ChampDeSaisie
+LIB_Libellé
+IMG_Image
+TABLE_Table
+COL_Colonne
+ONG_Onglet
+COMBO_Selection_dans_une_liste
 
 g_Global
-s_String  
+s_String_Chaine  
 m_Méthode
+ParamParamètre_de_la_requète
 
 ### 5.Débogueur
 
@@ -183,11 +198,14 @@ Trace(Produit) //WEBDEV
 
 // Extraire des caractères
 Texte est une chaîne = "San Francisco"
-Trace(Texte[5]) //F
-Trace(Texte[5 À 10]) //Franci
-Trace(Texte[5 À]) //Francisco
-Trace(Texte[À 10]) //San Franci
-Trace(Texte[10 SUR 3]) //isc
+Texte[5] //F
+Texte[5 À 10] //Franci
+Texte[5 À] //Francisco
+Texte[À 10] //San Franci
+Texte[10 SUR 3] //isc
+Texte.Gauche(3) //San
+Texte.Droite(3) //sco
+Texte.Milieu(5, 3) //Fra
 
 // Formatage
 TexteInitial est une chaîne = "C'est Éric"
@@ -535,6 +553,8 @@ Chaque objet crée sera une instance de la classe.
 L'héritage permet d'inclure les caractéristiques d'une classe de base dans une nouvelle classe dérivée (sous classe).  
 Une classe dérivée permet à ses objets d'accéder à toutes les méthodes, à tous les membres et à toutes les propriétés de ses classes ancêtres.
 
+#### a. Création d'une classe
+
 ```wl
 CProduit est une Classe
 
@@ -555,12 +575,16 @@ EtatStock est une Enumération
 FIN
 ```
 
+#### b. Le constructeur
+
 On modifie le constructeur pour initialiser le membre mg_SeuilAlerteStock lors de la création de l'objet
 
 ```wl
 PROCÉDURE Constructeur(SeuilAlerteStock est un entier)
 mg_SeuilAlerteStock = SeuilAlerteStock
 ```
+
+#### c. Getter et Setter
 
 On génère la propriété (clic droit) pour chaque membre afin d'avoir un getter et setter
 
@@ -573,6 +597,8 @@ RENVOYER m_Référence
 PROCÉDURE PUBLIQUE Référence(Valeur est une chaîne)
 m_Référence=Valeur
 ```
+
+#### d. Méthodes
 
 On crée des méthodes pour mettre le stock à jour et vérifier l'état du stock
 
@@ -609,6 +635,8 @@ FIN
 RENVOYER STOCK_OK
 ```
 
+#### e. Instanciation
+
 On crée un objet pour instancier la classe
 
 ```wl
@@ -625,4 +653,158 @@ SINON
 	Trace("Le stock est insuffisant")
 FIN
 //REF-123 Mon produit 10 | Le stock est insuffisant
+```
+
+## III. EXEMPLES
+
+### Afficher et mettre à jour la fiche d'un produit à partir d'une liste de produits
+
+```wl
+//-> BTN_Modifier dans FEN_Menu (clic)
+FEN_Fiche_du_produit.Ouvre()
+// Met à jour la ligne sélectionnée après modification
+TABLE_Produit.Affiche(taCourantBandeau) //met à jour le bandeau de sélection courant
+
+//-> code dans FEN_Fiche_du_produit (Fin d'initialisation)
+Produit.VersFenêtre() //Produit est un fichier de données (table)
+
+//-> BTN_Valider dans FEN_Fiche_du_produit (clic)
+EcranVersFichier()
+//les valeurs des champs de la fenêtre vont être sauvegardées dans les rubriques correspondantes dans le fichier de données
+
+// EcranVersFichier() est équivalent aux lignes suivantes:
+// Produit.Référence = SAI_Référence
+// Produit.Libellé = SAI_Libellé
+// Produit.Description = SAI_Description
+// ...
+
+Produit.Modifie()   //c'est le fichier de données Produit que l'on veut modifier
+Ferme()             //on ferme la fenêtre
+```
+
+### Modification d'une image
+
+```wl
+//-> BTN_Modifier dans FEN_Fiche_du_produit (clic)
+Fichier est une chaîne
+ 
+// Ouvre le sélecteur d'images
+Fichier = fSélecteurImage("", "", "Sélectionnez une image...") //avec l'assistant
+
+SI Fichier <> "" ALORS // Si un fichier a été sélectionné
+  IMG_Visuel = Fichier
+FIN
+```
+
+### Ajouter un nouveau produit
+
+```wl
+//-> BTN_Nouveau dans FEN_Menu (clic)
+
+//on initialise les variables des rubriques du fichier de données "Produit"
+Produit.RAZ()
+//on ouvre la fiche du produit
+FEN_Fiche_du_produit.Ouvre()
+//on réaffiche le champ Table à partir de l'enregistrement courant
+TABLE_Produit.Affiche(taCourantEnreg)
+
+//-> BTN_Valider dans FEN_Fiche_du_produit (clic)
+EcranVersFichier()
+SI Produit..NouvelEnregistrement ALORS //vrai car RAZ fait précédemment
+  Produit.Ajoute()
+SINON
+  Produit.Modifie()
+FIN
+//si.. sinon peut aussi être remplacé par: Produit.Enregistre()
+Ferme()
+```
+
+### Rechercher un produit
+
+- Recherche à l'identique
+
+```wl
+//-> BTN_RechercheIdentique pour champ COMBO_Client (clic)
+
+// On recherche l'id du client qui correspond au nom complet recherché dans la combo
+// La rubrique mémorisée dans la description du champ COMBO doit correspondre au premier paramètre de LitRecherche
+Client.LitRecherchePremier(IDClient, COMBO_Client)
+SI Client.Trouve() ALORS
+  // Affiche les données du client dans le fenêtre
+  Client.VersFenêtre()
+FIN
+```
+
+- Recherche générique
+
+```wl
+//-> BTN_RechercheGénérique pour champ SAI_Nom_Recherché (clic)
+
+// On recherche un nom complet qui correspond au texte saisi dans le champ
+// Seul le premier nom trouvé sera affiché
+Client.LitRecherche(NomComplet, SAI_Nom_Recherché)
+SI Client.Trouve() ALORS
+  // Affiche les données du client
+  Client.VersFenêtre()
+SINON
+  Erreur("Aucun client ne correspond")
+FIN
+```
+
+### Parcourir des produits
+
+```wl
+//-> BTN_Premier dans ONG_Visualisation (clic)
+
+// Lit le premier client
+Client.LitPremier()
+SI Client.EnDehors() ALORS
+  // si le fichier de données est vide
+  Info("Aucune fiche à visualiser.")
+SINON
+  // Affiche les données du client
+  Client.VersFenêtre()
+FIN
+
+//-> BTN_Précédent avec message d'erreur quand début du fichier atteint
+
+// Si aucune recherche en cours
+SI Client.EnDehors() ALORS
+  // Lit le dernier client
+  Client.LitDernier()
+FIN
+ 
+// Lit le client précédent
+Client.LitPrécédent()
+// Si le début du fichier de données est dépassé
+SI Client.EnDehors() ALORS
+  Info("Début du fichier de données atteint.")
+SINON
+  // Affiche les données du client
+  Client.VersFenêtre()
+FIN
+
+//-> BTN_Suivant avec retour au 1er si fin du fichier atteint
+
+SI Client.EnDehors() ALORS
+	Client.LitPremier()
+SINON
+	Client.LitSuivant()
+	SI Client.EnDehors() ALORS
+		Client.LitPremier()
+	FIN
+FIN
+Client.VersFenêtre()
+
+//-> BTN_Dernier
+
+// Lit le dernier client
+Client.LitDernier()
+SI Client.EnDehors() ALORS
+  // Pas de client
+  Info("Aucune fiche à visualiser.")
+SINON
+  // Affiche les données du client
+  Client.VersFenêtre()
+FIN
 ```
