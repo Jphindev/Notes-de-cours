@@ -61,20 +61,22 @@ Elles peuvent être:
 
 ### 4. Charte
 
-BTN_Bouton  
+BTN\*Bouton  
 FEN_Fenêtre  
 SAI_ChampDeSaisie
+SEL_ChampDeSélection_radio
 LIB_Libellé
 IMG_Image
 TABLE_Table
 COL_Colonne
 ONG_Onglet
 COMBO_Selection_dans_une_liste
+ETAT_Représentation_graphique
 
-g_Global
-s_String_Chaine  
-m_Méthode
-ParamParamètre_de_la_requète
+gGlobal
+sString_Chaine  
+mMéthode
+paramParamètre_de_la_requète
 
 ### 5.Débogueur
 
@@ -807,4 +809,41 @@ SINON
   // Affiche les données du client
   Client.VersFenêtre()
 FIN
+```
+
+### Recherche multicritère
+
+- Création de la requête
+
+Nouveau -> Requête -> Sélection  
+Sélectionner les rubriques des différents fichiers de données.  
+Choisir la rubrique qui va diriger le tri -> bouton "Trier"  
+Choisir les rubriques sur lesquels va porter les critères de recherche -> bouton "Condition de sélection" est égal au paramètre puis paramNom
+
+- Création des champs de recherche
+
+  -> Avec un drag & drop de la rubrique depuis le volet d'exploration.  
+  -> En créant le champ de recherche avec une liaison vers la rubrique concernée dans Description -> Liaison ou Description -> Contenu
+  -> En utilisant l'assistant de création du champ
+
+- Création du bouton de recherche pour mettre à jour l'affichage
+
+```wl
+//-> BTN_Rechercher (clic)
+
+TABLE_REQ_RechercheCommandes.Affiche(taInit)
+//permet de ré-exécuter l'événement "Initialisation" du champ Table
+```
+
+- Création de la table d'affichage
+
+La table doit avoir pour source la requête précédemment créée
+
+```wl
+//-> TABLE_REQ_RechercheCommandes (initialisation)
+
+MaSource.ParamEtat = SEL_Etat
+MaSource.ParamIDModeRèglement = COMBO_ModeReglement
+MaSource.ParamDebutPeriode = SAI_DateDébut
+MaSource.ParamFinPeriode = SAI_DateFin
 ```
