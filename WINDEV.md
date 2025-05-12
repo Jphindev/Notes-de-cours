@@ -20,7 +20,7 @@
 | Ctrl N     | Nouveau                           |
 | F9         | Tester la fenêtre                 |
 | Ctrl F9    | Tester le projet                  |
-|            |                                   |
+| F5         | Ordre de navigation               |
 |            |                                   |
 |            |                                   |
 |            |                                   |
@@ -63,22 +63,23 @@ Elles peuvent être:
 
 BTN\*Bouton  
 FEN_Fenêtre  
-SAI_ChampDeSaisie
-SEL_ChampDeSélection_radio
+SAI_Champ_De_Saisie
+SEL_Champ_De_Sélection_radio
 LIB_Libellé
 IMG_Image
 TABLE_Table
 COL_Colonne
 ONG_Onglet
-COMBO_Selection_dans_une_liste
+COMBO_Sélection_dans_une_liste
 ETAT_Représentation_graphique
+OPT_Option_de_menu_déroulant
 
 gGlobal
 sString_Chaine  
 mMéthode
 paramParamètre_de_la_requète
 
-### 5.Débogueur
+### 5. Débogueur
 
 - Placer un point d'arrêt puis lancer le projet
 - Suivre l'évolution pas à pas ou plus détaillé
@@ -657,6 +658,40 @@ FIN
 //REF-123 Mon produit 10 | Le stock est insuffisant
 ```
 
+### 6. FONCTIONS NATIVES
+
+```wl
+// AFFICHE
+TABLE_Produit.Affiche(<position>)
+  taCourantEnreg: affiche et sélectionne la produit recherché ou enregistré
+  taCourantBandeau: affiche les produits regroupés par catégories
+  taCourantPremier: positionne l'affichage sur le premier produit de la liste
+  taInit: réinitialise l'affichage
+
+// FINPROGRAMME: ferme l'application
+FinProgramme()
+
+// HSUPPRIMETOUT: supprime tous les enregistrements d'un fichier de données
+HSupprimeTout(Client)
+
+// INFO: Afficher dans une boite de dialogue
+Info("Bonjour" + Nom_utilisateur, "Bienvenue !") //virgule pour le saut de ligne
+
+// OUINON: fenêtre de dialogues avec 2 boutons: oui et non
+OuiNon(Non, "Quitter l'application ?") // Non sera sélectionné par défaut
+
+// TOASTAFFFICHE: pop up d'information
+ToastAffiche("Ceci est un message Toast.", toastLong, cvMilieu, chCentre, VertClair)
+
+// OUVREFILLE: ouvre une fenêtre non modale pour manipuler plusieurs fenêtre à la fois
+FEN_Envoi_d_un_mail.OuvreFille()
+
+
+
+
+
+```
+
 ## III. EXEMPLES
 
 ### Afficher et mettre à jour la fiche d'un produit à partir d'une liste de produits
@@ -753,6 +788,17 @@ SINON
 FIN
 ```
 
+- Recherche dynamique dans une table
+
+```wl
+//-> SAI_Nom_Recherché (modification)
+SI SAI_Nom_Recherché <> "" ALORS
+  TableActiveFiltre(TABLE_Produits.COL_Nom, filtreContient, SAI_Nom_Recherché)
+SINON
+  TableDésactiveFiltre(TABLE_Produits)
+FIN
+```
+
 ### Parcourir des produits
 
 ```wl
@@ -840,10 +886,72 @@ TABLE_REQ_RechercheCommandes.Affiche(taInit)
 La table doit avoir pour source la requête précédemment créée
 
 ```wl
-//-> TABLE_REQ_RechercheCommandes (initialisation)
+// -> TABLE_REQ_RechercheCommandes (initialisation)
 
 MaSource.ParamEtat = SEL_Etat
 MaSource.ParamIDModeRèglement = COMBO_ModeReglement
 MaSource.ParamDebutPeriode = SAI_DateDébut
 MaSource.ParamFinPeriode = SAI_DateFin
+```
+
+### Imprimer un bon de commande via un ETAT
+
+- Créer une requête SELECT et sélectionner les éléments à afficher sur le bon de commande
+- Créer une condition sur le pramètre à prendre en compte (Commande.IDCommande)
+- Créer l'état basé sur la requête
+- Spécifier les éléments à faire apparaitre en entête, corps ou pied de page
+- Réorganiser la position des éléments dans l'état
+- Créer un menu contextuel pour activer l'impression avec le code suivant
+
+```wl
+// Impression dans le visualisateur de rapports
+iDestination(iVisualisateur)
+// Initialise la requête de l'état avec l'id de la commande sélectionnée dans le tableau
+ETAT_Bon_de_commande.InitRequête(TABLE_REQ_RechercheCommandes.COL_IDCommande)
+// Lance l'impression de l'état
+ETAT_Bon_de_commande.Imprime()
+```
+
+- Lier le menu contextuel au champ table dans l'onglet UI de la description de la table
+
+### Envoie d'un mail
+
+```wl
+MaSession est un emailSessionSMTP
+MaSession.Nom				= SAI_Utilisateur
+MaSession.MotDePasse		= SAI_MotDePasse
+MaSession.AdresseServeur	= SAI_Serveur_SMTP
+MaSession.Port				= SAI_Port
+// Ouvre la session SMTP
+SI PAS MaSession.OuvreSession() ALORS
+	Erreur("Impossible de se connecter au serveur SMTP.", ErreurInfo())
+	RETOUR
+FIN
+
+MonMessage est un Email
+ 
+MonMessage.Expediteur	= SAI_Expéditeur
+MonMessage.Sujet		= SAI_Sujet
+ 
+EDHTML_Email.VersEmail(MonMessage)
+ 
+// Ajoute un destinataire
+MonMessage.Destinataire.Ajoute(COMBO_Destinataire.ValeurAffichée)
+ 
+ 
+// Ajoute la pièce jointe si besoin
+SI SAI_Fichier <> "" ALORS
+	MonMessage.ChargeFichierAttaché(SAI_Fichier)
+FIN
+
+// Envoie l'email
+SI MaSession.EnvoieMessage(MonMessage) = Faux ALORS
+	Erreur("Message non envoyé.", ErreurInfo())
+SINON
+	// Message envoyé
+	ToastAffiche("Message envoyé", toastCourt, cvMilieu, chCentre)
+FIN
+
+// Ferme la session SMTP
+MaSession.FermeSession()
 ```
