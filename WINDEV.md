@@ -660,35 +660,113 @@ FIN
 
 ### 6. FONCTIONS NATIVES
 
+#### Affiche
+
 ```wl
-// AFFICHE
 TABLE_Produit.Affiche(<position>)
   taCourantEnreg: affiche et sélectionne la produit recherché ou enregistré
   taCourantBandeau: affiche les produits regroupés par catégories
   taCourantPremier: positionne l'affichage sur le premier produit de la liste
   taInit: réinitialise l'affichage
+```
 
-// FINPROGRAMME: ferme l'application
+#### ChangeFenêtreSource
+
+```wl
+// charge une fenêtre interne dans un champ fenêtre interne
+ChangeFenêtreSource(CFI_ChampFenêtreInterne, FI_FenêtreInterne1)
+  //Charge FI_FenêtreInterne1 dans CFI_ChampFenêtreInterne
+```
+
+#### ExécuteTraitement
+
+```wl
+// Exécute le code d'un événement d'un autre élément.
+//-> IMG_Visuel (clic)
+BTN_Modifier.ExécuteTraitement(trtClic)
+```
+
+#### FinProgramme
+
+```wl
+// ferme l'application
 FinProgramme()
+```
 
-// HSUPPRIMETOUT: supprime tous les enregistrements d'un fichier de données
+#### HExécuteRequête
+
+```wl
+// Exécuter une requête
+HExécuteRequête(REQ_Requête, hRequêteDéfaut, gsVariableChampRécupéré)
+TABLE_REQ_Requête.Affiche()
+```
+
+#### HSupprimeTout
+
+```wl
+// supprime tous les enregistrements d'un fichier de données
 HSupprimeTout(Client)
+```
 
-// INFO: Afficher dans une boite de dialogue
+#### Info
+
+```wl
+// Afficher dans une boite de dialogue
 Info("Bonjour" + Nom_utilisateur, "Bienvenue !") //virgule pour le saut de ligne
+```
 
-// OUINON: fenêtre de dialogues avec 2 boutons: oui et non
+#### InfoConstruit
+
+```wl
+// Boîte de dialogue avec des paramètres (%1)
+InfoConstruit("Bonjour %1" + RC + "Bienvenue !", Nom_Utilisateur)
+```
+
+#### Nation
+
+```wl
+// Change la langue de l'application
+Nation(nationAnglais)
+```
+
+#### OuiNon
+
+```wl
+// fenêtre de dialogues avec 2 boutons: oui et non
 OuiNon(Non, "Quitter l'application ?") // Non sera sélectionné par défaut
+```
 
-// TOASTAFFFICHE: pop up d'information
-ToastAffiche("Ceci est un message Toast.", toastLong, cvMilieu, chCentre, VertClair)
+#### OuvreFille
 
-// OUVREFILLE: ouvre une fenêtre non modale pour manipuler plusieurs fenêtre à la fois
+```wl
+// ouvre une fenêtre non modale pour manipuler plusieurs fenêtre à la fois
 FEN_Envoi_d_un_mail.OuvreFille()
+```
 
+#### Saisie
 
+```wl
+// fenêtre de dialogue avec un champ de saisie
+Saisie("Quel est votre nom ?", sNom)
+```
 
+#### RepriseSaisie
 
+```wl
+// met le focus sur le champ de saisie spécifié
+RepriseSaisie(SAI_Nom)
+```
+
+#### ToastAffiche
+
+```wl
+// pop up d'information
+ToastAffiche("Ceci est un message Toast.", toastLong, cvMilieu, chCentre, VertClair)
+```
+
+#### Fonction
+
+```wl
 
 ```
 
