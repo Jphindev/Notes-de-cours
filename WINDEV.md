@@ -396,6 +396,12 @@ SINON
   Trace("Nombre inférieur ou égal à 2000")
 FIN
 
+// Fonction en condition: fait l'action et vérifie ensuite la condition
+SI fCopieFichier("test.txt","test2.txt") = Faux ALORS
+	Erreur("Problème lors de la copie de test.txt vers test2.txt")
+	RETOUR
+FIN
+
 // Instruction conditionnelle monoligne
 Trace(NombreAléatoire > 2000 ? "Nombre supérieur à 2000" SINON "Nombre inférieur ou égal à 2000")
 ```
@@ -658,11 +664,150 @@ FIN
 //REF-123 Mon produit 10 | Le stock est insuffisant
 ```
 
-### 6. FONCTIONS NATIVES
+## III. FONCTIONS NATIVES
 
-#### Affiche
+### BASE DE DONNEES
 
 ```wl
+// HExécuteRequête // Exécuter une requête
+HExécuteRequête(REQ_Requête, hRequêteDéfaut, gsVariableChampRécupéré)
+TABLE_REQ_Requête.Affiche()
+
+// HSupprimeTout // supprime tous les enregistrements d'un fichier de données
+HSupprimeTout(Client)
+```
+
+### CHAINE
+
+```wl
+// ExtraitChaine // extraction en fonction des séparateurs
+sChaîne est une chaîne = "Fraise, Framboise<BR>Citron<BR>Chocolat et Banane"
+sRésultat est une chaîne = sChaîne.ExtraitChaîne(rangPremier, [", " , " et ", "<BR>"])
+TANTQUE sRésultat <> EOT //End Of Text
+  Trace(sRésultat)
+  sRésultat = sChaîne.ExtraitChaîne(rangSuivant, [", " , " et ", "<BR>"])
+FIN
+```
+
+### CHAMPS
+
+```wl
+// RepriseSaisie // met le focus sur le champ de saisie spécifié
+RepriseSaisie(SAI_Nom)
+```
+
+### FENETRE
+
+```wl
+// ChangeFenêtreSource // charge une fenêtre interne dans un champ fenêtre interne
+ChangeFenêtreSource(CFI_ChampFenêtreInterne, FI_FenêtreInterne1)    //charge FI_FenêtreInterne1 dans CFI_ChampFenêtreInterne
+
+// FinProgramme // ferme l'application
+FinProgramme()
+
+// Info // Afficher dans une boite de dialogue
+Info("Bonjour" + Nom_utilisateur, "Bienvenue !")
+  //virgule pour le saut de ligne
+
+// InfoConstruit // Boîte de dialogue avec des paramètres (%1)
+InfoConstruit("Bonjour %1" + RC + "Bienvenue !", Nom_Utilisateur)
+
+// OuiNon // fenêtre de dialogues avec 2 boutons: oui et non
+OuiNon(Non, "Quitter l'application ?")
+  // Non sera sélectionné par défaut
+
+// Ouvre // ouvre une fenêtre modale avec possibilité d'envoyer des paramètres
+FEN_TraitementPatient.Ouvre(TABLE_Patients.COL_IDPatients)
+  //on ouvre la fenêtre TraitementPatient et on lui transmet l'identifiant du patient
+  //dans l'événement de Déclarations globales de la nouvelle fenêtre:
+PROCÉDURE FEN_TraitementPatient(VariableTransmise)
+
+// OuvreFille // ouvre une fenêtre non modale pour manipuler plusieurs fenêtre à la fois
+FEN_Envoi_d_un_mail.OuvreFille()
+
+// Saisie // fenêtre de dialogue avec un champ de saisie
+Saisie("Quel est votre nom ?", sNom)
+```
+
+### FICHIER
+
+```wl
+// fRepExe // chaine correspondant au répertoire EXE du projet
+sChemin est une chaîne = fRepExe() + "Fichier.txt"
+
+// fCrée // crée un fichier
+oFichier est un FichierDisque = fCrée(sChemin)
+
+// Ouvre // ouvre un fichier
+oFichier.Ouvre(sChemin, foLectureEcriture)
+
+// EcritLigne // écrit une ligne dans le fichier
+oFichier.EcritLigne("Première ligne")
+
+// Ferme // ferme le fichier
+oFichier.Ferme()
+
+// fSauveTexte // Écriture directe dans le fichier .txt
+fSauveTexte(sChemin, "Contenu de la ligne 1"+RC+"Contenu de la ligne 2"+RC+"Contenu de la ligne 3")
+
+// lit // lit le contenu d'un fichier par bloc
+oFichier.lit(500)
+  // Lecture de 500 octets du fichier
+
+// LitLigne // lit une ligne du fichier
+sLigneFichier = oFichier.LitLigne()
+  // Lecture de la première ligne du fichier puis le fichier est parcouru jusqu'à la fin
+TANTQUE PAS sLigneFichier~=EOT
+	sContenuFichier += [RC] + sLigneFichier
+	  // On mémorise la ligne lue et lecture de la ligne suivante
+	sLigneFichier = oFichier.LitLigne()
+FIN
+Info("Le contenu du fichier est : ",sContenuFichier)
+
+// fChargeTexte // Lecture complète d'un fichier .txt
+sContenuFichier = fChargeTexte(ComplèteRep(fRepExe())+"fichier.txt")
+Info("Le contenu du fichier est : ",sContenuFichier)
+
+// fCopieFichier // copie un fichier
+fCopieFichier("test.txt","test2.txt")
+
+// fSupprime // supprime un fichier
+SI fSupprime("test2.txt") ALORS //fait l'action et vérifie si c'est vrai
+	Info("Suppression de test2.txt effectuée")
+SINON
+	Erreur("Suppression impossible : test2.txt inexistant")
+FIN
+
+// fSélecteur // choisit un fichier via l'explorateur Windows
+sFichier est une chaîne = ""
+sFichier = fSélecteur("",...	// Répertoire de base
+	"",...                      // Fichier sélectionné
+	"",...                      // Titre de la fenêtre
+	"Fichier texte (*.txt)"+TAB+"*.TXT"+RC+...		// Choix des extensions
+	"Tous (*.*)"+TAB+"*.*",...	// Filtre de sélection
+	"TXT")                      // Extension sélectionnée à l'entrée
+SI sFichier <> "" ALORS
+	InfoConstruit("Le fichier sélectionné est '%1'",sFichier)
+SINON
+	Info("Aucun fichier sélectionné")
+FIN
+
+// REPERTOIRES //
+fRepEnCours()             // Repertoire courant
+fRepExe()                 // Repertoire de l'application
+fRepDonnéesUtilisateur()  // Repertoire des données de l'utilisateur
+fRépertoireExiste()       // Retourne vrai si le repertoire existe
+fRepCrée()                // Crée un repertoire
+fListeRépertoire(gsRep1,frRécursif) // Liste des repertoires
+fRepSupprime(gsRep1,frRécursif)     // Supprime un repertoire
+fRepSélecteur(ComplèteRep(SAI_REPENCOURS), "Sélectionnez un répertoire...", "")
+
+```
+
+### TABLEAU
+
+```wl
+// Affiche // met à jour l'affichage du tableau
 TABLE_Produit.Affiche(<position>)
   taCourantEnreg: affiche et sélectionne la produit recherché ou enregistré
   taCourantBandeau: affiche les produits regroupés par catégories
@@ -670,107 +815,33 @@ TABLE_Produit.Affiche(<position>)
   taInit: réinitialise l'affichage
 ```
 
-#### ChangeFenêtreSource
+### FONCTIONNALITES DIVERSES
 
 ```wl
-// charge une fenêtre interne dans un champ fenêtre interne
-ChangeFenêtreSource(CFI_ChampFenêtreInterne, FI_FenêtreInterne1)
-  //Charge FI_FenêtreInterne1 dans CFI_ChampFenêtreInterne
-```
+// ErreurDétectée / ErreurInfo // affiche l'erreur détectée
+SI ErreurDétectée ALORS
+  Trace(ErreurInfo())
+  Erreur("Une erreur a été détectée pendant l'écriture dans le fichier",ErreurInfo())
+	RETOUR
+FIN
 
-#### ExécuteTraitement
-
-```wl
-// Exécute le code d'un événement d'un autre élément.
+// ExécuteTraitement // Exécute le code d'un événement d'un autre élément.
 //-> IMG_Visuel (clic)
 BTN_Modifier.ExécuteTraitement(trtClic)
-```
 
-#### FinProgramme
-
-```wl
-// ferme l'application
-FinProgramme()
-```
-
-#### HExécuteRequête
-
-```wl
-// Exécuter une requête
-HExécuteRequête(REQ_Requête, hRequêteDéfaut, gsVariableChampRécupéré)
-TABLE_REQ_Requête.Affiche()
-```
-
-#### HSupprimeTout
-
-```wl
-// supprime tous les enregistrements d'un fichier de données
-HSupprimeTout(Client)
-```
-
-#### Info
-
-```wl
-// Afficher dans une boite de dialogue
-Info("Bonjour" + Nom_utilisateur, "Bienvenue !") //virgule pour le saut de ligne
-```
-
-#### InfoConstruit
-
-```wl
-// Boîte de dialogue avec des paramètres (%1)
-InfoConstruit("Bonjour %1" + RC + "Bienvenue !", Nom_Utilisateur)
-```
-
-#### Nation
-
-```wl
-// Change la langue de l'application
+// Nation // Change la langue de l'application
 Nation(nationAnglais)
-```
 
-#### OuiNon
+// Sablier // le pointeur se transforme en sablier pendant le déroulement d'un code
+Sablier(vrai)
+  //code
+Sablier(faux)
 
-```wl
-// fenêtre de dialogues avec 2 boutons: oui et non
-OuiNon(Non, "Quitter l'application ?") // Non sera sélectionné par défaut
-```
-
-#### OuvreFille
-
-```wl
-// ouvre une fenêtre non modale pour manipuler plusieurs fenêtre à la fois
-FEN_Envoi_d_un_mail.OuvreFille()
-```
-
-#### Saisie
-
-```wl
-// fenêtre de dialogue avec un champ de saisie
-Saisie("Quel est votre nom ?", sNom)
-```
-
-#### RepriseSaisie
-
-```wl
-// met le focus sur le champ de saisie spécifié
-RepriseSaisie(SAI_Nom)
-```
-
-#### ToastAffiche
-
-```wl
-// pop up d'information
+// ToastAffiche // pop up d'information
 ToastAffiche("Ceci est un message Toast.", toastLong, cvMilieu, chCentre, VertClair)
 ```
 
-#### Fonction
-
-```wl
-
-```
-
-## III. EXEMPLES
+## IV. EXEMPLES DE CODE
 
 ### Afficher et mettre à jour la fiche d'un produit à partir d'une liste de produits
 

@@ -30,7 +30,7 @@ CODE
 ``code comportant déjà la `balise`.``
 
 Bloc de code
-```
+```html
 <html>
 	<body>
 		Les indentations sont conservées
