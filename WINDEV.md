@@ -725,6 +725,9 @@ PROCÉDURE FEN_TraitementPatient(VariableTransmise)
 // OuvreFille // ouvre une fenêtre non modale pour manipuler plusieurs fenêtre à la fois
 FEN_Envoi_d_un_mail.OuvreFille()
 
+// OuvreSoeur // fenêtre non modale qui ne se fermera pas à la fermeture de la fenêtre parente
+FEN_Envoi_d_un_mail.OuvreSoeur()
+
 // Saisie // fenêtre de dialogue avec un champ de saisie
 Saisie("Quel est votre nom ?", sNom)
 ```
