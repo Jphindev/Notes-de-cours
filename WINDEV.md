@@ -2,31 +2,37 @@
 
 ## Raccourcis clavier
 
-| Raccourci  | Effet                             |
-| ---------- | --------------------------------- |
-| Ctrl <     | Accueil                           |
-| Ctrl E     | chercher une fenêtre              |
-| Ctrl W     | cacher les volets                 |
-| Ctrl B     | Placer un point d'arrêt débogueur |
-| F2         | Événements de l'objet             |
-| Ctrl F2    | Traitement ou événement initial   |
-| Ctrl L     | supprime la ligne                 |
-| Ctrl D     | duplique la ligne                 |
-| Tab        | Indente                           |
-| Maj Tab    | Désindente                        |
-| Ctrl /     | met en commentaires               |
-| Ctrl Maj / | enlève les commentaires           |
-| Ctrl R     | Indenter automatiquement le code  |
-| Ctrl N     | Nouveau                           |
-| F9         | Tester la fenêtre                 |
-| Ctrl F9    | Tester le projet                  |
-| F5         | Ordre de navigation               |
-|            |                                   |
-|            |                                   |
-|            |                                   |
-|            |                                   |
-|            |                                   |
-|            |                                   |
+| Raccourci    | Effet                             | Niveau  |
+| ------------ | --------------------------------- | ------- |
+| F1           | Aide sur l'élément sélectionné    |         |
+| F2           | Événements de l'objet             |         |
+| F4           | Reproduire la mise en forme       | fenêtre |
+| F4           | Nouvelle procédure locale         | code    |
+| F5           | Ordre de navigation               | fenêtre |
+| F9           | Tester la fenêtre                 |         |
+| Ctrl F2      | Traitement ou événement initial   |         |
+| Ctrl F3      | Rechercher/remplacer dans le code |         |
+| Ctrl F4      | Fermer la fenêtre                 |         |
+| Ctrl F9      | Tester le projet                  |         |
+| Ctrl <       | Accueil                           |         |
+| Ctrl E       | chercher une fenêtre              |         |
+| Ctrl W       | cacher les volets                 |         |
+| Ctrl B       | Placer un point d'arrêt débogueur | code    |
+| Ctrl L       | supprime la ligne                 | code    |
+| Ctrl D       | duplique la ligne                 | code    |
+| Ctrl /       | met en commentaires               |         |
+| Ctrl Shift / | enlève les commentaires           |         |
+| Ctrl R       | Indenter automatiquement le code  |         |
+| Ctrl N       | Nouveau                           |         |
+| Shift F4     | Nouvelle procédure globale        | code    |
+| Shift Tab    | Désindente                        | code    |
+| Tab          | Indente                           | code    |
+| Alt Entrée   | Ouvrir la description             |         |
+| R            | Formatage du champ                | état    |
+|              |                                   |         |
+|              |                                   |         |
+|              |                                   |         |
+|              |                                   |         |
 
 ## I. Les bases
 
@@ -539,7 +545,6 @@ PROCÉDURE CalculTTC(LOCAL MontantHT est un monétaire, LOCAL TauxTVA est un ré
   TTC = MontantHT * (1 + TauxTVA/100)
 RENVOYER TTC
 
-
 // Appel de la procédure depuis le code
 Bienvenue()
 
@@ -664,7 +669,48 @@ FIN
 //REF-123 Mon produit 10 | Le stock est insuffisant
 ```
 
-## III. FONCTIONS NATIVES
+## III. ÉTATS
+
+Un état est une représentation graphique de données.
+Un rapport à envoyer, un bon de commande à imprimer, un PDF à générer, ...
+
+### Visualiser un état
+
+```wl
+// Configuration du visualisateur
+iParamètreVisualisateur(iBoutonAucun+iBoutonImprimante+iBoutonPdf)
+iParamètreVisualisateur(iBoutonTous-iBoutonImprimante)
+// Ouverture grâce au visualisateur
+iDestination(iVisualisateur)
+//sélection de l'état à afficher
+iImprimeEtat(ETAT_Bon_de_commande)
+```
+
+### Etat à partir d'une requête
+
+```wl
+//-> BTN_RapportPrescription (clic)
+IDDoc est une chaîne
+// Saisie du paramètre
+Saisie("Pour quel médecin ?", IDDoc)
+iDestination(iVisualisateur)
+// Lancer la requête avec le paramètre
+iInitrequêteEtat(ETAT_PrescriptionsDocteur, IDDoc)
+// Afficher l'état
+iImprimeEtat(ETAT_PrescriptionsDocteur)
+
+//Autre solution: lancer la requête dans le code de l'état
+//-> Ouverture de ETAT_PrescriptionsDocteur
+PROCÉDURE MonEtat(IDSaisie est une chaîne)
+  iInitrequêteEtat(ETAT_PrescriptionsDocteur, IDSaisie)
+//-> BTN_RapportPrescription (clic)
+iImprimeEtat(ETAT_PrescriptionsDocteur, IDDoc)
+```
+
+Si plusieurs paramètres sont à fournir avec l'état, il faut les écrire dans le même ordre que celui de la requête SQL.
+Pour un état sans tableau, il suffit de modéliser les champs sur la première ligne de résultat. Le reste du résultat sera généré automatiquement par répétition des champs.
+
+## IV. FONCTIONS NATIVES
 
 ### BASE DE DONNEES
 
@@ -672,6 +718,9 @@ FIN
 // HExécuteRequête // Exécuter une requête
 HExécuteRequête(REQ_Requête, hRequêteDéfaut, gsVariableChampRécupéré)
 TABLE_REQ_Requête.Affiche()
+
+// HNbEnr // renvoie le nombre de résultats d'une requête ou d'un fichier de données
+HNbEnr(REQ_NomRequete)
 
 // HSupprimeTout // supprime tous les enregistrements d'un fichier de données
 HSupprimeTout(Client)
@@ -694,6 +743,13 @@ FIN
 ```wl
 // RepriseSaisie // met le focus sur le champ de saisie spécifié
 RepriseSaisie(SAI_Nom)
+```
+
+### DATE ET HEURE
+
+```wl
+// DateDifférence // renvoie le nombre de jours entre deux dates
+nNbJours est un entier = DateDifférence(PremierJourDuMois(), SAI_DateFin)
 ```
 
 ### FENETRE
@@ -736,7 +792,7 @@ Saisie("Quel est votre nom ?", sNom)
 
 ```wl
 // fRepExe // chaine correspondant au répertoire EXE du projet
-sChemin est une chaîne = fRepExe() + "Fichier.txt"
+sChemin est une chaîne = fRepExe() + "\Fichier.txt"
 
 // fCrée // crée un fichier
 oFichier est un FichierDisque = fCrée(sChemin)
@@ -752,6 +808,12 @@ oFichier.Ferme()
 
 // fSauveTexte // Écriture directe dans le fichier .txt
 fSauveTexte(sChemin, "Contenu de la ligne 1"+RC+"Contenu de la ligne 2"+RC+"Contenu de la ligne 3")
+
+// HExtraitMémo // extrait le contenu d'un fichier image, son ou binaire
+HextraitMémo(Fichier de données, Rubrique, "C:\Projet\test.jpg")
+
+// LanceAppliAssociée // ouvre un fichier externe avec l'application dédiée
+LanceAppliAssociée("C:\WDNEWS\Version\Fonctions.pdf")
 
 // lit // lit le contenu d'un fichier par bloc
 oFichier.lit(500)
@@ -821,6 +883,9 @@ TABLE_Produit.Affiche(<position>)
 ### FONCTIONNALITES DIVERSES
 
 ```wl
+// DateDifférence // renvoie le nombre de jours entre deux dates
+nNbJours est un entier = DateDifférence(SAI_DateDebut, SAI_DateFin)
+
 // ErreurDétectée / ErreurInfo // affiche l'erreur détectée
 SI ErreurDétectée ALORS
   Trace(ErreurInfo())
@@ -840,11 +905,16 @@ Sablier(vrai)
   //code
 Sablier(faux)
 
+// TimerSys // Exécuter une procédure au bout d'un certain temps
+TimerSys(Nom_Procédure, 200, 1) // Procédure éxécutée après 2s
+FinTimerSys(1) // Annule le timer 1
+
 // ToastAffiche // pop up d'information
 ToastAffiche("Ceci est un message Toast.", toastLong, cvMilieu, chCentre, VertClair)
+
 ```
 
-## IV. EXEMPLES DE CODE
+## V. EXEMPLES DE CODE
 
 ### Afficher et mettre à jour la fiche d'un produit à partir d'une liste de produits
 
