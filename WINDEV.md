@@ -695,14 +695,14 @@ IDDoc est une chaîne
 Saisie("Pour quel médecin ?", IDDoc)
 iDestination(iVisualisateur)
 // Lancer la requête avec le paramètre
-iInitrequêteEtat(ETAT_PrescriptionsDocteur, IDDoc)
+iInitRequêteEtat(ETAT_PrescriptionsDocteur, IDDoc)
 // Afficher l'état
 iImprimeEtat(ETAT_PrescriptionsDocteur)
 
 //Autre solution: lancer la requête dans le code de l'état
 //-> Ouverture de ETAT_PrescriptionsDocteur
 PROCÉDURE MonEtat(IDSaisie est une chaîne)
-  iInitrequêteEtat(ETAT_PrescriptionsDocteur, IDSaisie)
+  iInitRequêteEtat(ETAT_PrescriptionsDocteur, IDSaisie)
 //-> BTN_RapportPrescription (clic)
 iImprimeEtat(ETAT_PrescriptionsDocteur, IDDoc)
 ```
@@ -878,6 +878,46 @@ TABLE_Produit.Affiche(<position>)
   taCourantBandeau: affiche les produits regroupés par catégories
   taCourantPremier: positionne l'affichage sur le premier produit de la liste
   taInit: réinitialise l'affichage
+```
+
+### GRAPHES
+
+```wl
+//GRAPHE DONUT
+grTitre(GRF_Programmation, "Part des hommes et des femmes",grEnHaut)
+//Ajouter des données: 60% hommes, 40% femmes
+grAjouteDonnée (GRF_Programmation, 1,60)
+grAjouteDonnée (GRF_Programmation, 1,40)
+//Ajouter une légende
+grLégende (GRF_Programmation,grADroite)
+//Ajouter les étiquettes de catégorie
+grEtiquetteCatégorie (GRF_Programmation,1, "Hommes")
+grEtiquetteCatégorie(GRF_Programmation, 2, "Femmes")
+//Dessiner le graphe complètement
+grDessine(GRF_Programmation)
+
+// HISTOGRAMMES
+//Titre de l'histogramme
+grTitre(GRF_HistoProgrammation,"CA pour les trois premiers mois de l'année",grEnHaut)
+// Légende
+grLégende(GRF_HistoProgrammation,grADroite)
+//Remplir la légende › Etiquette de séries
+grEtiquetteSérie(GRF_HistoProgrammation,1,"2020")
+grEtiquetteSérie(GRF_HistoProgrammation,2,"2021")
+//Remplir la base du graphique › Catégorie = abscisse
+grEtiquetteCatégorie (GRF_HistoProgrammation,1,"Janv.")
+grEtiquettecatégorie(GRF_HistoProgrammation,2,"Fev.")
+grEtiquetteCatégorie(GRF_HistoProgrammation,3,"Mar.")
+//Remplir les données pour 2020
+grAjouteDonnée(GRF_HistoProgrammation,1,1,100) //nom,série,catégorie,valeur
+grAjouteDonnée(GRF_HistoProgrammation,1,2,110)
+grAjouteDonnée(GRF_HistoProgrammation,1,3,120)
+//Remplir les données pour 2021
+grAjouteDonnée(GRF_HistoProgrammation,2,1,150)
+grAjouteDonnée(GRF_HistoProgrammation,2,2,170)
+grAjouteDonnée(GRF_HistoProgrammation,2,3,180)
+//Dessiner
+grDessine(GRF_HistoProgrammation)
 ```
 
 ### FONCTIONNALITES DIVERSES
