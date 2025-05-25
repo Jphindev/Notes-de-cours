@@ -878,46 +878,45 @@ TABLE_Produit.Affiche(<position>)
   taCourantBandeau: affiche les produits regroupés par catégories
   taCourantPremier: positionne l'affichage sur le premier produit de la liste
   taInit: réinitialise l'affichage
+
+// TableSelect // position dans un tableau
+TABLE_Produit.TableSelect() // indique l'indice la la ligne sélectionnée
+TABLE_Produit.TableSelectPlus(3) // sélection de la 3e ligne du tableau
+TABLE_Produit.TableSelectMoins(3) // désélection de la 3e ligne du tableau
+
 ```
 
 ### GRAPHES
 
 ```wl
-//GRAPHE DONUT
+// grTitre // titre du graphe
 grTitre(GRF_Programmation, "Part des hommes et des femmes",grEnHaut)
-//Ajouter des données: 60% hommes, 40% femmes
-grAjouteDonnée (GRF_Programmation, 1,60)
-grAjouteDonnée (GRF_Programmation, 1,40)
-//Ajouter une légende
-grLégende (GRF_Programmation,grADroite)
-//Ajouter les étiquettes de catégorie
-grEtiquetteCatégorie (GRF_Programmation,1, "Hommes")
-grEtiquetteCatégorie(GRF_Programmation, 2, "Femmes")
-//Dessiner le graphe complètement
-grDessine(GRF_Programmation)
 
-// HISTOGRAMMES
-//Titre de l'histogramme
-grTitre(GRF_HistoProgrammation,"CA pour les trois premiers mois de l'année",grEnHaut)
-// Légende
-grLégende(GRF_HistoProgrammation,grADroite)
-//Remplir la légende › Etiquette de séries
+// grLégende // Ajouter une légende
+grLégende (GRF_Programmation,grADroite)
+
+// grEtiquetteSérie // Etiquette de séries pour les HISTOGRAMMES
 grEtiquetteSérie(GRF_HistoProgrammation,1,"2020")
 grEtiquetteSérie(GRF_HistoProgrammation,2,"2021")
-//Remplir la base du graphique › Catégorie = abscisse
-grEtiquetteCatégorie (GRF_HistoProgrammation,1,"Janv.")
-grEtiquettecatégorie(GRF_HistoProgrammation,2,"Fev.")
-grEtiquetteCatégorie(GRF_HistoProgrammation,3,"Mar.")
-//Remplir les données pour 2020
+
+// grEtiquetteCatégorie // Ajouter les étiquettes de catégorie (abscisses)
+grEtiquetteCatégorie(GRF_Programmation, 1, "Hommes")
+grEtiquetteCatégorie(GRF_Programmation, 2, "Femmes")
+
+// grAjouteDonnée pour les graphes SECTEURS // Ajouter des données
+grAjouteDonnée (GRF_Programmation, 1, 60)
+grAjouteDonnée (GRF_Programmation, 1, 40)
+
+// grAjouteDonnée pour les graphes SECTEURS // Remplir les données pour 2020 (série 1) et 2021 (série 2)
 grAjouteDonnée(GRF_HistoProgrammation,1,1,100) //nom,série,catégorie,valeur
 grAjouteDonnée(GRF_HistoProgrammation,1,2,110)
 grAjouteDonnée(GRF_HistoProgrammation,1,3,120)
-//Remplir les données pour 2021
 grAjouteDonnée(GRF_HistoProgrammation,2,1,150)
 grAjouteDonnée(GRF_HistoProgrammation,2,2,170)
 grAjouteDonnée(GRF_HistoProgrammation,2,3,180)
-//Dessiner
-grDessine(GRF_HistoProgrammation)
+
+// grDessine // Dessiner le graphe complètement
+grDessine(GRF_Programmation)
 ```
 
 ### FONCTIONNALITES DIVERSES
@@ -1216,4 +1215,41 @@ FIN
 
 // Ferme la session SMTP
 MaSession.FermeSession()
+```
+
+### Remplir un histogramme par programmation
+
+```wl
+grTitre(GRF_TraitmentsParDocteur, "Nb de traitements par docteur par jour",grEnHaut)
+grLégende(GRF_TraitmentsParDocteur,grADroite)
+HExécuteRequête(REQ_TraitementsParDocteur,hRequêteDéfaut)
+
+tabDatesIndices				est un tableau associatif d'entier
+IndiceCat		est un entier	= 1
+
+// Parcours unique avec gestion dynamique des indices
+POUR TOUT REQ_TraitementsParDocteur
+	datereq est une Date = REQ_TraitementsParDocteur.DateAdministration
+
+	// Si cette date n'a pas encore d'indice, lui en attribuer un
+	SI PAS tabDatesIndices[datereq] ALORS
+		tabDatesIndices[datereq] = IndiceCat
+		// Définir l'étiquette de la catégorie
+		grEtiquetteCatégorie(GRF_TraitmentsParDocteur, IndiceCat, DateVersChaîne(datereq, "DD/MM/YY"))
+		IndiceCat++
+	FIN
+
+	// Récupérer l'indice de la date courante
+	indiceDateCat	est un entier			= tabDatesIndices[datereq]
+	numserie			est un entier			= Gauche(REQ_TraitementsParDocteur.IDDocteur, 3)
+	nomserie			est une chaîne		= Milieu(REQ_TraitementsParDocteur.IDDocteur, 4, 6)
+
+	// Définir le nom de la série
+	grEtiquetteSérie(GRF_TraitmentsParDocteur, numserie, nomserie)
+
+	// Ajouter la donnée
+	grAjouteDonnée(GRF_TraitmentsParDocteur, numserie, indiceDateCat, REQ_TraitementsParDocteur.Comptage_1)
+FIN
+
+grDessine(GRF_TraitmentsParDocteur)
 ```
