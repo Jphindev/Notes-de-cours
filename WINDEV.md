@@ -223,6 +223,7 @@ TexteInitial = TexteInitial.Formate(ccSansAccent + ccMinuscule) //cc = chaine de
 Trace(TexteInitial) //c'est eric
 TexteInitial = TexteInitial.Formate(ccMajuscule + ccSansEspaceIntérieur)
 Trace(TexteInitial) //C'ESTÉRIC
+SansEspace("Abra ca da bra", sscIntérieur) // Renvoie "Abracadabra"
 
 // Recherche
 ChaîneARechercher	est une chaîne	= "WINDEV"
@@ -686,6 +687,16 @@ iDestination(iVisualisateur)
 iImprimeEtat(ETAT_Bon_de_commande)
 ```
 
+### Enchainement d'états
+
+```wl
+iDestination(iVisualisateur)
+// Affiche plusieurs états à la suite
+iEnchaînementAjoute(ETAT_Partie1)
+iEnchaînementAjoute(ETAT_Partie2)
+iEnchaînementImprime()
+```
+
 ### Etat à partir d'une requête
 
 ```wl
@@ -712,9 +723,28 @@ Pour un état sans tableau, il suffit de modéliser les champs sur la première 
 
 ## IV. FONCTIONS NATIVES
 
-### BASE DE DONNEES
+### BASE DE DONNEES / SERVEUR
 
 ```wl
+// CONNEXION BDD DISTANTE // fichiers locaux vers BDD externe
+MaConnexionManuelle est une Connexion
+HDécritConnexion(MaConnexionManuelle)
+  //Paramètres de la connexion à l'aide de l'assistant
+  MaConnexionManuelle.Provider = hAccèsHFCLientServeur
+  MaConnexionManuelle.Utilisateur = "WINDEVNURSE"
+  MaConnexionManuelle.MotDePasse = "1234"
+  MaConnexionManuelle.Serveur = "webdev26.dinao.com:4900"
+  MaConnexionManuelle.BaseDeDonnées = "WINDEVNURSE"
+  MaConnexionManuelle.Cryptage = hCryptageNon
+SI HOuvreConnexion(MaConnexionManuelle) ALORS   //on ouvre la connexion
+  HChangeConnexion("*", MaConnexionManuelle)    //on l'applique à tous nos fichiers de données
+  HCréationSiInexistant("*")                    //création des fichiers dans la BDD externe
+  HFermeConnexion(MaConnexionManuelle)          //on ferme la connexion
+SINON
+  ToastAffiche("Connexion impossible", toastLong, cvMilieu, chCentre, VertClair)
+  RETOUR
+FIN
+
 // HExécuteRequête // Exécuter une requête
 HExécuteRequête(REQ_Requête, hRequêteDéfaut, gsVariableChampRécupéré)
 TABLE_REQ_Requête.Affiche()
@@ -724,6 +754,9 @@ HNbEnr(REQ_NomRequete)
 
 // HSupprimeTout // supprime tous les enregistrements d'un fichier de données
 HSupprimeTout(Client)
+
+// Ping // vérifie la disponibilité d'un serveur
+Ping("webdev26.dinao.com") //vrai si le serveur est disponible
 ```
 
 ### CHAINE
@@ -736,6 +769,12 @@ TANTQUE sRésultat <> EOT //End Of Text
   Trace(sRésultat)
   sRésultat = sChaîne.ExtraitChaîne(rangSuivant, [", " , " et ", "<BR>"])
 FIN
+
+// ChaîneOccurrence // renvoie le nombre d'occurrence d'une chaîne dans une autre
+ChaîneOccurrence("anastasia", ["a","s"]) // Renvoie 6
+
+// SansEspace // supprime les espaces d'une chaîne
+SansEspace(" a  b c ") //abc
 ```
 
 ### CHAMPS
@@ -743,6 +782,11 @@ FIN
 ```wl
 // RepriseSaisie // met le focus sur le champ de saisie spécifié
 RepriseSaisie(SAI_Nom)
+
+// SaisieInvalideDétecte // en cas de champ bligatoire non rempli ou caractères non autorisés
+SI SaisieInvalideDétecte() ALORS
+  ToastAffiche("Erreur de saisie !", ToastCourt, cvMilieu, chMilieu, RougeClair)
+FIN
 ```
 
 ### DATE ET HEURE
@@ -867,6 +911,12 @@ fListeRépertoire(gsRep1,frRécursif) // Liste des repertoires
 fRepSupprime(gsRep1,frRécursif)     // Supprime un repertoire
 fRepSélecteur(ComplèteRep(SAI_REPENCOURS), "Sélectionnez un répertoire...", "")
 
+// EXCEL //
+FicXls est un xlsDocument = xlsOuvre("C:\chemin\Fichier.xls") // Ouvre un fichier Excel
+xlsNbLigne(FicXls)                    // Nombre de lignes du fichier Excel
+xlsDonnée(FicXls, n°ligne, n°colonne) // accède à une cellule
+xlsFerme()                            // Ferme un fichier Excel
+HImporteXLS(fichier de données, chemin du xls, n°feuille, "rubrique1pourinjectioncolonne1,rubrique2pourinjectioncolonne2", hImpTestDoublon + hImpIgnorePremièreLigne)
 ```
 
 ### TABLEAU
@@ -880,10 +930,9 @@ TABLE_Produit.Affiche(<position>)
   taInit: réinitialise l'affichage
 
 // TableSelect // position dans un tableau
-TABLE_Produit.TableSelect() // indique l'indice la la ligne sélectionnée
-TABLE_Produit.TableSelectPlus(3) // sélection de la 3e ligne du tableau
-TABLE_Produit.TableSelectMoins(3) // désélection de la 3e ligne du tableau
-
+TableSelect(TABLE_Produit) // indique l'indice la la ligne sélectionnée
+TableSelectPlus(TABLE_Produit,3) // sélection de la 3e ligne du tableau
+TableSelectMoins(TABLE_Produit,3) // désélection de la 3e ligne du tableau
 ```
 
 ### GRAPHES
@@ -919,13 +968,24 @@ grAjouteDonnée(GRF_HistoProgrammation,2,3,180)
 grDessine(GRF_Programmation)
 ```
 
+### ZONES RÉPÉTÉES
+
+Comme un tableau avec un affichage différent en zones répétées
+
+```wl
+// ZoneRépétéeAjoute // ajoute des données dans une zone répétée
+POUR TOUT Patient
+  ZoneRépétéeAjoute(ZR_Patients, Patient.Nom + TAB + Patient.Prenom) // TAB pour aller au champ suivant
+FIN
+```
+
 ### FONCTIONNALITES DIVERSES
 
 ```wl
 // DateDifférence // renvoie le nombre de jours entre deux dates
 nNbJours est un entier = DateDifférence(SAI_DateDebut, SAI_DateFin)
 
-// ErreurDétectée / ErreurInfo // affiche l'erreur détectée
+// ErreurDétectée / ErreurInfo // détecte si la dernière fonction utilisée a renvoyé une erreur et affiche l'erreur
 SI ErreurDétectée ALORS
   Trace(ErreurInfo())
   Erreur("Une erreur a été détectée pendant l'écriture dans le fichier",ErreurInfo())
@@ -1220,8 +1280,8 @@ MaSession.FermeSession()
 ### Remplir un histogramme par programmation
 
 ```wl
-grTitre(GRF_TraitmentsParDocteur, "Nb de traitements par docteur par jour",grEnHaut)
-grLégende(GRF_TraitmentsParDocteur,grADroite)
+grTitre(GRF_TraitementsParDocteur, "Nb de traitements par docteur par jour",grEnHaut)
+grLégende(GRF_TraitementsParDocteur,grADroite)
 HExécuteRequête(REQ_TraitementsParDocteur,hRequêteDéfaut)
 
 tabDatesIndices				est un tableau associatif d'entier
@@ -1235,7 +1295,7 @@ POUR TOUT REQ_TraitementsParDocteur
 	SI PAS tabDatesIndices[datereq] ALORS
 		tabDatesIndices[datereq] = IndiceCat
 		// Définir l'étiquette de la catégorie
-		grEtiquetteCatégorie(GRF_TraitmentsParDocteur, IndiceCat, DateVersChaîne(datereq, "DD/MM/YY"))
+		grEtiquetteCatégorie(GRF_TraitementsParDocteur, IndiceCat, DateVersChaîne(datereq, "DD/MM/YY"))
 		IndiceCat++
 	FIN
 
@@ -1245,11 +1305,11 @@ POUR TOUT REQ_TraitementsParDocteur
 	nomserie			est une chaîne		= Milieu(REQ_TraitementsParDocteur.IDDocteur, 4, 6)
 
 	// Définir le nom de la série
-	grEtiquetteSérie(GRF_TraitmentsParDocteur, numserie, nomserie)
+	grEtiquetteSérie(GRF_TraitementsParDocteur, numserie, nomserie)
 
 	// Ajouter la donnée
-	grAjouteDonnée(GRF_TraitmentsParDocteur, numserie, indiceDateCat, REQ_TraitementsParDocteur.Comptage_1)
+	grAjouteDonnée(GRF_TraitementsParDocteur, numserie, indiceDateCat, REQ_TraitementsParDocteur.Comptage_1)
 FIN
 
-grDessine(GRF_TraitmentsParDocteur)
+grDessine(GRF_TraitementsParDocteur)
 ```
