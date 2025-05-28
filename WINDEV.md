@@ -69,21 +69,21 @@ Elles peuvent être:
 
 BTN\*Bouton  
 FEN_Fenêtre  
-SAI_Champ_De_Saisie
-SEL_Champ_De_Sélection_radio
-LIB_Libellé
-IMG_Image
-TABLE_Table
-COL_Colonne
-ONG_Onglet
-COMBO_Sélection_dans_une_liste
-ETAT_Représentation_graphique
-OPT_Option_de_menu_déroulant
+SAI_Champ_De_Saisie  
+SEL_Champ_De_Sélection_radio  
+LIB_Libellé  
+IMG_Image  
+TABLE_Table  
+COL_Colonne  
+ONG_Onglet  
+COMBO_Sélection_dans_une_liste  
+ETAT_Représentation_graphique  
+OPT_Option_de_menu_déroulant  
 
-gGlobal
+gGlobal  
 sString_Chaine  
-mMéthode
-paramParamètre_de_la_requète
+mMéthode  
+paramParamètre_de_la_requète  
 
 ### 5. Débogueur
 
@@ -780,8 +780,9 @@ SansEspace(" a  b c ") //abc
 ### CHAMPS
 
 ```wl
-// RepriseSaisie // met le focus sur le champ de saisie spécifié
+// RepriseSaisie / DonneFocus // met le focus sur le champ de saisie spécifié
 RepriseSaisie(SAI_Nom)
+DonneFocus(SAI_Nom)
 
 // SaisieInvalideDétecte // en cas de champ bligatoire non rempli ou caractères non autorisés
 SI SaisieInvalideDétecte() ALORS
@@ -928,6 +929,9 @@ TABLE_Produit.Affiche(<position>)
   taCourantBandeau: affiche les produits regroupés par catégories
   taCourantPremier: positionne l'affichage sur le premier produit de la liste
   taInit: réinitialise l'affichage
+
+// TableCherche // cherche une valeur dans une colonne et renvoie le nb trouvé
+nbOccurencesTrouvés = TableCherche(TABLE_NomTable.COL_NomCol, SAI_NomChamp)
 
 // TableSelect // position dans un tableau
 TableSelect(TABLE_Produit) // indique l'indice la la ligne sélectionnée
