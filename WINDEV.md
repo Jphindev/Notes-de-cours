@@ -930,8 +930,8 @@ TABLE_Produit.Affiche(<position>)
   taCourantPremier: positionne l'affichage sur le premier produit de la liste
   taInit: réinitialise l'affichage
 
-// TableCherche // cherche une valeur dans une colonne et renvoie le nb trouvé
-nbOccurencesTrouvés = TableCherche(TABLE_NomTable.COL_NomCol, SAI_NomChamp)
+// TableCherche // cherche une valeur dans une colonne et renvoie l'indice
+IndiceTrouvé = TableCherche(TABLE_NomTable.COL_NomCol, SAI_NomChamp, rechercheIdentique)
 
 // TableSelect // position dans un tableau
 TableSelect(TABLE_Produit) // indique l'indice la la ligne sélectionnée
