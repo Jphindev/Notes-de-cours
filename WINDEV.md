@@ -78,12 +78,12 @@ COL_Colonne
 ONG_Onglet  
 COMBO_Sélection_dans_une_liste  
 ETAT_Représentation_graphique  
-OPT_Option_de_menu_déroulant  
+OPT_Option_de_menu_déroulant
 
 gGlobal  
 sString_Chaine  
 mMéthode  
-paramParamètre_de_la_requète  
+paramParamètre_de_la_requète
 
 ### 5. Débogueur
 
@@ -95,11 +95,11 @@ paramParamètre_de_la_requète
 - colonne expression pour mettre une valeur cible (ex: =10)
 - Visualiser le suivi d'une variable: clic droit puis éditer
 
-## II. Wlangage
+## II. jsangage
 
 -> programmation événementielle
 
-```wl
+```js
 // Syntaxe classique
 TableAjouteLigne(TABLE_TableProduit, "Dubois", "Pierre")
 
@@ -119,7 +119,7 @@ FIN
 
 https://doc.pcsoft.fr/?1514013&name=les_differents_types_variables
 
-```wl
+```js
 // Déclaration
 Prix est un monétaire //deviendra moPrix avec la charte
 Nom, Prénom sont des chaînes // gsNom, gsPrénom pour global string avec la charte
@@ -138,7 +138,7 @@ Prix est un monétaire = 500.32
 
 #### a. NOMBRES
 
-```wl
+```js
 Compteur est un entier
 V1 est un entier
 Res est un numérique
@@ -157,7 +157,7 @@ Res = Compteur / 5 // Res vaut 3.6
 
 #### b. CHAÎNE
 
-```wl
+```js
 Nom est une chaîne
 Nom = "Dupont"
 Nom = SAI_Nom //affectation d'une variable avec un champ
@@ -171,7 +171,7 @@ Chaîne multiligne = "
 
 ##### Concaténation
 
-```wl
+```js
 MaChaîneConstruite	est une chaîne
 NomProduit			    est une chaîne	= "WINDEV"
 
@@ -190,7 +190,7 @@ Trace("Saisie directe : " + MaChaîneConstruite)
 
 ##### Opérations de chaînes
 
-```wl
+```js
 ListeProduits est une chaîne = "
 WINDEV
 WEBDEV
@@ -264,7 +264,7 @@ SI Chaîne1 ~= Chaîne3 ALORS ... //équivalentes
 
 ##### Type Date
 
-```wl
+```js
 MaDate est une Date
 MaDate	= Hier()
 MaDate	= "20210929"
@@ -282,7 +282,7 @@ FIN
 
 ##### Type heure
 
-```wl
+```js
 // Déclaration d'une heure
 MonHeure est une Heure // Par défaut, l'heure est initialisée avec l'heure actuelle
 MonHeure = Maintenant()
@@ -304,7 +304,7 @@ FIN //antérieure
 
 ##### Type Durée
 
-```wl
+```js
 MaDurée est une Durée
 MaDurée = 2 min 8 s
 MaDurée = 128 s
@@ -314,7 +314,7 @@ Trace(MaDurée.VersChaîne("MM:SS")) //02:08
 
 #### d. TABLEAU
 
-```wl
+```js
 // les indices commencent à 1, pas à 0
 
 MonTableau est un tableau de chaînes
@@ -330,7 +330,7 @@ TableauJour est un tableau de chaînes = ["Lundi", "Mardi", "Mercredi", "Jeudi",
 
 ##### POUR ... À
 
-```wl
+```js
 POUR Indice = 1 À MonTableau.Occurrence
   Trace("[%Indice%] : [%MonTableau[Indice]%]")
 FIN //1 : WINDEV | 2 : WEBDEV ...
@@ -338,7 +338,7 @@ FIN //1 : WINDEV | 2 : WEBDEV ...
 
 ##### POUR TOUT ...
 
-```wl
+```js
 POUR TOUT ÉLÉMENT UneChaîne, Indice DE MonTableau
   Trace("[%Indice%] : [%UneChaîne%]")
 FIN
@@ -346,7 +346,7 @@ FIN
 
 ##### Tableau associatif
 
-```wl
+```js
 MonTableau est un tableau associatif de Dates
 
 MonTableau["Marc"] = "19820201"
@@ -361,7 +361,7 @@ FIN
 
 #### e. STRUCTURE
 
-```wl
+```js
 //regroupe des variables de type différents
 NomComplet est une Structure
   Nom est une chaîne //membre
@@ -389,7 +389,7 @@ Trace(MesContacts[1].Nom, MesContacts[1].Prénom) //POLO | MARCO
 
 #### a. SI... ALORS... SINON... FIN
 
-```wl
+```js
 NombreAléatoire est un entier
 // Initialise le générateur de nombre aléatoire
 InitHasard()
@@ -415,7 +415,7 @@ Trace(NombreAléatoire > 2000 ? "Nombre supérieur à 2000" SINON "Nombre infér
 
 ##### ET
 
-```wl
+```js
 Condition1 est un booléen = Faux
 Condition2 est un booléen = Vrai
 
@@ -428,7 +428,7 @@ FIN
 
 ##### OU
 
-```wl
+```js
 Condition1 est un booléen = Faux
 Condition2 est un booléen = Vrai
 
@@ -443,7 +443,7 @@ FIN
 
 #### b. SELON
 
-```wl
+```js
 LaDateDuJour est une Date
 
 SELON LaDateDuJour.Jour
@@ -463,7 +463,7 @@ FIN
 
 #### a. POUR
 
-```wl
+```js
 // Remplissage d'un tableau d'entiers pairs de 1 à 10
 TableauNombres est un tableau d'entiers
 POUR Indice = 1 À 10
@@ -487,7 +487,7 @@ FIN
 
 ##### PAS
 
-```wl
+```js
 POUR Indice = 100 À 1 PAS -10
   Trace(Indice) // 100, 90, 80...
 FIN
@@ -495,7 +495,7 @@ FIN
 
 #### b. BOUCLE (nb d'occurences inconnus)
 
-```wl
+```js
 Compteur est un entier = 10
 
 // Fin de boucle avec SI
@@ -520,7 +520,7 @@ FIN
 
 #### c. TANTQUE (condition de sortie au début)
 
-```wl
+```js
 Compteur est un entier = 1
 TANTQUE Compteur <= 10
   Trace("Tour de boucle | Valeur : [%Compteur%]")
@@ -530,10 +530,10 @@ FIN
 
 ### 4. LES PROCÉDURES
 
-```wl
+```js
 //Création d'une procédure globale
 PROCÉDURE Bienvenue()
-  Info("Bienvenue dans mon programme écrit en WLangage")
+  Info("Bienvenue dans mon programme écrit en jsangage")
 
 PROCÉDURE SupprimerEspace(LOCAL ChaîneATraiter est une chaîne)
   //LOCAL permet de ne pas modifier la variable originale
@@ -570,7 +570,7 @@ Une classe dérivée permet à ses objets d'accéder à toutes les méthodes, à
 
 #### a. Création d'une classe
 
-```wl
+```js
 CProduit est une Classe
 
 PUBLIC
@@ -594,7 +594,7 @@ FIN
 
 On modifie le constructeur pour initialiser le membre mg_SeuilAlerteStock lors de la création de l'objet
 
-```wl
+```js
 PROCÉDURE Constructeur(SeuilAlerteStock est un entier)
 mg_SeuilAlerteStock = SeuilAlerteStock
 ```
@@ -603,7 +603,7 @@ mg_SeuilAlerteStock = SeuilAlerteStock
 
 On génère la propriété (clic droit) pour chaque membre afin d'avoir un getter et setter
 
-```wl
+```js
 //getter: lit la valeur du membre
 PROCÉDURE PUBLIQUE Référence() : chaîne
 RENVOYER m_Référence
@@ -617,7 +617,7 @@ m_Référence=Valeur
 
 On crée des méthodes pour mettre le stock à jour et vérifier l'état du stock
 
-```wl
+```js
 PROCÉDURE AjouteStock(LOCAL StockSupplémentaire est un entier) : booléen
 
 // Le stock fourni en paramètre doit être valide
@@ -633,7 +633,7 @@ m_Stock += StockSupplémentaire
 RENVOYER Vrai
 ```
 
-```wl
+```js
 PROCÉDURE EtatDuStock() : EtatStock
 
 // Si le stock est vide
@@ -654,7 +654,7 @@ RENVOYER STOCK_OK
 
 On crée un objet pour instancier la classe
 
-```wl
+```js
 UnProduit est un CProduit(20) //renseignement de la quantité limite grâce au contructeur
 
 UnProduit.Référence	= "REF-123"
@@ -677,29 +677,29 @@ Un rapport à envoyer, un bon de commande à imprimer, un PDF à générer, ...
 
 ### Visualiser un état
 
-```wl
+```js
 // Configuration du visualisateur
-iParamètreVisualisateur(iBoutonAucun+iBoutonImprimante+iBoutonPdf)
-iParamètreVisualisateur(iBoutonTous-iBoutonImprimante)
+iParamètreVisualisateur(iBoutonAucun + iBoutonImprimante + iBoutonPdf);
+iParamètreVisualisateur(iBoutonTous - iBoutonImprimante);
 // Ouverture grâce au visualisateur
-iDestination(iVisualisateur)
+iDestination(iVisualisateur);
 //sélection de l'état à afficher
-iImprimeEtat(ETAT_Bon_de_commande)
+iImprimeEtat(ETAT_Bon_de_commande);
 ```
 
 ### Enchainement d'états
 
-```wl
-iDestination(iVisualisateur)
+```js
+iDestination(iVisualisateur);
 // Affiche plusieurs états à la suite
-iEnchaînementAjoute(ETAT_Partie1)
-iEnchaînementAjoute(ETAT_Partie2)
-iEnchaînementImprime()
+iEnchaînementAjoute(ETAT_Partie1);
+iEnchaînementAjoute(ETAT_Partie2);
+iEnchaînementImprime();
 ```
 
 ### Etat à partir d'une requête
 
-```wl
+```js
 //-> BTN_RapportPrescription (clic)
 IDDoc est une chaîne
 // Saisie du paramètre
@@ -723,9 +723,38 @@ Pour un état sans tableau, il suffit de modéliser les champs sur la première 
 
 ## IV. FONCTIONS NATIVES
 
+### AGENDA
+
+```js
+// AgendaAffiche // met à jour l'agenda
+AgendaAffiche(AGD_MonAgenda)
+
+// AgendaAjouteRendezVous // ajoute un redv dans l'agenda
+AgendaAjouteRendezVous(AGD_MonAgenda, "Titre du RDV", "202205041600", "202205041700")
+AgendaSupprimeRendezVous(AGD_MonAgenda) //supprime le rdv sélectionné
+
+// AgendaPosition // se positionne sur une date précise
+AgendaPosition(AGD_MonAgenda, "20220504")
+AgendaPosition(AGD_MonAgenda) //renvoie la date affichée de l'agenda
+
+// RendezVous // crée un rendez-vous
+NouveauRendezVous est un RendezVous
+NouveauRendezVous.Titre = "Mon RDV"
+NouveauRendezVous.DateDébute = SAI_DateDebut + SAI_HeureDebut
+NouveauRendezVous.DateFin = SAI_DateFin + SAI_HeureFin
+NouveauRendezVous.Contenu = SAI_Contenu
+AgendaAjouteRendezVous(AGD_MonAgenda, NouveauRendezVous)
+
+// requête liée à un agenda
+AGD_MonAgenda.ParamOption = "En cours"
+  //pour ajouter la paramètre de condition de la requête
+  // Attention dans ce cas, les rendez-vous ne sont pas liés directement au données de l'agenda: pas de possibilité de modifier par déplacement.
+
+```
+
 ### BASE DE DONNEES / SERVEUR
 
-```wl
+```js
 // CONNEXION BDD DISTANTE // fichiers locaux vers BDD externe
 MaConnexionManuelle est une Connexion
 HDécritConnexion(MaConnexionManuelle)
@@ -761,7 +790,7 @@ Ping("webdev26.dinao.com") //vrai si le serveur est disponible
 
 ### CHAINE
 
-```wl
+```js
 // ExtraitChaine // extraction en fonction des séparateurs
 sChaîne est une chaîne = "Fraise, Framboise<BR>Citron<BR>Chocolat et Banane"
 sRésultat est une chaîne = sChaîne.ExtraitChaîne(rangPremier, [", " , " et ", "<BR>"])
@@ -779,10 +808,15 @@ SansEspace(" a  b c ") //abc
 
 ### CHAMPS
 
-```wl
+```js
 // RepriseSaisie / DonneFocus // met le focus sur le champ de saisie spécifié
 RepriseSaisie(SAI_Nom)
 DonneFocus(SAI_Nom)
+
+// RAZ // efface le contenu d'un champ
+RAZ(Vrai) //efface le contenu des champs de saisie de la page
+RAZ(SAI_Nom, Vrai) //efface le contenu du champ SAI_Nom
+RAZ() //même effet qu'un bouton annuler
 
 // SaisieInvalideDétecte // en cas de champ bligatoire non rempli ou caractères non autorisés
 SI SaisieInvalideDétecte() ALORS
@@ -792,14 +826,14 @@ FIN
 
 ### DATE ET HEURE
 
-```wl
+```js
 // DateDifférence // renvoie le nombre de jours entre deux dates
 nNbJours est un entier = DateDifférence(PremierJourDuMois(), SAI_DateFin)
 ```
 
 ### FENETRE
 
-```wl
+```js
 // ChangeFenêtreSource // charge une fenêtre interne dans un champ fenêtre interne
 ChangeFenêtreSource(CFI_ChampFenêtreInterne, FI_FenêtreInterne1)    //charge FI_FenêtreInterne1 dans CFI_ChampFenêtreInterne
 
@@ -835,7 +869,7 @@ Saisie("Quel est votre nom ?", sNom)
 
 ### FICHIER
 
-```wl
+```js
 // fRepExe // chaine correspondant au répertoire EXE du projet
 sChemin est une chaîne = fRepExe() + "\Fichier.txt"
 
@@ -922,7 +956,7 @@ HImporteXLS(fichier de données, chemin du xls, n°feuille, "rubrique1pourinject
 
 ### TABLEAU
 
-```wl
+```js
 // Affiche // met à jour l'affichage du tableau
 TABLE_Produit.Affiche(<position>)
   taCourantEnreg: affiche et sélectionne la produit recherché ou enregistré
@@ -941,42 +975,42 @@ TableSelectMoins(TABLE_Produit,3) // désélection de la 3e ligne du tableau
 
 ### GRAPHES
 
-```wl
+```js
 // grTitre // titre du graphe
-grTitre(GRF_Programmation, "Part des hommes et des femmes",grEnHaut)
+grTitre(GRF_Programmation, "Part des hommes et des femmes", grEnHaut);
 
 // grLégende // Ajouter une légende
-grLégende (GRF_Programmation,grADroite)
+grLégende(GRF_Programmation, grADroite);
 
 // grEtiquetteSérie // Etiquette de séries pour les HISTOGRAMMES
-grEtiquetteSérie(GRF_HistoProgrammation,1,"2020")
-grEtiquetteSérie(GRF_HistoProgrammation,2,"2021")
+grEtiquetteSérie(GRF_HistoProgrammation, 1, "2020");
+grEtiquetteSérie(GRF_HistoProgrammation, 2, "2021");
 
 // grEtiquetteCatégorie // Ajouter les étiquettes de catégorie (abscisses)
-grEtiquetteCatégorie(GRF_Programmation, 1, "Hommes")
-grEtiquetteCatégorie(GRF_Programmation, 2, "Femmes")
+grEtiquetteCatégorie(GRF_Programmation, 1, "Hommes");
+grEtiquetteCatégorie(GRF_Programmation, 2, "Femmes");
 
 // grAjouteDonnée pour les graphes SECTEURS // Ajouter des données
-grAjouteDonnée (GRF_Programmation, 1, 60)
-grAjouteDonnée (GRF_Programmation, 1, 40)
+grAjouteDonnée(GRF_Programmation, 1, 60);
+grAjouteDonnée(GRF_Programmation, 1, 40);
 
 // grAjouteDonnée pour les graphes SECTEURS // Remplir les données pour 2020 (série 1) et 2021 (série 2)
-grAjouteDonnée(GRF_HistoProgrammation,1,1,100) //nom,série,catégorie,valeur
-grAjouteDonnée(GRF_HistoProgrammation,1,2,110)
-grAjouteDonnée(GRF_HistoProgrammation,1,3,120)
-grAjouteDonnée(GRF_HistoProgrammation,2,1,150)
-grAjouteDonnée(GRF_HistoProgrammation,2,2,170)
-grAjouteDonnée(GRF_HistoProgrammation,2,3,180)
+grAjouteDonnée(GRF_HistoProgrammation, 1, 1, 100); //nom,série,catégorie,valeur
+grAjouteDonnée(GRF_HistoProgrammation, 1, 2, 110);
+grAjouteDonnée(GRF_HistoProgrammation, 1, 3, 120);
+grAjouteDonnée(GRF_HistoProgrammation, 2, 1, 150);
+grAjouteDonnée(GRF_HistoProgrammation, 2, 2, 170);
+grAjouteDonnée(GRF_HistoProgrammation, 2, 3, 180);
 
 // grDessine // Dessiner le graphe complètement
-grDessine(GRF_Programmation)
+grDessine(GRF_Programmation);
 ```
 
 ### ZONES RÉPÉTÉES
 
 Comme un tableau avec un affichage différent en zones répétées
 
-```wl
+```js
 // ZoneRépétéeAjoute // ajoute des données dans une zone répétée
 POUR TOUT Patient
   ZoneRépétéeAjoute(ZR_Patients, Patient.Nom + TAB + Patient.Prenom) // TAB pour aller au champ suivant
@@ -985,7 +1019,7 @@ FIN
 
 ### FONCTIONNALITES DIVERSES
 
-```wl
+```js
 // DateDifférence // renvoie le nombre de jours entre deux dates
 nNbJours est un entier = DateDifférence(SAI_DateDebut, SAI_DateFin)
 
@@ -1021,17 +1055,17 @@ ToastAffiche("Ceci est un message Toast.", toastLong, cvMilieu, chCentre, Ve
 
 ### Afficher et mettre à jour la fiche d'un produit à partir d'une liste de produits
 
-```wl
+```js
 //-> BTN_Modifier dans FEN_Menu (clic)
-FEN_Fiche_du_produit.Ouvre()
+FEN_Fiche_du_produit.Ouvre();
 // Met à jour la ligne sélectionnée après modification
-TABLE_Produit.Affiche(taCourantBandeau) //met à jour le bandeau de sélection courant
+TABLE_Produit.Affiche(taCourantBandeau); //met à jour le bandeau de sélection courant
 
 //-> code dans FEN_Fiche_du_produit (Fin d'initialisation)
-Produit.VersFenêtre() //Produit est un fichier de données (table)
+Produit.VersFenêtre(); //Produit est un fichier de données (table)
 
 //-> BTN_Valider dans FEN_Fiche_du_produit (clic)
-EcranVersFichier()
+EcranVersFichier();
 //les valeurs des champs de la fenêtre vont être sauvegardées dans les rubriques correspondantes dans le fichier de données
 
 // EcranVersFichier() est équivalent aux lignes suivantes:
@@ -1040,13 +1074,13 @@ EcranVersFichier()
 // Produit.Description = SAI_Description
 // ...
 
-Produit.Modifie()   //c'est le fichier de données Produit que l'on veut modifier
-Ferme()             //on ferme la fenêtre
+Produit.Modifie(); //c'est le fichier de données Produit que l'on veut modifier
+Ferme(); //on ferme la fenêtre
 ```
 
 ### Modification d'une image
 
-```wl
+```js
 //-> BTN_Modifier dans FEN_Fiche_du_produit (clic)
 Fichier est une chaîne
  
@@ -1060,7 +1094,7 @@ FIN
 
 ### Ajouter un nouveau produit
 
-```wl
+```js
 //-> BTN_Nouveau dans FEN_Menu (clic)
 
 //on initialise les variables des rubriques du fichier de données "Produit"
@@ -1085,7 +1119,7 @@ Ferme()
 
 - Recherche à l'identique
 
-```wl
+```js
 //-> BTN_RechercheIdentique pour champ COMBO_Client (clic)
 
 // On recherche l'id du client qui correspond au nom complet recherché dans la combo
@@ -1099,7 +1133,7 @@ FIN
 
 - Recherche générique
 
-```wl
+```js
 //-> BTN_RechercheGénérique pour champ SAI_Nom_Recherché (clic)
 
 // On recherche un nom complet qui correspond au texte saisi dans le champ
@@ -1115,7 +1149,7 @@ FIN
 
 - Recherche dynamique dans une table
 
-```wl
+```js
 //-> SAI_Nom_Recherché (modification)
 SI SAI_Nom_Recherché <> "" ALORS
   TableActiveFiltre(TABLE_Produits.COL_Nom, filtreContient, SAI_Nom_Recherché)
@@ -1126,7 +1160,7 @@ FIN
 
 ### Parcourir des produits
 
-```wl
+```js
 //-> BTN_Premier dans ONG_Visualisation (clic)
 
 // Lit le premier client
@@ -1199,10 +1233,10 @@ Choisir les rubriques sur lesquels va porter les critères de recherche -> bouto
 
 - Création du bouton de recherche pour mettre à jour l'affichage
 
-```wl
+```js
 //-> BTN_Rechercher (clic)
 
-TABLE_REQ_RechercheCommandes.Affiche(taInit)
+TABLE_REQ_RechercheCommandes.Affiche(taInit);
 //permet de ré-exécuter l'événement "Initialisation" du champ Table
 ```
 
@@ -1210,13 +1244,13 @@ TABLE_REQ_RechercheCommandes.Affiche(taInit)
 
 La table doit avoir pour source la requête précédemment créée
 
-```wl
+```js
 // -> TABLE_REQ_RechercheCommandes (initialisation)
 
-MaSource.ParamEtat = SEL_Etat
-MaSource.ParamIDModeRèglement = COMBO_ModeReglement
-MaSource.ParamDebutPeriode = SAI_DateDébut
-MaSource.ParamFinPeriode = SAI_DateFin
+MaSource.ParamEtat = SEL_Etat;
+MaSource.ParamIDModeRèglement = COMBO_ModeReglement;
+MaSource.ParamDebutPeriode = SAI_DateDébut;
+MaSource.ParamFinPeriode = SAI_DateFin;
 ```
 
 ### Imprimer un bon de commande via un ETAT
@@ -1228,20 +1262,20 @@ MaSource.ParamFinPeriode = SAI_DateFin
 - Réorganiser la position des éléments dans l'état
 - Créer un menu contextuel pour activer l'impression avec le code suivant
 
-```wl
+```js
 // Impression dans le visualisateur de rapports
-iDestination(iVisualisateur)
+iDestination(iVisualisateur);
 // Initialise la requête de l'état avec l'id de la commande sélectionnée dans le tableau
-ETAT_Bon_de_commande.InitRequête(TABLE_REQ_RechercheCommandes.COL_IDCommande)
+ETAT_Bon_de_commande.InitRequête(TABLE_REQ_RechercheCommandes.COL_IDCommande);
 // Lance l'impression de l'état
-ETAT_Bon_de_commande.Imprime()
+ETAT_Bon_de_commande.Imprime();
 ```
 
 - Lier le menu contextuel au champ table dans l'onglet UI de la description de la table
 
 ### Envoie d'un mail
 
-```wl
+```js
 MaSession est un emailSessionSMTP
 MaSession.Nom				= SAI_Utilisateur
 MaSession.MotDePasse		= SAI_MotDePasse
@@ -1283,7 +1317,7 @@ MaSession.FermeSession()
 
 ### Remplir un histogramme par programmation
 
-```wl
+```js
 grTitre(GRF_TraitementsParDocteur, "Nb de traitements par docteur par jour",grEnHaut)
 grLégende(GRF_TraitementsParDocteur,grADroite)
 HExécuteRequête(REQ_TraitementsParDocteur,hRequêteDéfaut)
