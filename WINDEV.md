@@ -95,7 +95,7 @@ paramParamètre_de_la_requète
 - colonne expression pour mettre une valeur cible (ex: =10)
 - Visualiser le suivi d'une variable: clic droit puis éditer
 
-## II. jsangage
+## II. WLangage
 
 -> programmation événementielle
 
@@ -1106,7 +1106,7 @@ TABLE_Produit.Affiche(taCourantEnreg)
 
 //-> BTN_Valider dans FEN_Fiche_du_produit (clic)
 EcranVersFichier()
-SI Produit..NouvelEnregistrement ALORS //vrai car RAZ fait précédemment
+SI Produit.NouvelEnregistrement ALORS //vrai car RAZ fait précédemment
   Produit.Ajoute()
 SINON
   Produit.Modifie()
