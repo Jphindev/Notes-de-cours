@@ -774,6 +774,28 @@ SINON
   RETOUR
 FIN
 
+// Passage d'une connexion en ligne à une connexion locale
+VarNomDonateur est une chaine
+SI HOuvreConnexion(ConnexionBDDenligne) = Vrai ALORS
+  // On affecte la connexion à tous les fichiers de données
+  HChangeConnexion("*",ConnexionBDDenligne)
+  //On cherche la première entrée et on la sauvegarde
+  HLitPremier(Donateur)
+  VarNomDonateur = Donateur.Nom
+  HFermeConnexion(ConnexionBDDenligne)
+
+  BDDLocale est une Connexion
+  //On peut utiliser l'assistant de HDécritConnexion()
+  BDDLocale..Provider = hAccèsHF7
+  HOuvreConnexion(BDDLocale)
+  HChangeConnexion("*",BDDLocale)
+  //On enregistre la variable sauvegardée dans le fichier local
+  Donateur.Nom = VarNomDonateur
+  HAjoute(Donateur)
+  //On affiche les données du fichier local
+  TableAffiche(TABLE_Donateur)
+	
+
 // HExécuteRequête // Exécuter une requête
 HExécuteRequête(REQ_Requête, hRequêteDéfaut, gsVariableChampRécupéré)
 TABLE_REQ_Requête.Affiche()
