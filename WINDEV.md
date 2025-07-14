@@ -794,7 +794,10 @@ SI HOuvreConnexion(ConnexionBDDenligne) = Vrai ALORS
   HAjoute(Donateur)
   //On affiche les données du fichier local
   TableAffiche(TABLE_Donateur)
-	
+SINON
+  Info("Impossible d'ouvrir la connexion")
+  RETOUR
+FIN
 
 // HExécuteRequête // Exécuter une requête
 HExécuteRequête(REQ_Requête, hRequêteDéfaut, gsVariableChampRécupéré)
