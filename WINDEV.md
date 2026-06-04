@@ -2,37 +2,38 @@
 
 ## Raccourcis clavier
 
-| Raccourci    | Effet                             | Niveau  |
-| ------------ | --------------------------------- | ------- |
-| F1           | Aide sur l'élément sélectionné    |         |
-| F2           | Événements de l'objet             |         |
-| F4           | Reproduire la mise en forme       | fenêtre |
-| F4           | Nouvelle procédure locale         | code    |
-| F5           | Ordre de navigation               | fenêtre |
-| F9           | Tester la fenêtre                 |         |
-| Ctrl F2      | Traitement ou événement initial   |         |
-| Ctrl F3      | Rechercher/remplacer dans le code |         |
-| Ctrl F4      | Fermer la fenêtre                 |         |
-| Ctrl F9      | Tester le projet                  |         |
-| Ctrl <       | Accueil                           |         |
-| Ctrl E       | chercher une fenêtre              |         |
-| Ctrl W       | cacher les volets                 |         |
-| Ctrl B       | Placer un point d'arrêt débogueur | code    |
-| Ctrl L       | supprime la ligne                 | code    |
-| Ctrl D       | duplique la ligne                 | code    |
-| Ctrl /       | met en commentaires               |         |
-| Ctrl Shift / | enlève les commentaires           |         |
-| Ctrl R       | Indenter automatiquement le code  |         |
-| Ctrl N       | Nouveau                           |         |
-| Shift F4     | Nouvelle procédure globale        | code    |
-| Shift Tab    | Désindente                        | code    |
-| Tab          | Indente                           | code    |
-| Alt Entrée   | Ouvrir la description             |         |
-| R            | Formatage du champ                | état    |
-|              |                                   |         |
-|              |                                   |         |
-|              |                                   |         |
-|              |                                   |         |
+| Raccourci     | Effet                             | Niveau  |
+| ------------   | --------------------------------- | ------- |
+| F1             | Aide sur l'élément sélectionné    |         |
+| F2             | Événements de l'objet             |         |
+| F4             | Reproduire la mise en forme       | fenêtre |
+| F4             | Nouvelle procédure locale         | code    |
+| F5             | Ordre de navigation               | fenêtre |
+| F9             | Tester la fenêtre                 |         |
+| Ctrl F2        | Traitement ou événement initial   |         |
+| Ctrl F3        | Rechercher/remplacer dans le code |         |
+| Ctrl F4        | Fermer la fenêtre                 |         |
+| Ctrl F9        | Tester le projet                  |         |
+| Ctrl <         | Accueil                           |         |
+| Ctrl E         | chercher une fenêtre              |         |
+| Ctrl W         | cacher les volets                 |         |
+| Ctrl B         | Placer un point d'arrêt débogueur | code    |
+| Ctrl L         | supprime la ligne                 | code    |
+| Ctrl D         | duplique la ligne                 | code    |
+| Ctrl /         | met en commentaires               |         |
+| Ctrl Shift /   | enlève les commentaires           |         |
+| Ctrl R         | Indenter automatiquement le code  |         |
+| Ctrl N         | Nouveau                           |         |
+| Shift F4       | Nouvelle procédure globale        | code    |
+| Shift Tab      | Désindente                        | code    |
+| Tab            | Indente                           | code    |
+| Alt Entrée     | Ouvrir la description             |         |
+| R              | Formatage du champ                | état    |
+| Ctrl Alt       | Multicurseur                      | code    |
+| Ctrl Maj Suppr | Suppr le code après le curseur    | code    |
+| Alt Maj ->     | Sélection en rectangle            | code    |
+| Ctrl M         | Sélection en minuscule            | code    |
+| Ctrl Maj       | Sélection en majuscule            | code    |
 
 ## I. Les bases
 
